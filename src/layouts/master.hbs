@@ -4,13 +4,14 @@
 <!--[if gt IE 9]><!-->	<html> <!--<![endif]-->
 	<head>
 		<meta charset="utf-8" />
-		<title>Akka.NET</title>
-		<meta name="keywords" content="HTML5,CSS3,Template" />
+		<title>{% if page.title %} {{ page.title }} | {% endif %} {{ site.title }}</title>
+		<meta name="keywords" content="Actor,Finite state machine, concurrency" />
 		<meta name="description" content="" />
 		<meta name="Author" content="Dorin Grigoras [www.stepofweb.com]" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
 		<!-- mobile settings -->
-		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+		<meta name="viewport" contenht="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
 
 		<!-- Favicon -->
 		<link rel="shortcut icon" href="/assets/images/demo/favicon.ico" />
@@ -29,9 +30,15 @@
 		<link href="/assets/css/animate.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/flexslider.css" rel="stylesheet" type="text/css" />
 
+		<!-- FAV ICON -->
+		<link rel="shortcut icon" href="http://akkadotnet.github.io/favicon.ico?v=2" />
+
 		<!-- REVOLUTION SLIDER -->
 		<link href="/assets/css/revolution-slider.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/layerslider.css" rel="stylesheet" type="text/css" />
+
+		<!-- BLOG -->
+		<link href="/assets/css/layout-blog.css" rel="stylesheet" type="text/css" />
 
 		<!-- THEME CSS -->
 		<link href="/assets/css/essentials.css" rel="stylesheet" type="text/css" />
@@ -39,8 +46,12 @@
 		<link href="/assets/css/header-default.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/footer-default.css" rel="stylesheet" type="text/css" />
 		<link href="/assets/css/color_scheme/red.css" rel="stylesheet" type="text/css" id="color_scheme" />
+		
+		
+		<!-- Highlighting -->
+		<link href="https://highlightjs.org/static/styles/github.css" rel="stylesheet" type="text/css" />
 		<link href="/content/style.css" rel="stylesheet" type="text/css" />
-
+	
 		<!-- Morenizr -->
 		<script type="text/javascript" src="/assets/plugins/modernizr.min.js"></script>
 
@@ -83,8 +94,8 @@
 						</div>
 
 						<!-- Logo -->
-						<a class="logo" href="index.html">
-							<img src="/content/akkanet.png" height="50" alt="" style="border-radius:5px;" />
+						<a class="logo" href="/">
+							<img src="/content/images/akkalogo.png"  alt="" style="padding-top:0px;padding-left: 5px;" />
 						</a>
 
 					</div><!-- /.container -->
@@ -102,8 +113,8 @@
 						</button>
 
 						<!-- Search -->
-						<form class="search" method="get" action="search.html">
-							<input type="text" class="form-control" name="s" value="" placeholder="Search">
+						<form class="search" method="get" action="/search">
+							<input type="text" class="form-control" name="q" value="" placeholder="Search">
 							<button class="fa fa-search"></button>
 						</form>
 						<!-- /Search -->
@@ -122,14 +133,15 @@
 										<a href="#">HOME</a>
 									</li>
 								-->
+								<!-- pageurl {{ page.url }} -->
 								<ul id="topMain" class="nav nav-pills nav-main">
-									<li class="mega-menu">
-										<a href="/index.html">
+									<li class="mega-menu{% if page.layout == "master" %} active{% endif %}">
+										<a href="/">
 											HOME <span>welcome</span>
 										</a>
 									</li>
-									<li class="active mega-menu">
-										<a href="#">DOCUMENTATION <span>Wiki</span></a>
+									<li class="mega-menu{% if page.layout == 'wiki' %} active{% endif %}">										
+										<a href="/wiki/">DOCUMENTATION <span>Wiki</span></a>
 									</li>
 									<li class="mega-menu">
 										<a href="https://github.com/akkadotnet/akka.net">CODE <span>Github repository</span></a>
@@ -138,7 +150,7 @@
 										<a href="https://groups.google.com/forum/#!forum/akkadotnet-user-list">MAILINGLIST <span>Discuss</span></a>
 									</li>	
 									<li class="mega-menu">
-										<a href="https://github.com/akkadotnet/akka.net/issues">BUGTRACKER <span>:-(</span></a>
+										<a href="https://github.com/akkadotnet/akka.net/issues">TRACKER <span>Issues and Features</span></a>
 									</li>	
 								</ul>
 
@@ -152,81 +164,7 @@
 
 			</div>
 
-
-
-			<!-- PAGE TOP -->
-			<section class="page-title">
-				<div class="container">
-
-					<header>
-
-						<ul class="breadcrumb"><!-- breadcrumb -->
-							<li><a href="/index.html">Home</a></li>
-							<li class="active">Wiki</li>
-						</ul><!-- /breadcrumb -->
-
-						<h2><!-- Page Title -->
-							Akka.NET Wiki
-						</h2><!-- /Page Title -->
-
-					</header>
-
-				</div>			
-			</section>
-			<!-- /PAGE TOP -->
-
-
-
-			<!-- CONTENT -->
-			<section>
-				<div class="container">
-
-					<div class="row">
-
-						<!-- LEFT COLUMNS -->
-						<div class="col-md-9">
-
-							<div>
-								{{ content }}
-
-								<div class="sky-form boxed">
-									<header>Leave a reply</header>
-									<div style="padding:12px;">
-									<div id="disqus_thread"></div>
-					                <script type="text/javascript">
-					                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-					                    var disqus_shortname = 'akkanet'; // required: replace example with your forum shortname
-
-					                    /* * * DON'T EDIT BELOW THIS LINE * * */
-					                    (function () {
-					                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-					                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-					                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-					                    })();
-					                </script>
-					                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-					                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-						            </div>
-						        </div>
-							</div>
-
-						</div>
-						<!-- /LEFT COLUMNS -->
-
-						<!-- RIGHT COLUMNS -->
-						<div class="col-md-3">
-
-							{% include Sidebar.html %}
-							
-						</div>
-						<!-- /RIGHT COLUMNS -->
-
-					</div>
-
-				</div>
-			</section>
-			<!-- /CONTENT -->
-
+			{{> body }}
 
 
 			<!-- FOOTER -->
@@ -236,16 +174,15 @@
 					<div class="row">
 
 						<!-- col #1 -->
-						<div class="logo_footer dark col-md-3">
-
-							<img alt="" src="/assets/images/logo_footer.png" height="50" class="logo" />
-
+						<div class="spaced dark col-md-3">
+							<h4>About <strong>Akka.NET</strong></h4>
 							<p class="block">
-								4th Street, Suite 88<br />
-								New York NY 10887<br />
-								Email: youremail@yourdomain.com<br />
-								Phone: +40 (0) 111 1234 567<br />
-								Fax: +40 (0) 111 1234 568<br />
+							Akka.NET is a port of the popular <br/>
+							Java/Scala framework <a href="http://akka.io">Akka</a> to .NET.<br/>
+							<br/>
+							This is a community driven port and <br/>
+							is not affiliated with <a href="http://typesafe.com">Typesafe</a> who <br/>
+							makes the original Java/Scala version.<br/>
 							</p>
 
 							<p class="block"><!-- social -->
@@ -256,31 +193,13 @@
 						</div>
 						<!-- /col #1 -->
 
-						<!-- col #2 -->
-						<div class="spaced col-md-3 col-sm-4">
-							<h4>Recent <strong>Posts</strong></h4>
-							<ul class="list-unstyled">
-								<li>
-									<a class="block" href="#">New CSS3 Transitions this Year</a>
-									<small>June 29, 2014</small>
-								</li>
-								<li>
-									<a class="block" href="#">Inteligent Transitions In UX Design</a>
-									<small>June 29, 2014</small>
-								</li>
-								<li>
-									<a class="block" href="#">Lorem Ipsum Dolor</a>
-									<small>June 29, 2014</small>
-								</li>
-							</ul>
-						</div>
-						<!-- /col #2 -->
+
 
 						<!-- col #3 -->
-						<div class="spaced col-md-3 col-sm-4">
+						<div class="spaced col-md-6 col-sm-4">
 							<h4>Recent <strong>Tweets</strong></h4>
-							<ul class="list-unstyled fsize13">
-								<li>
+							<ul class="list-unstyled fsize13" id="recent_tweets">
+							<!--	<li>
 									<i class="fa fa-twitter"></i> <a href="#">@John Doe</a> Pilsum dolor lorem sit consectetur adipiscing orem sequat <small class="ago">8 mins ago</small>
 								</li>
 								<li>
@@ -288,29 +207,38 @@
 								</li>
 								<li>
 									<i class="fa fa-twitter"></i> <a href="#">@John Doe</a> Imperdiet condimentum diam dolor lorem sit consectetur adipiscing <small class="ago">8 mins ago</small>
-								</li>
+								</li>-->
 							</ul>
 						</div>
 						<!-- /col #3 -->
-
-						<!-- col #4 -->
+						
 						<div class="spaced col-md-3 col-sm-4">
-							<h4>About <strong>Us</strong></h4>
-							<p>
-								Incredibly beautiful responsive Bootstrap Template for Corporate and Creative Professionals.
-							</p>
+							<h4>Keep <strong>Updated</strong></h4>
 
 							<h4><small><strong>Subscribe to our Newsletter</strong></small></h4>
-							<form method="get" action="#" class="input-group">
-								<input required type="email" class="form-control" name="email" id="email" value="" placeholder="E-mail Address">
+
+							
+							<!-- Begin MailChimp Signup Form -->
+							<div id="mc_embed_signup">
+							<form class="input-group" action="//github.us8.list-manage.com/subscribe/post?u=945d2a2edaa89aaabd396bc45&amp;id=5f9a7a993d" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
+						
+								<input type="email" value="" name="EMAIL" class="form-control placeholder required email" id="mce-EMAIL" placeholder="E-mail Address" >
 								<span class="input-group-btn">
-									<button class="btn btn-primary">SUBMIT</button>
+									<button class="btn btn-primary" type="submit" name="subscribe" id="mc-embedded-subscribe">SUBMIT</button>
 								</span>
+					
+								<div id="mce-responses" class="clear">
+									<div class="response" id="mce-error-response" style="display:none"></div>
+									<div class="response" id="mce-success-response" style="display:none"></div>
+								</div>    <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
+							    <div style="position: absolute; left: -5000px;"><input type="text" name="b_945d2a2edaa89aaabd396bc45_5f9a7a993d" tabindex="-1" value=""></div>
+							    <div class="clear"></div>
 							</form>
+							</div>
+							
+							<!--End mc_embed_signup-->
 
 						</div>
-						<!-- /col #4 -->
-
 					</div>
 
 				</div>
@@ -346,8 +274,10 @@
 		<script type="text/javascript" src="/assets/plugins/revolution-slider/js/jquery.themepunch.plugins.min.js"></script>
 		<script type="text/javascript" src="/assets/plugins/revolution-slider/js/jquery.themepunch.revolution.min.js"></script>
 		<script type="text/javascript" src="/assets/js/revolution_slider.js"></script>
+		<script type="text/javascript" src="/content/jquery-toc.js"></script>
 
 
 		<script type="text/javascript" src="/assets/js/scripts.js"></script>
+		<script type="text/javascript" src="/content/scripts.js"></script>
 	</body>
 </html>
