@@ -8,5 +8,4 @@ module.exports.register = function (Handlebars, x)  {
       + marked(options.fn(this))
       + '</div>');
   });
-
 };
