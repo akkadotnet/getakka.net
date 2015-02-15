@@ -4,7 +4,6 @@ module.exports = function(grunt) {
     var layouts = source + 'layouts';
     var assets = source + 'assets';
 
-    // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
         clean: ['akka.net',output,'src/wiki'],
