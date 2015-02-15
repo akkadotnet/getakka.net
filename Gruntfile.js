@@ -8,7 +8,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         clean: ['akka.net',output,'src/wiki'],
         gitclone: {
-            "akka.net": {
+            "akka.net": { //clone akka.net repository
                 options: {
                     branch : 'dev',
                     repository : 'https://github.com/akkadotnet/akka.net.git',
@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         },
 
         copy: {
-            "documentation" : {
+            "documentation" : { //copy documentation and assets from akka.net repo to our source folder
                 files: [ 
                     {
                         expand: true,
@@ -28,7 +28,7 @@ module.exports = function(grunt) {
                     },
                 ]
             },
-            "assets" : {
+            "assets" : { //copy assets from source to output folder
                 files: [
                     {
                         expand: true,
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
                 ]
             }
         },
-        replace: {
+        replace: { //fix template names, that is, add .hbs extension 
           "template names": {
             src: ['src/**/*.md'], 
             overwrite: true,  
@@ -64,7 +64,7 @@ module.exports = function(grunt) {
                 assets: assets 
             },
 
-            "pages": {
+            "pages": { //build all pages, hbs and markdown
                 files: [
                     {
                         expand: true, 
