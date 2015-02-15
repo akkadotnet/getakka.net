@@ -1,38 +1,42 @@
 module.exports = function(grunt) {
+    var output = "web/";
+    var source = "src/"
+    var layouts = source + 'layouts';
+    var assets = source + 'assets';
+
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        copy: {
-            main : {
-                files: [
-                    {
-                        expand: true,
-                        cwd   :'src/',
-                        src   : ['**/*.*','!**/*.hbs','!**/*.md'],
-                        dest  : 'web/'
-                    }
-                ]
-            }
-        },
-
         assemble: {
             options: {
                 layout: "master.hbs",
                 flatten: false,
                 expand: true,
-                layoutdir: 'src/layouts',
+                layoutdir: layouts,
                 helpers: ['helper-gfm.js'],
-                assets: 'src/assets' 
+                assets: assets 
             },
 
             pages: {
                 files: [
                     {
                         expand: true, 
-                        cwd: 'src/', 
+                        cwd: source, 
                         src: ['*.hbs','pages/*.hbs','**/*.md'], 
-                        dest: 'web/', 
+                        dest: output, 
                         ext: '.html'
+                    }
+                ]
+            }
+        },
+        copy: {
+            main : {
+                files: [
+                    {
+                        expand: true,
+                        cwd   : source,
+                        src   : ['**/*.*','!**/*.hbs','!**/*.md'],
+                        dest  : output
                     }
                 ]
             }
