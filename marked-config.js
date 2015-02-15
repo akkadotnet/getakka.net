@@ -1,6 +1,6 @@
 var S = require('string');
 var marked = require('./marked');
-
+var hljs = require('highlight.js');
 marked.setOptions({
     renderer: new marked.Renderer(),
     gfm: true,
@@ -12,10 +12,10 @@ marked.setOptions({
     smartypants: false,
     highlight: function (code, lang) {
         try {
-            var highlighted = require('highlight.js').highlight(lang,code,true).value;
+            var highlighted = hljs.highlight(lang,code,true).value;
             return highlighted;
         } catch (err) {            
-            var highlighted2 = require('highlight.js').highlightAuto(code).value;
+            var highlighted2 = hljs.highlightAuto(code).value;
             return highlighted2;
         }
     },

@@ -29,6 +29,8 @@ module.exports = function(grunt) {
                 ]
             }
         },
+        clean: [output],
+
         copy: {
             main : {
                 files: [
@@ -42,10 +44,11 @@ module.exports = function(grunt) {
             }
         }
     });
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-git');
     grunt.loadNpmTasks('assemble');
 
-    grunt.registerTask('default', ['assemble','copy']);
+    grunt.registerTask('default', ['clean','copy','assemble']);
 };
 
