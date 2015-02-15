@@ -1,0 +1,54 @@
+# ----------------------- #
+#      Main Configs       #
+# ----------------------- #
+
+url: http://getakka.net
+title: Akka.NET
+author: Akka.NET
+
+# Default date format is "ordinal" (resulting in "July 22nd 2007")
+# You can customize the format as defined in
+# http://www.ruby-doc.org/core-1.9.2/Time.html#method-i-strftime
+# Additionally, %o will give you the ordinal representation of the day
+date_format: "ordinal"
+
+# RSS / Email (optional) subscription links (change if using something like Feedburner)
+subscribe_rss: /atom.xml
+subscribe_email:
+# RSS feeds can list your email address if you like
+email: akkadotnet@gmail.com
+
+# ----------------------- #
+#    Jekyll & Plugins     #
+# ----------------------- #
+
+# If publishing to a subdirectory as in http://site.com/project set 'root: /project'
+root: /
+permalink: /blog/:year/:month/:day/:title/
+#source: source
+#destination: public
+#plugins: plugins
+#code_dir: downloads/code
+category_dir: /blog/categories
+
+markdown: redcarpet
+
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "strikethrough", "superscript","tables", "with_toc_data"]
+
+#markdown: kramdown
+
+kramdown:
+  input: GFM
+  use_coderay: true
+  coderay:
+    coderay_line_numbers: true
+    coderay_css: class
+
+highlighter: pygments # default python pygments have been replaced by pygments.rb
+
+paginate: 10          # Posts per page on the blog index
+paginate_path: "posts/:num"  # Directory base for pagination URLs eg. /posts/2/
+recent_posts: 5       # Posts in the sidebar Recent Posts section
+excerpt_link: "Read on &rarr;"  # "Continue reading" link text at the bottom of excerpted articles
+excerpt_separator: "<!--more-->"

@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!--[if IE 8]>			<html class="ie ie8"> <![endif]-->
+<!--[if IE 9]>			<html class="ie ie9"> <![endif]-->
+<!--[if gt IE 9]><!-->	<html> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8" />
+		<title>Akka.NET</title>
+		<meta name="keywords" content="HTML5,CSS3,Template" />
+		<meta name="description" content="" />
+		<meta name="Author" content="Dorin Grigoras [www.stepofweb.com]" />
+
+		<!-- mobile settings -->
+		<meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0" />
+
+		<!-- Favicon -->
+		<link rel="shortcut icon" href="/assets/images/demo/favicon.ico" />
+
+		<!-- WEB FONTS -->
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700,800&amp;subset=latin,latin-ext" rel="stylesheet" type="text/css" />
+
+		<!-- CORE CSS -->
+		<link href="/assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/font-awesome.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/sky-forms.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/weather-icons.min.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/line-icons.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/plugins/owl-carousel/owl.pack.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/plugins/magnific-popup/magnific-popup.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/animate.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/flexslider.css" rel="stylesheet" type="text/css" />
+
+		<!-- REVOLUTION SLIDER -->
+		<link href="/assets/css/revolution-slider.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/layerslider.css" rel="stylesheet" type="text/css" />
+
+		<!-- THEME CSS -->
+		<link href="/assets/css/essentials.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/layout.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/header-default.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/footer-default.css" rel="stylesheet" type="text/css" />
+		<link href="/assets/css/color_scheme/red.css" rel="stylesheet" type="text/css" id="color_scheme" />
+		<link href="/content/style.css" rel="stylesheet" type="text/css" />
+
+		<!-- Morenizr -->
+		<script type="text/javascript" src="/assets/plugins/modernizr.min.js"></script>
+
+		<!--[if lte IE 8]>
+			<script src="/assets/plugins/respond.js"></script>
+		<![endif]-->
+	</head>
+	
+	<!-- 
+		Available body classes: 
+			smoothscroll			= enable chrome browser smooth scroll
+			grey 					= grey content background
+			boxed 					= boxed style
+			pattern1 ... pattern10 	= background pattern
+
+		Background Image - add to body: 
+			data-background="/assets/images/boxed_background/1.jpg"
+	-->
+	<body>
+
+		<div id="wrapper">
+
+			<div id="header"><!-- class="sticky" for sticky menu -->
+
+				<!-- Top Bar -->
+				<header id="topBar">
+					<div class="container">
+
+						<div class="pull-right fsize13 margin-top10 hide_mobile">
+
+							<!-- mail , phone -->
+							<a href="mailto:akkadotnet@gmail.com">AkkaDotNet@Gmail.com</a> &bull; 
+
+							<div class="block text-right"><!-- social -->
+								<a href="https://www.facebook.com/akkadotnet" class="social fa fa-facebook"></a>
+								<a href="http://stackoverflow.com/questions/tagged/akka.net" class="social fa fa-stack-overflow"></a>
+								<a href="https://twitter.com/AkkaDotNET" class="social fa fa-twitter"></a>
+							</div><!-- /social -->
+
+						</div>
+
+						<!-- Logo -->
+						<a class="logo" href="index.html">
+							<img src="/content/akkanet.png" height="50" alt="" style="border-radius:5px;" />
+						</a>
+
+					</div><!-- /.container -->
+				</header>
+				<!-- /Top Bar -->
+
+
+				<!-- Top Nav -->
+				<header id="topNav">
+					<div class="container">
+
+						<!-- Mobile Menu Button -->
+						<button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse">
+							<i class="fa fa-bars"></i>
+						</button>
+
+						<!-- Search -->
+						<form class="search" method="get" action="search.html">
+							<input type="text" class="form-control" name="s" value="" placeholder="Search">
+							<button class="fa fa-search"></button>
+						</form>
+						<!-- /Search -->
+
+						<!-- Top Nav -->
+						<div class="navbar-collapse nav-main-collapse collapse">
+							<nav class="nav-main">
+
+								<!--
+									NOTE
+									
+									For a regular link, remove "dropdown" class from LI tag and "dropdown-toggle" class from the href.
+									Direct Link Example: 
+
+									<li>
+										<a href="#">HOME</a>
+									</li>
+								-->
+								<ul id="topMain" class="nav nav-pills nav-main">
+									<li class="mega-menu">
+										<a href="/index.html">
+											HOME <span>welcome</span>
+										</a>
+									</li>
+									<li class="active mega-menu">
+										<a href="#">DOCUMENTATION <span>Wiki</span></a>
+									</li>
+									<li class="mega-menu">
+										<a href="https://github.com/akkadotnet/akka.net">CODE <span>Github repository</span></a>
+									</li>
+									<li class="mega-menu">
+										<a href="https://groups.google.com/forum/#!forum/akkadotnet-user-list">MAILINGLIST <span>Discuss</span></a>
+									</li>	
+									<li class="mega-menu">
+										<a href="https://github.com/akkadotnet/akka.net/issues">BUGTRACKER <span>:-(</span></a>
+									</li>	
+								</ul>
+
+							</nav>
+						</div>
+						<!-- /Top Nav -->
+
+					</div><!-- /.container -->
+				</header>
+				<!-- /Top Nav -->
+
+			</div>
+
+
+
+			<!-- PAGE TOP -->
+			<section class="page-title">
+				<div class="container">
+
+					<header>
+
+						<ul class="breadcrumb"><!-- breadcrumb -->
+							<li><a href="/index.html">Home</a></li>
+							<li class="active">Wiki</li>
+						</ul><!-- /breadcrumb -->
+
+						<h2><!-- Page Title -->
+							Akka.NET Wiki
+						</h2><!-- /Page Title -->
+
+					</header>
+
+				</div>			
+			</section>
+			<!-- /PAGE TOP -->
+
+
+
+			<!-- CONTENT -->
+			<section>
+				<div class="container">
+
+					<div class="row">
+
+						<!-- LEFT COLUMNS -->
+						<div class="col-md-9">
+
+							<div>
+								{{ content }}
+
+								<div class="sky-form boxed">
+									<header>Leave a reply</header>
+									<div style="padding:12px;">
+									<div id="disqus_thread"></div>
+					                <script type="text/javascript">
+					                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					                    var disqus_shortname = 'akkanet'; // required: replace example with your forum shortname
+
+					                    /* * * DON'T EDIT BELOW THIS LINE * * */
+					                    (function () {
+					                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+					                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+					                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					                    })();
+					                </script>
+					                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+						            </div>
+						        </div>
+							</div>
+
+						</div>
+						<!-- /LEFT COLUMNS -->
+
+						<!-- RIGHT COLUMNS -->
+						<div class="col-md-3">
+
+							{% include Sidebar.html %}
+							
+						</div>
+						<!-- /RIGHT COLUMNS -->
+
+					</div>
+
+				</div>
+			</section>
+			<!-- /CONTENT -->
+
+
+
+			<!-- FOOTER -->
+			<footer id="footer">
+				<div class="container">
+
+					<div class="row">
+
+						<!-- col #1 -->
+						<div class="logo_footer dark col-md-3">
+
+							<img alt="" src="/assets/images/logo_footer.png" height="50" class="logo" />
+
+							<p class="block">
+								4th Street, Suite 88<br />
+								New York NY 10887<br />
+								Email: youremail@yourdomain.com<br />
+								Phone: +40 (0) 111 1234 567<br />
+								Fax: +40 (0) 111 1234 568<br />
+							</p>
+
+							<p class="block"><!-- social -->
+								<a href="https://www.facebook.com/akkadotnet" class="social fa fa-facebook"></a>
+								<a href="http://stackoverflow.com/questions/tagged/akka.net" class="social fa fa-stack-overflow"></a>
+								<a href="https://twitter.com/AkkaDotNET" class="social fa fa-twitter"></a>
+							</p><!-- /social -->
+						</div>
+						<!-- /col #1 -->
+
+						<!-- col #2 -->
+						<div class="spaced col-md-3 col-sm-4">
+							<h4>Recent <strong>Posts</strong></h4>
+							<ul class="list-unstyled">
+								<li>
+									<a class="block" href="#">New CSS3 Transitions this Year</a>
+									<small>June 29, 2014</small>
+								</li>
+								<li>
+									<a class="block" href="#">Inteligent Transitions In UX Design</a>
+									<small>June 29, 2014</small>
+								</li>
+								<li>
+									<a class="block" href="#">Lorem Ipsum Dolor</a>
+									<small>June 29, 2014</small>
+								</li>
+							</ul>
+						</div>
+						<!-- /col #2 -->
+
+						<!-- col #3 -->
+						<div class="spaced col-md-3 col-sm-4">
+							<h4>Recent <strong>Tweets</strong></h4>
+							<ul class="list-unstyled fsize13">
+								<li>
+									<i class="fa fa-twitter"></i> <a href="#">@John Doe</a> Pilsum dolor lorem sit consectetur adipiscing orem sequat <small class="ago">8 mins ago</small>
+								</li>
+								<li>
+									<i class="fa fa-twitter"></i> <a href="#">@John Doe</a> Remonde sequat ipsum dolor lorem sit consectetur adipiscing  <small class="ago">8 mins ago</small>
+								</li>
+								<li>
+									<i class="fa fa-twitter"></i> <a href="#">@John Doe</a> Imperdiet condimentum diam dolor lorem sit consectetur adipiscing <small class="ago">8 mins ago</small>
+								</li>
+							</ul>
+						</div>
+						<!-- /col #3 -->
+
+						<!-- col #4 -->
+						<div class="spaced col-md-3 col-sm-4">
+							<h4>About <strong>Us</strong></h4>
+							<p>
+								Incredibly beautiful responsive Bootstrap Template for Corporate and Creative Professionals.
+							</p>
+
+							<h4><small><strong>Subscribe to our Newsletter</strong></small></h4>
+							<form method="get" action="#" class="input-group">
+								<input required type="email" class="form-control" name="email" id="email" value="" placeholder="E-mail Address">
+								<span class="input-group-btn">
+									<button class="btn btn-primary">SUBMIT</button>
+								</span>
+							</form>
+
+						</div>
+						<!-- /col #4 -->
+
+					</div>
+
+				</div>
+
+				<hr />
+
+				<div class="copyright">
+					<div class="container text-center fsize12">
+						<!--Epona theme by <a href="http://www.stepofweb.com" target="_blank" title="bootstrap themes &amp; templates" class="copyright">stepofweb</a> &bull; All Right Reserved &copy; Your Company LLC. &nbsp;
+						<a href="page-privacy.html" class="fsize11">Privacy Policy</a> &bull; 
+						<a href="page-terms.html" class="fsize11">Terms of Service</a>-->
+					</div>
+				</div>
+			</footer>
+			<!-- /FOOTER -->
+
+			<a href="#" id="toTop"></a>
+
+		</div><!-- /#wrapper -->
+
+		<!-- JAVASCRIPT FILES -->
+		<script type="text/javascript" src="/assets/plugins/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="/assets/plugins/jquery.isotope.js"></script>
+		<script type="text/javascript" src="/assets/plugins/masonry.js"></script>
+
+		<script type="text/javascript" src="/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/assets/plugins/magnific-popup/jquery.magnific-popup.min.js"></script>
+		<script type="text/javascript" src="/assets/plugins/owl-carousel/owl.carousel.min.js"></script>
+		<script type="text/javascript" src="/assets/plugins/knob/js/jquery.knob.js"></script>
+		<script type="text/javascript" src="/assets/plugins/flexslider/jquery.flexslider-min.js"></script>
+
+		<!-- REVOLUTION SLIDER -->
+		<script type="text/javascript" src="/assets/plugins/revolution-slider/js/jquery.themepunch.plugins.min.js"></script>
+		<script type="text/javascript" src="/assets/plugins/revolution-slider/js/jquery.themepunch.revolution.min.js"></script>
+		<script type="text/javascript" src="/assets/js/revolution_slider.js"></script>
+
+
+		<script type="text/javascript" src="/assets/js/scripts.js"></script>
+	</body>
+</html>

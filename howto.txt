@@ -1,0 +1,1 @@
+http://blog.parkji.co.uk/2013/07/06/building-a-static-site-using-grunt-and-assemble.html

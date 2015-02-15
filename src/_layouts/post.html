@@ -1,0 +1,165 @@
+---
+layout: master
+---
+<!-- PAGE TOP -->
+			<section class="page-title">
+				<div class="container">
+
+					<header>
+
+						<ul class="breadcrumb"><!-- breadcrumb -->
+							<li><a href="/">Home</a></li>
+							<li><a href="/blog">Blog</a></li>
+							<li class="active">{% if page.title %} {{ page.title }} {% endif %}</li>							
+						</ul><!-- /breadcrumb -->
+
+						<h2><!-- Page Title -->
+							<strong>Akka.NET</strong> Blog
+						</h2><!-- /Page Title -->
+
+					</header>
+
+				</div>			
+			</section>
+			<!-- /PAGE TOP -->
+
+
+
+			<!-- CONTENT -->
+			<section>
+				<div class="container">
+
+					<div class="row" id="blog">
+					
+					<!-- BLOG ARTICLE -->
+						<div class="col-md-9 col-sm-9">
+
+							<div class="prev-article row">					
+
+						<div class="blog-prev-date col-md-3 col-sm-3">
+							<span class="date">
+								{{ page.date | date: "%-d" }} <small>{{ page.date | date: "%B %Y" }}</small>
+							</span>
+							<span class="info hidden-xs">
+								<span class="block"><i class="fa fa-user"></i> BY <a href="blog-author.html">{{ page.author }}</a></span>
+								<span class="block"><i class="fa fa-folder-open-o"></i> POSTED IN <a href="blog.html">{{ page.category }}</a></span>
+								<span class="block"><i class="fa fa-comments"></i> WITH <a href="blog-single-sidebar.html#comments">_ COMMENTS</a></span>
+								<span class="block"><i class="fa fa-link"></i> <a href="{{ page.url }}">PERMALINK</a></span>
+							</span>
+						</div>
+
+						<!-- LEFT COLUMNS -->
+						<div class="col-md-9">
+							<div id="main_content">
+
+								{{ content }}
+
+								<div class="sky-form boxed">
+									<header>Leave a comment</header>
+									<div style="padding:12px;">
+									<div id="disqus_thread"></div>
+					                <script type="text/javascript">
+					                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+					                    var disqus_shortname = 'akkanet'; // required: replace example with your forum shortname
+
+					                    /* * * DON'T EDIT BELOW THIS LINE * * */
+					                    (function () {
+					                        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+					                        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+					                        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+					                    })();
+					                </script>
+					                <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+					                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+						            </div>
+						        </div>
+							</div>
+
+						</div>
+						<!-- /LEFT COLUMNS -->
+						
+					</div>
+
+				</div>
+
+		
+				<!-- /BLOG ARTICLE -->
+
+						
+					<!-- BLOG SIDEBAR -->
+						<div class="col-md-3 col-sm-3">						
+						
+							<!-- RECENT,POPULAR -->
+							<div class="widget">
+
+								<!-- TABS -->
+								<div class="tabs nomargin-top">
+
+									<!-- tabs -->
+									<ul class="nav nav-tabs nav-justified">
+										<li class="active">
+											<a href="#tab1" data-toggle="tab">
+												Recent
+											</a>
+										</li>
+									</ul>
+
+									<!-- tabs content -->
+									<div class="tab-content">
+										<div id="tab1" class="tab-pane active">
+											<ul class="posts">  
+												{% for post in site.posts limit:20 %}  
+												   <li>  
+													   <a href="{{ BASE_PATH }}{{ post.url }}"> 
+													   <i class="fa fa-sign-out"></i> 
+													   {{ post.title }}</a>
+													   <small>{{ post.date | date_to_string }}</small>
+												   </li>  
+												{% endfor %}  
+											</ul>
+										</div>
+
+									</div>
+
+								</div>
+								<!-- /TABS -->
+
+							</div>
+							<!-- /RECENT,POPULAR -->
+
+
+							<!-- categories -->
+							<div class="widget">
+								<h4>CATEGORIES</h4>
+								
+								<ul class="nav nav-list">
+									{% for cat in site.categories %}
+								    	<li><i class="fa fa-angle-right"></i> {{ cat[0] }}</li>
+									{% endfor %}
+								</ul>
+							</div>
+
+							<!-- tags -->
+							<div class="widget">
+								<h4>TAGS</h4>
+								{% capture tags %}
+								  {% for tag in site.tags %}
+								    {{ tag[0] }}
+								  {% endfor %}
+								{% endcapture %}
+								{% assign sortedtags = tags | split:' ' | sort %}
+
+								{% for tag in sortedtags %}
+								  <a class="tag label label-default light" href="#"><i class="fa fa-tags"></i> {{ tag }}</a> 
+								{% endfor %}
+							</div>
+
+
+						</div>
+						<!-- /BLOG SIDEBAR -->
+
+					</div>
+
+
+				</div>
+			</section>
