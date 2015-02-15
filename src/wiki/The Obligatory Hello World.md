@@ -1,5 +1,5 @@
 ---
-layout: wiki
+layout: src/layouts/wiki.hbs
 title: The Obligatory Hello World
 ---
 #  The Obligatory Hello World

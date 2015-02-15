@@ -1,5 +1,5 @@
 ---
-layout: master.hbs
+layout: src/layouts/master.hbs
 ---
 			<!-- PAGE TOP -->
 			<section class="page-title">
@@ -38,7 +38,9 @@ layout: master.hbs
 						<div class="col-md-9">
 							<div id="main_content">
 
+								{{#markdown }} 
 								{{> body }}
+								{{/markdown }} 
 
 								<div class="sky-form boxed">
 									<header>Leave a comment</header>

@@ -1,5 +1,5 @@
 ---
-layout: wiki
+layout: src/layouts/wiki.hbs
 title: Routing
 ---
 ## TL;DR RoundRobin Group router example

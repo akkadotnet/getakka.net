@@ -1,5 +1,5 @@
 ---
-layout: wiki
+layout: src/layouts/wiki.hbs
 title: Getting started
 ---
 # Getting started with Akka.NET

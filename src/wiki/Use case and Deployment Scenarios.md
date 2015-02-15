@@ -1,5 +1,5 @@
 ---
-layout: wiki
+layout: src/layouts/wiki.hbs
 title: Use case and Deployment Scenarios
 ---
 # Deployment Scenarios

@@ -1,5 +1,5 @@
 ---
-layout: wiki
+layout: src/layouts/wiki.hbs
 title: Performance
 ---
 Pigeon is extremely performant when it comes to sending and receiving messages.

@@ -1,5 +1,5 @@
 ---
-layout: wiki
+layout: src/layouts/wiki.hbs
 title: Supervision
 ---
 This chapter outlines the concept behind supervision, the primitives offered and their semantics.

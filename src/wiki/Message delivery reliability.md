@@ -1,5 +1,5 @@
 ---
-layout: wiki
+layout: src/layouts/wiki.hbs
 title: Message delivery reliability
 ---
 # Message Delivery Reliability

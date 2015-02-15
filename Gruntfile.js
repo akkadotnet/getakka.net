@@ -9,7 +9,8 @@ module.exports = function(grunt) {
             },
             pages: {
                 files: {
-                    'web/': ['src/*.hbs']
+                    'web/': ['src/*.hbs'],
+                    'web/wiki/': ['src/wiki/*.md'],
                 }
             }
         }
