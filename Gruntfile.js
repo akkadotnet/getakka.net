@@ -8,7 +8,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd   :'src/',
-                        src   : ['**/*.png','**/*.jpg','**/*.gif','**/*.css','**/*.js','**/*.svg','**/*.ttf','**/*.woff','**/*.eot'],
+                        src   : ['**/*.*','!**/*.hbs','!**/*.md'],
                         dest  : 'web/'
                     }
                 ]
@@ -30,14 +30,7 @@ module.exports = function(grunt) {
                     {
                         expand: true, 
                         cwd: 'src/', 
-                        src: ['*.hbs','pages/*.hbs'], 
-                        dest: 'web/', 
-                        ext: '.html'
-                    },
-                    {
-                        expand: true, 
-                        cwd: 'src/', 
-                        src: '**/*.md', 
+                        src: ['*.hbs','pages/*.hbs','**/*.md'], 
                         dest: 'web/', 
                         ext: '.html'
                     }
