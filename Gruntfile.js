@@ -4,8 +4,10 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         assemble: {
             options: {
-                layout: "src/layouts/master.hbs",
-                flatten: true
+                layout: "master.hbs",
+                flatten: true,
+                layoutdir: 'src/layouts',
+                helpers: ['helper-foo.js']
             },
             pages: {
                 files: {
@@ -18,3 +20,4 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('assemble');
     grunt.registerTask('default', ['assemble']);
 };
+

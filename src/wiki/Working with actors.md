@@ -1,5 +1,5 @@
 ---
-layout: src/layouts/wiki.hbs
+layout: wiki.hbs
 title: Working with actors
 ---
 # Working with actors

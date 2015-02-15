@@ -1,5 +1,5 @@
 ---
-layout: src/layolayout: src/layouts/wiki.hbs
+layout: wiki.hbs
 title: ActorContext
 ---
 .

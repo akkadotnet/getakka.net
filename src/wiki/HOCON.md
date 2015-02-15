@@ -1,5 +1,5 @@
 ---
-layout: src/layouts/wiki.hbs
+layout: wiki.hbs
 title: HOCON
 ---
 # HOCON (Human-Optimized Config Object Notation)
@@ -164,26 +164,30 @@ each other.
 
 These two are equivalent:
 
-    {
-        "foo" : { "a" : 42 },
-        "foo" : { "b" : 43 }
-    }
+```hocon
+{
+    "foo" : { "a" : 42 },
+    "foo" : { "b" : 43 }
+}
 
-    {
-        "foo" : { "a" : 42, "b" : 43 }
-    }
+{
+    "foo" : { "a" : 42, "b" : 43 }
+}
+```
 
 And these two are equivalent:
 
-    {
-        "foo" : { "a" : 42 },
-        "foo" : null,
-        "foo" : { "b" : 43 }
-    }
+```hocon
+{
+    "foo" : { "a" : 42 },
+    "foo" : null,
+    "foo" : { "b" : 43 }
+}
 
-    {
-        "foo" : { "b" : 43 }
-    }
+{
+    "foo" : { "b" : 43 }
+}
+```
 
 The intermediate setting of `"foo"` to `null` prevents the object merge.
 
@@ -192,7 +196,7 @@ The intermediate setting of `"foo"` to `null` prevents the object merge.
 A sequence of characters outside of a quoted string is a string
 value if:
 
- - it does not contain "forbidden characters": '$', '"', '{', '}',
+ - it does not contain "forbidden characters": "$", '"', '{', '}',
    '[', ']', ':', '=', ',', '+', '#', '`', '^', '?', '!', '@',
    '*', '&', '\' (backslash), or whitespace.
  - it does not contain the two-character string "//" (which
@@ -358,34 +362,42 @@ involved or not.
 
 Here are several ways to define `a` to the same object value:
 
-    // one object
-    a : { b : 1, c : 2 }
-    // two objects that are merged via concatenation rules
-    a : { b : 1 } { c : 2 }
-    // two fields that are merged
-    a : { b : 1 }
-    a : { c : 2 }
+```hocon
+// one object
+a : { b : 1, c : 2 }
+// two objects that are merged via concatenation rules
+a : { b : 1 } { c : 2 }
+// two fields that are merged
+a : { b : 1 }
+a : { c : 2 }
+```
 
 Here are several ways to define `a` to the same array value:
 
-    // one array
-    a : [ 1, 2, 3, 4 ]
-    // two arrays that are concatenated
-    a : [ 1, 2 ] [ 3, 4 ]
-    // a later definition referring to an earlier
-    // (see "self-referential substitutions" below)
-    a : [ 1, 2 ]
-    a : ${a} [ 3, 4 ]
+```hocon
+// one array
+a : [ 1, 2, 3, 4 ]
+// two arrays that are concatenated
+a : [ 1, 2 ] [ 3, 4 ]
+// a later definition referring to an earlier
+// (see "self-referential substitutions" below)
+a : [ 1, 2 ]
+a : ${a} [ 3, 4 ]
+```
 
 A common use of object concatenation is "inheritance":
 
-    data-center-generic = { cluster-size = 6 }
-    data-center-east = ${data-center-generic} { name = "east" }
+```hocon
+data-center-generic = { cluster-size = 6 }
+data-center-east = ${data-center-generic} { name = "east" }
+```
 
 A common use of array concatenation is to add to paths:
 
-    path = [ /bin ]
-    path = ${path} [ /usr/bin ]
+```hocon
+path = [ /bin ]
+path = ${path} [ /usr/bin ]
+```
 
 #### Note: Arrays without commas or newlines
 
@@ -393,25 +405,29 @@ Arrays allow you to use newlines instead of commas, but not
 whitespace instead of commas. Non-newline whitespace will produce
 concatenation rather than separate elements.
 
-    // this is an array with one element, the string "1 2 3 4"
-    [ 1 2 3 4 ]
-    // this is an array of four integers
-    [ 1
-      2
-      3
-      4 ]
+```hocon
+// this is an array with one element, the string "1 2 3 4"
+[ 1 2 3 4 ]
+// this is an array of four integers
+[ 1
+  2
+  3
+  4 ]
 
-    // an array of one element, the array [ 1, 2, 3, 4 ]
-    [ [ 1, 2 ] [ 3, 4 ] ]
-    // an array of two arrays
-    [ [ 1, 2 ]
-      [ 3, 4 ] ]
+// an array of one element, the array [ 1, 2, 3, 4 ]
+[ [ 1, 2 ] [ 3, 4 ] ]
+// an array of two arrays
+[ [ 1, 2 ]
+  [ 3, 4 ] ]
+```
 
 If this gets confusing, just use commas. The concatenation
 behavior is useful rather than surprising in cases like:
 
-    [ This is an unquoted string my name is ${name}, Hello ${world} ]
-    [ ${a} ${b}, ${x} ${y} ]
+```hocon
+[ This is an unquoted string my name is ${name}, Hello ${world} ]
+[ ${a} ${b}, ${x} ${y} ]
+```
 
 Non-newline whitespace is never an element or field separator.
 
@@ -1438,6 +1454,3 @@ Environment variables are interpreted as follows:
 ### hyphen-separated vs. camelCase
 
 Config keys are encouraged to be `hyphen-separated` rather than `camelCase`.
-
-abc
-

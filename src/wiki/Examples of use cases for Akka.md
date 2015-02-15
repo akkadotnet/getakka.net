@@ -1,5 +1,5 @@
 ---
-layout: src/layouts/wiki.hbs
+layout: wiki.hbs
 title: Examples of use cases for Akka
 ---
 >**Note**<br/>

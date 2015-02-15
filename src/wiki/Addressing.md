@@ -1,5 +1,5 @@
 ---
-layout: src/layouts/wiki.hbs
+layout: wiki.hbs
 title: Addressing
 ---
 This chapter describes how actors are identified and located within a possibly distributed actor system. It ties into the central idea that Actor Systems form intrinsic supervision hierarchies as well as that communication between actors is transparent with respect to their placement across multiple network nodes.

@@ -1,5 +1,5 @@
----
-layout: src/layouts/wiki.hbs
+h---
+layout: wiki.hbs
 title: Mailbox
 ---
 ..
