@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         pkg: grunt.file.readJSON('package.json'),
         clean: ['akka.net',output,'src/wiki'],
         gitclone: {
-            your_target: {
+            "akka.net": {
                 options: {
                     branch : 'dev',
                     repository : 'https://github.com/akkadotnet/akka.net.git',
@@ -19,14 +19,18 @@ module.exports = function(grunt) {
         },
 
         copy: {
-            assets : {
-                files: [
+            "documentation" : {
+                files: [ 
                     {
                         expand: true,
                         cwd   : 'akka.net/documentation',
                         src   : ['**/*.*'],
                         dest  : source
                     },
+                ]
+            },
+            "assets" : {
+                files: [
                     {
                         expand: true,
                         cwd   : source,
@@ -38,15 +42,15 @@ module.exports = function(grunt) {
             }
         },
         replace: {
-          example: {
+          "template names": {
             src: ['src/**/*.md'], 
             overwrite: true,  
             replacements: [{
-              from: 'layout: wiki',                   // string replacement 
+              from: 'layout: wiki',
               to: 'layout: wiki.hbs'
             },
             {
-              from: "'$'",                   // string replacement 
+              from: "'$'",
               to: '"$"'
             }]
             },
@@ -61,7 +65,7 @@ module.exports = function(grunt) {
                 assets: assets 
             },
 
-            pages: {
+            "pages": {
                 files: [
                     {
                         expand: true, 
@@ -81,6 +85,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-git');
     grunt.loadNpmTasks('assemble');
 
-    grunt.registerTask('default', ['clean','gitclone','copy','replace','assemble']);
+    grunt.registerTask('default', [
+        'clean',
+        'gitclone',         //fetch akka.net
+        'copy',             //copy documentation to src, copy resources from src to output
+        'replace',          //fix up template names (.hbs)
+        'assemble']);       //build pages
 };
 

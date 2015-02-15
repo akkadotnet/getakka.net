@@ -2776,3 +2776,4 @@ web/*.*
 web/wiki/*.*
 node_modules/*
 web/*
+src/wiki/*
