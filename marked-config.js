@@ -39,7 +39,7 @@ marked.setOptions({
     }
 });
 
-function render(body, callback) {
-    marked(body, callback);
+function render(body) {
+    return marked(body);
 }
 module.exports = render;

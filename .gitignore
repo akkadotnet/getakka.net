@@ -2775,3 +2775,4 @@ node_modules/grunt/README.md
 web/*.*
 web/wiki/*.*
 node_modules/*
+web/*

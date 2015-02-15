@@ -3,7 +3,9 @@ layout: empty.hbs
 ---
 {
 	
-{{foo abc}}
+{{#foo}}
+I am _using_ *marked* down
+{{/foo}}
 	"pages" : [
 	{{#each pages}} "{{basename }}",{{/each}}"dummy"
 	]	

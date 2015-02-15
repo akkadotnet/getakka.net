@@ -7,7 +7,7 @@ module.exports = function(grunt) {
                 layout: "master.hbs",
                 flatten: true,
                 layoutdir: 'src/layouts',
-                helpers: ['helper-foo.js']
+                helpers: ['helper-gfm.js']
             },
             pages: {
                 files: {
