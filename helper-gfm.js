@@ -1,7 +1,8 @@
-var marked = require('./marked-config');
+
 module.exports.register = function (Handlebars, x)  {   
 
-  Handlebars.registerHelper('foo', function (options)  { 
+  Handlebars.registerHelper('gfm', function (options)  { 
+  	var marked = require('./marked-config');
     return new Handlebars.SafeString(
       '<div class="mybold">'
       + marked(options.fn(this))
