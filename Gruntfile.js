@@ -7,6 +7,48 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
+        clean: ['akka.net',output],
+
+        gitclone: {
+            your_target: {
+                options: {
+                    branch : 'dev',
+                    repository : 'https://github.com/akkadotnet/akka.net.git',
+                    depth:1
+                }
+            }
+        },
+
+        replace: {
+          example: {
+            src: ['akka.net/documentation/**/*.md'],             // source files array (supports minimatch) 
+            dest: source,                                        // destination directory or file 
+            replacements: [{
+              from: 'layout: wiki',                   // string replacement 
+              to: 'layout: wiki.hbs'
+            },
+            {
+              from: "'$'",                   // string replacement 
+              to: '"$"'
+            }]
+            },
+        },
+
+        copy: {
+            assets : {
+                files: [
+                    {
+                        expand: true,
+                        cwd   : source,
+                        src   : ['**/*.*','!**/*.hbs','!**/*.md'],
+                        dest  : output
+                    },
+
+                ]
+            }
+        },
+
+
         assemble: {
             options: {
                 layout: "master.hbs",
@@ -28,27 +70,15 @@ module.exports = function(grunt) {
                     }
                 ]
             }
-        },
-        clean: [output],
-
-        copy: {
-            main : {
-                files: [
-                    {
-                        expand: true,
-                        cwd   : source,
-                        src   : ['**/*.*','!**/*.hbs','!**/*.md'],
-                        dest  : output
-                    }
-                ]
-            }
         }
     });
+    
+    grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-git');
     grunt.loadNpmTasks('assemble');
 
-    grunt.registerTask('default', ['clean','copy','assemble']);
+    grunt.registerTask('default', ['clean','gitclone','replace','copy','assemble']);
 };
 
