@@ -52,7 +52,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd   : source,
-                        src   : ['**/*.*','!**/*.hbs','!**/*.md'],
+                        src   : ['**/*.*','!**/*.hbs','!**/*.md','!**/.htm'],
                         dest  : output
                     },
 
@@ -75,7 +75,7 @@ module.exports = function(grunt) {
         },
         assemble: {
             options: {
-                layout: "master.hbs",
+                layout: "wiki.hbs",
                 flatten: false,
                 expand: true,
                 layoutdir: layouts,
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: source,
-                        src: ['*.hbs','pages/*.hbs','**/*.md'],
+                        src: ['*.hbs','pages/*.hbs','**/*.md','help/**/*.htm'],
                         dest: output,
                         ext: '.html'
                     }

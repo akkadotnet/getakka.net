@@ -5,7 +5,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>{{title}} | Akka.NET</title>
-	
+
 		<meta name="keywords" content="Actor,Finite state machine, concurrency" />
 		<meta name="description" content="" />
 		<meta name="Author" content="Dorin Grigoras [www.stepofweb.com]" />
@@ -136,12 +136,12 @@
 								-->
 								<!-- pageurl {{ page.url }} -->
 								<ul id="topMain" class="nav nav-pills nav-main">
-									<li class="mega-menu{{#if true}} active{{/if}}">
+									<li class="mega-menu{{#is layout  "master.hbs" }} active{{/is}}">
 										<a href="/">
 											HOME <span>welcome</span>
 										</a>
 									</li>
-									<li class="mega-menu{{#if true}} active{{/if}}">
+									<li class="mega-menu{{#is layout  "wiki.hbs" }}  active{{/is}}">
 										<a href="/wiki/">DOCUMENTATION <span>Wiki</span></a>
 									</li>
 									<li class="mega-menu">
