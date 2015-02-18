@@ -12,19 +12,19 @@ module.exports = function(grunt) {
           }
         },
         'http-server': {
-        'dev': {
-            root: "web",
-            port: 8080,
-            host: "0.0.0.0",
-            cache: 0,
-            showDir : true,
-            autoIndex: true,
-            // server default file extension
-            ext: "html",
-            // run in parallel with other tasks
-            runInBackground: false
-        }
-    },
+            'dev': {
+                root: "web",
+                port: 8080,
+                host: "0.0.0.0",
+                cache: 0,
+                showDir : true,
+                autoIndex: true,
+                // server default file extension
+                ext: "html",
+                // run in parallel with other tasks
+                runInBackground: false
+            }
+        },
         clean: ['akka.net',output,'src/wiki'],
         gitclone: {
             "akka.net": { //clone akka.net repository
