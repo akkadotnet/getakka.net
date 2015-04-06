@@ -2,6 +2,11 @@
   Formatting for page & standard document content
 /*--------------------------------------------------------------------------*/
 
+.callout.dark p
+{
+  margin-top:10px;
+}
+
 pre {
     word-wrap: inherit;
     border: 0px solid white;
