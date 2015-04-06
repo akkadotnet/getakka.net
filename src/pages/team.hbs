@@ -2,6 +2,7 @@
 layout: master.hbs
 title: Our team
 ---
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 <!-- PAGE TOP -->
 <section class="page-title">
 	<div class="container">
@@ -23,22 +24,10 @@ title: Our team
 </section>
 <!-- /PAGE TOP -->
 
-<section class="callout dark">
-<div class="container">
-
-	<div class="row">
-		<div class="col-md-12">
-		<i class="fa fa-warning"></i>
-		This is a community driven port and is not affiliated with <a href="http://typesafe.com">Typesafe</a> who makes the original Java/Scala version of <a href="http://akka.io">Akka</a>.<br/>
-		</div>
-	</div>
-</section>
-
 <section>
 	<div class="container">
 
 		<p class="lead">Meet the core Akka.NET team below.</p>
-
 
 		<div class="row">
 
@@ -192,5 +181,75 @@ title: Our team
 				</div>
 			</div>
 		</div>
+
+		<p class="lead">Full list of contributors.</p>
+
+		<div class="row" ng-app="app">
+			<div ng-controller="TeamController as team">
+			<div ng-repeat="person in team.contributors">
+			<div class="col-sm-4 col-md-3 fadeInUpBig" ng-controller="ContributorController as contributor"><!-- member -->
+				<div class="box-content thumbnail text-center" ng-controller="ContributorController as contributor">
+					<span class="item-image">
+						<img class="img-responsive" ng-src="[[person.author.avatar_url]]" alt="" style="width:255px">
+					</span>
+					<div class="caption text-left">
+
+						<div class="clearfix margin-bottom10">
+							<div class="pull-left">
+								<h4 class="nomargin">[[contributor.data.name || "-"]]
+									<small class="block">[[person.author.login]]</small>
+								</h4>
+							</div>
+							<div class="pull-right">
+								<a href="[[person.author.html_url]]" class="btn ico-only btn-stackoverflow btn-xs"><i class="fa fa-github"></i></a>
+							</div>
+
+						</div>
+
+						<p class="noborder nomargin nopadding">Commits: [[person.total]]</p>
+					</div>
+				</div>
+			</div>
+			</div>
+			</div>
+		</div>
 	</div>
 </section>
+<script>
+var app = angular.module('app', []);
+
+app.config(function($interpolateProvider){
+	$interpolateProvider.startSymbol('[[').endSymbol(']]');
+});
+
+app.controller('TeamController', function($http) {
+	var team = this;
+
+	$http.get('https://api.github.com/repos/akkadotnet/akka.net/stats/contributors').
+	success(function(data, status, headers, config) {
+		team.contributors = data;
+		team.contributors.sort(function(a,b)
+					{
+						return b.total-a.total;
+					});
+	}).
+	error(function(data, status, headers, config) {
+		// called asynchronously if an error occurs
+		// or server returns response with an error status.
+	});
+});
+app.controller('ContributorController', function($scope,$http) {
+	var contributor = this;
+
+	$http.get($scope.person.author.url).
+	success(function(data, status, headers, config) {
+		console.log(data);
+		contributor.data = data;
+	}).
+	error(function(data, status, headers, config) {
+		// called asynchronously if an error occurs
+		// or server returns response with an error status.
+	});
+
+});
+</script>

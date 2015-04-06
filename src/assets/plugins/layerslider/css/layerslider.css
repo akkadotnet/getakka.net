@@ -861,6 +861,8 @@ body * .ls-container .ls-bottom-nav-wrapper,
 .ls-gpuhack {
 	width: 100% !important;
 	height: 100% !important;
+	left: 0px !important;
+	top: 0px !important;
 }
 
 
@@ -883,4 +885,10 @@ body * .ls-container .ls-webkit-hack,
 		left: 9px;
 		height: 3px;
 	}
+}
+
+/* Mobile features */
+
+.ls-forcehide {
+	display: none !important;
 }

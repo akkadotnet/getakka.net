@@ -280,6 +280,7 @@ body.boxed #topBar {
 	border-left:#eee 1px solid;
 	margin-left:-1px;
 	display: table-cell;
+	vertical-align:top;
 	float:none;
 }
 #topNav ul.nav>li.mega-menu div div:first-child {

@@ -34,6 +34,14 @@ h1, h2, h3, h4, h5, h6 {
 	color:#fff;
 }
 
+#topNav ul.nav>li a {
+	background-color:#2D2D2D;
+}
+
+.well {
+	background-color:#222;
+	border: 1px solid transparent;
+}
 input,
 select {
 	color:#222;
@@ -79,7 +87,31 @@ hr {
 	background-color:#2D2D2D;
 	border-color:#333;
 }
+ 
+#topNav ul.nav>li.mega-menu>ul.dropdown-menu>li, 
+#topNav ul.dropdown-menu,
+#topNav ul.nav>li.mega-menu div div, 
 
+#topNav .nav-pills>li.active>a, 
+#topNav .nav-pills>li.active>a:hover, 
+#topNav .nav-pills>li.active>a:focus {
+	color:#fff;
+	background-color:#2D2D2D;
+	border:0;
+}
+
+@media only screen and (max-width: 768px) {
+	#topBar, #topNav,
+	#topNav ul.nav>li,
+	#topNav ul.dropdown-menu,
+	#topNav .nav-pills>li>a, 
+	#topNav .nav-pills>li>a:hover, 
+	#topNav .nav-pills>li>a:focus {
+		color:#fff;
+		background-color:#2D2D2D;
+		border:0;
+	}
+}
 
 /* 
 	SHORTCODES 
@@ -315,4 +347,32 @@ section.page-title,
 }
 
 
-
+/**
+	SUMMERNOTE
+**/
+.note-popover .popover .popover-content>.btn-group, 
+.note-toolbar>.btn-group>button {
+	background-color:#222222 !important;
+}
+.note-editor .note-statusbar,
+.note-editor .note-editable {
+	background-color:#222222 !important;
+}
+.note-editor .note-toolbar {
+	background-color: rgba(0,0,0,0.3);
+	border-bottom: 1px solid #000;
+}
+.dropdown-menu,
+.dropdown-menu p,
+.dropdown-menu a,
+.dropdown-menu>li>a,
+.dropdown-menu>li>a>h1,
+.dropdown-menu>li>a>h2,
+.dropdown-menu>li>a>h3,
+.dropdown-menu>li>a>h4,
+.dropdown-menu>li>a>h5,
+.dropdown-menu>li>a>h6,
+.note-popover .popover .popover-content .note-para .dropdown-menu i.fa, 
+.note-toolbar .note-para .dropdown-menu i.fa {
+	color:#000;
+}

@@ -25,28 +25,7 @@ module.exports = function(grunt) {
                 runInBackground: false
             }
         },
-        clean: ['akka.net',output,'src/wiki'],
-        gitclone: {
-            "akka.net": { //clone akka.net repository
-                options: {
-                    branch : 'dev',
-                    repository : 'https://github.com/akkadotnet/akka.net.git',
-                    depth:1
-                }
-            }
-        },
-
         copy: {
-            "documentation" : { //copy documentation and assets from akka.net repo to our source folder
-                files: [
-                    {
-                        expand: true,
-                        cwd   : 'akka.net/documentation',
-                        src   : ['**/*.*'],
-                        dest  : source
-                    },
-                ]
-            },
             "assets" : { //copy assets from source to output folder
                 files: [
                     {
@@ -58,20 +37,6 @@ module.exports = function(grunt) {
 
                 ]
             }
-        },
-        replace: { //fix template names, that is, add .hbs extension
-          "template names": {
-            src: ['src/**/*.md'],
-            overwrite: true,
-            replacements: [{
-              from: 'layout: wiki',
-              to: 'layout: wiki.hbs'
-            },
-            {
-              from: "'$'",
-              to: '"$"'
-            }]
-            },
         },
         assemble: {
             options: {
@@ -106,10 +71,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('assemble');
 
     grunt.registerTask('default', [
-        'clean',
-        'gitclone',         //fetch akka.net
-        'copy',             //copy documentation to src, copy resources from src to output
-        'replace',          //fix up template names (.hbs)
+    	'copy',             //copy documentation to src, copy resources from src to output
         'assemble',         //build pages
         'open',
         'http-server'       //start server

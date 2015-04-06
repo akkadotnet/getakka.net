@@ -1,8 +1,3 @@
-	// VIDEOJS PATH
-	// Example: 'assets/plugins/revolution-slider/videojs/'
-	var _videoJsPath = 'assets/plugins/revolution-slider/videojs/';
-	// ------------------------------------------------------------
-
 jQuery(document).ready(function() {
 	var revapi;
 
@@ -109,7 +104,6 @@ jQuery(document).ready(function() {
 			hideCaptionAtLimit:768,
 			hideAllCaptionAtLilmit:0,
 			startWithSlide:0,
-			videoJsPath: _videoJsPath,
 			fullScreenOffsetContainer: ""
 		});
 
@@ -196,7 +190,6 @@ jQuery(document).ready(function() {
 					hideCaptionAtLimit:768,
 					hideAllCaptionAtLilmit:0,
 					startWithSlide:0,
-					videoJsPath: _videoJsPath,
 					fullScreenOffsetContainer: "#topBar, #topNav"	
 				});
 

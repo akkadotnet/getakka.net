@@ -1,12 +1,29 @@
 /** ********************************************** **
 	@Author			Dorin Grigoras
 	@Website		www.stepofweb.com
-	@Last Update	11:55 AM Sunday, May 04, 2014
+	@Last Update	1:33 PM Friday, September 26, 2014
 
 	TABLE CONTENTS
 	-------------------------------
 		01. Globals
-
+		02. Boxed Layout
+		03. Callout
+		04. Slider
+		05. Misc
+		06. Maps
+		07. Maintenance
+		08. Error 404
+		09. Coming Soon
+		10. Word Rotator
+		11. Item Box
+		12. Timeline
+		13. Portfolio
+		14. Contact
+		15. Onepage
+		16. User Profile
+		17. Comments
+		18. Responsive
+		--. DEMO ONLY
 
 *************************************************** **/
 
@@ -28,7 +45,7 @@ body {
 	font-family:'Open Sans', Arial, sans-serif;
 
 	font-size:14px; line-height:23px;
-	margin:0; padding:0;
+	margin:0; padding:0 !important;
 }
 body.grey .divider .fa,
 body.grey { /* grey background - YT style */
@@ -98,24 +115,22 @@ textarea, select {
 /* sticky header using bootstrap affix */
 #header.sticky {
 	display:block;
-	left:0; right:0;
+	left:0; right:0; 
 	z-index:100;
-
-	-webkit-transition: all 0.2s;
-	   -moz-transition: all 0.2s;
-		 -o-transition: all 0.2s;
-			transition: all 0.2s;
 }
 #header.sticky.affix #topBar {
 	display:none;
 }
+#header.sticky.affix.has-slider { /* slider above */
+	top:0;
+	margin-top:0 !important;
+}
 
 
 
 
 
-
-/** Boxed Layout
+/** 02. Boxed Layout
  **************************************************************** **/
 	body.boxed {
 		background-color:#D7D6D6;
@@ -165,8 +180,7 @@ textarea, select {
 }
 
 
-
-/** Callout
+/** 03. Callout
  **************************************************************** **/
 .callout {
 	z-index:10;
@@ -256,8 +270,7 @@ textarea, select {
 
 
 
-
-/** Slider
+/** 04. Slider
  **************************************************************** **/
 div.slider {
 	background-color:#171717;
@@ -461,7 +474,10 @@ div.owl-carousel .caption {
 	z-index:10;
 }
 
-/** Misc
+
+
+
+/** 05. Misc
  **************************************************************** **/
 #toTop {
 	background-color: #333;
@@ -525,12 +541,21 @@ span.user-avatar {
 		display:inline-block;
 	}
 
+	ul.has-icons>li>i {
+		margin-right:6px;
+		min-width:15px;
+	}
 .callout  ul.list-icon li:before {
 	font-size:20px;
 }
 
 section.brands {
 	padding:30px 0;
+}
+
+.dropdown-menu .label {
+	color:#fff !important;
+	margin-top:-2px;
 }
 
 /* alert - callout */
@@ -612,17 +637,67 @@ section.brands {
 	}
 }
 
-/* bootstrap IE fix */
-.img-responsive, 
-.thumbnail>img, 
-.thumbnail a>img, 
-.carousel-inner>.item>img, 
-.carousel-inner>.item>a>img {
-	width:inherit;
+/* footable */
+.footable {
+	-webkit-border-radius: 2px;
+	   -moz-border-radius: 2px;
+			border-radius: 2px;
+}
+.footable > thead > tr > th, .footable > thead > tr > td {
+	background-image:none;
+	background-color: rgba(0,0,0,0.03) !important;
+}
+
+/* search page */
+form.search-big {
+	margin-bottom:30px;
+	margin-top:-30px;
+	display:block;
+}
+form.search-big input {
+	height:46px;
+	border-width:1px;
+	border: #c6c6c6 1px solid;
+}
+div.search-result {
+	padding:20px 0;
+	border-bottom:#eee 1px solid;
+}
+div.search-result h4 {
+	margin:0;
+	line-height:20px;
+	font-weight:400;
+}
+div.search-result p {
+	margin:0; padding:0;
+}
+div.search-result img {
+	float:left; 
+	margin-right:10px;
+	margin-top:6px;
+}
+.search-title-aside {
+	margin-top:20px;
+	font-size:17px;
+	line-height: 20px;
+	color:#888;
+	font-weight:400;
+}
+ul.search-history {
+	border-bottom:#eee 1px solid;
+	margin-bottom:0;
+	padding-bottom:6px;
 }
 
 
-/**	Maps
+/* user profile */
+.buttons-over-image {
+	position:absolute;
+	left:23px; top:8px;
+}
+
+
+/**	06. Maps
  *************************************************** **/
 /* vectorial map */
 #world-map {
@@ -650,7 +725,9 @@ section.brands {
 }
 
 
-/**	Maintenance
+
+
+/**	07. Maintenance
  *************************************************** **/
 .maintenance {
 	padding: 20px;
@@ -677,7 +754,8 @@ section.brands {
 
 
 
-/**	Error 404
+
+/**	08. Error 404
  *************************************************** **/
 .default-404 {
 	font-size:170px;
@@ -699,7 +777,8 @@ section.brands {
 
 
 
-/**	Coming Soon
+
+/**	09. Coming Soon
  *************************************************** **/
 .comingsoon {
 	padding: 20px;
@@ -784,8 +863,7 @@ section.brands {
 
 
 
-
-/** Word Rotator
+/** 10. Word Rotator
  **************************************************************** **/
 .word-rotator {
 	visibility: hidden;
@@ -835,7 +913,7 @@ section.brands {
 
 
 
-/** Item Box
+/** 11. Item Box
  **************************************************************** **/
 .item-box {
 	background:#f6f6f6;
@@ -1023,7 +1101,7 @@ section.brands {
 
 
 
-/** Timeline
+/** 12. Timeline
  **************************************************************** **/
 .timeline {
 	position:relative;
@@ -1249,7 +1327,7 @@ section.brands {
 
 
 
-/** Portfolio
+/** 13. Portfolio
  **************************************************************** **/
 /* item list */
 #portfolio .item-box-desc h4 {
@@ -1333,14 +1411,20 @@ section.brands {
 
 
 
-/** Contact
+
+/** 14. Contact
  **************************************************************** **/
 #gmap {
 	width:100%;
 	height:400px;
 	display:block;
 
-
+	z-index:1;
+}
+#gmap.gmap-half {
+	height:250px;
+}
+#gmap.grayscale {
 	-webkit-filter: grayscale(100%);
 	   -moz-filter: grayscale(100%);
 		-ms-filter: grayscale(100%);
@@ -1348,17 +1432,11 @@ section.brands {
 		   filter: grayscale(100%);
 		   filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
 		   filter: gray; 
-
-	z-index:1;
-}
-#gmap.gmap-half {
-	height:250px;
 }
 
 
 
-
-/** Onepage
+/** 15. Onepage
  **************************************************************** **/
 .divider.onepage {
 	max-width:300px;
@@ -1410,8 +1488,131 @@ body.boxed .onepage-slider-offset {
 }
 
 
- 
-/** Responsive
+
+
+
+
+
+/**	16. User Profile
+ *************************************************** **/
+.profile-buttons {
+	background-color:rgba(0,0,0,0.05);
+	padding:15px;
+}
+.profile-buttons h2 {
+	margin:0; padding:0;
+	font-size:30px;
+	line-height:30px;
+}
+.profile-btn-link {
+	padding:4px 10px !important;
+	margin:0 !important;
+	color:#999;
+}
+.profile-activity h6 {
+	margin-bottom:6px;
+	padding-left:15px;
+	font-weight:bold;
+}
+.profile-activity p {
+	font-size:13px;
+	padding-left:15px;
+}
+
+.profile-tabs {
+	border-top:rgba(0,0,0,0.1) 1px solid;
+	padding-top:30px;
+	margin-top:-1px;
+}
+
+
+time.datebox {
+	font-size: 14px;
+	display: block;
+	position: relative;
+	width: 35px;
+	background-color: #fff;
+	margin: 3px auto;
+	border:1px solid;
+}
+time.datebox strong {
+	padding: 2px 0;
+	color: #fff;
+	background-color:rgba(0,0,0,0.7);
+	display:block;
+	text-align:center;
+}
+time.datebox span {
+	font-size: 15px;
+	color: #2f2f2f;
+	display:block;
+	text-align:center;
+}
+
+
+
+
+/** 17. Comments
+ *************************************************** **/
+#comments {
+	margin-top:60px;
+}
+#comments .comment {
+	margin:40px 0;
+}
+#comments a.replyBtn {
+	float:right;
+	font-size:11px;
+	text-transform:uppercase;
+}
+#comments span.user-avatar {
+	background:#eee;
+	width:64px; height:64px;
+	float:left;
+	margin-right:10px;
+}
+
+ul.comment {
+	margin-bottom:30px;
+}
+li.comment {
+	position:relative;
+	margin-bottom:25px;
+	font-size:13px;
+}
+li.comment p {
+	margin:0; padding:0;
+}
+li.comment img.avatar {
+	position:absolute;
+	left:0; top:0;
+	display:inline-block;
+}
+li.comment.comment-reply img.avatar {
+	left:6px; top:6px;
+}
+li.comment .comment-body {
+	position:relative;
+	padding-left:60px;
+}
+li.comment.comment-reply {
+	margin-left:60px;
+	background-color:#fafafa;
+	padding:6px;
+	margin-bottom:6px;
+}
+li.comment a.comment-author {
+	margin-bottom:6px;
+	display:block;
+}
+li.comment a.comment-author span {
+	font-size:15px;
+}
+
+
+
+
+/** 18. Responsive
  **************************************************************** **/
 @media only screen and (max-width: 1216px) {
 	.container {
@@ -1446,13 +1647,7 @@ body.boxed .onepage-slider-offset {
 
 
 
-
-
-
-
-
-
-/** DEMO ONLY
+/** --. DEMO ONLY
  **************************************************************** **/
 /** feature-icons.html - icon text color - can be removed on production **/
 .fa-hover a {

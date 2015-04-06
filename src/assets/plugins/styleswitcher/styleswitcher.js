@@ -28,22 +28,22 @@ jQuery(document).ready(function() {
 				+ '		<h4>STYLE SWITCHER</h4>'
 
 				+ '		<ul>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'red\'); return false;" title="red" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/2.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'orange\'); return false;" title="orange" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/1.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'pink\'); return false;" title="pink" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/3.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'yellow\'); return false;" title="yellow" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/4.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'darkgreen\'); return false;" title="darkgreen" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/5.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'green\'); return false;" title="green" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/6.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'darkblue\'); return false;" title="darkblue" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/7.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'blue\'); return false;" title="blue" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/8.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'brown\'); return false;" title="brown" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/9.png" alt="" width="30" height="30" /></a></li>'
-				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'lightgrey\'); return false;" title="lightgrey" class="color"><img src="/assets/plugins/styleswitcher/color_schemes/10.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'red\'); return false;" title="red" class="color"><img src="assets/plugins/styleswitcher/color_schemes/2.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'orange\'); return false;" title="orange" class="color"><img src="assets/plugins/styleswitcher/color_schemes/1.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'pink\'); return false;" title="pink" class="color"><img src="assets/plugins/styleswitcher/color_schemes/3.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'yellow\'); return false;" title="yellow" class="color"><img src="assets/plugins/styleswitcher/color_schemes/4.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'darkgreen\'); return false;" title="darkgreen" class="color"><img src="assets/plugins/styleswitcher/color_schemes/5.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'green\'); return false;" title="green" class="color"><img src="assets/plugins/styleswitcher/color_schemes/6.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'darkblue\'); return false;" title="darkblue" class="color"><img src="assets/plugins/styleswitcher/color_schemes/7.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'blue\'); return false;" title="blue" class="color"><img src="assets/plugins/styleswitcher/color_schemes/8.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'brown\'); return false;" title="brown" class="color"><img src="assets/plugins/styleswitcher/color_schemes/9.png" alt="" width="30" height="30" /></a></li>'
+				+ '			<li><a href="#" onclick="setActiveStyleSheet(\'lightgrey\'); return false;" title="lightgrey" class="color"><img src="assets/plugins/styleswitcher/color_schemes/10.png" alt="" width="30" height="30" /></a></li>'
 				+ '		</ul>'
 
 				+ '		<div class="margin-top10">'
 
 				+ '			<label><input class="dark_switch" type="radio" name="color_skin" id="is_light" value="light" checked="checked" /> Light</label>'
-				+ '			<label><input class="dark_switch" type="radio" name="color_skin" id="is_dark" value="dark" /> Dark <small class="fsize11 styleColor">(BETA)</small></label>'
+				+ '			<label><input class="dark_switch" type="radio" name="color_skin" id="is_dark" value="dark" /> Dark <!--<small class="fsize11 styleColor">(BETA)</small>--></label>'
 
 				+ '			<hr />'
 
@@ -54,27 +54,27 @@ jQuery(document).ready(function() {
 
 				+ '		<p class="nomargin-bottom">Patterns for Boxed Version</p>'
 				+ '		<div>'
-				+ '			<button onclick="pattern_switch(\'none\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/none.jpg" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern2\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern2.png" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern3\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern3.png" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern4\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern4.png" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern5\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern5.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'none\');" class="pointer switcher_thumb"><img src="assets/images/patterns/none.jpg" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern2\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern2.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern3\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern3.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern4\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern4.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern5\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern5.png" width="27" height="27" alt="" /></button>'
 				+ '		</div>'
 
 				+ '		<div>'
-				+ '			<button onclick="pattern_switch(\'pattern6\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern6.png" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern7\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern7.png" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern8\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern8.png" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern9\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern9.png" width="27" height="27" alt="" /></button>'
-				+ '			<button onclick="pattern_switch(\'pattern10\');" class="pointer switcher_thumb"><img src="/assets/images/patterns/pattern10.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern6\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern6.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern7\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern7.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern8\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern8.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern9\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern9.png" width="27" height="27" alt="" /></button>'
+				+ '			<button onclick="pattern_switch(\'pattern10\');" class="pointer switcher_thumb"><img src="assets/images/patterns/pattern10.png" width="27" height="27" alt="" /></button>'
 				+ '		</div>'
 
 				+ '		<p class="nomargin-bottom">Images for Boxed Version</p>'
-				+ '		<button onclick="background_switch(\'none\');" class="pointer switcher_thumb"><img src="/assets/images/boxed_background/none.jpg" width="27" height="27" alt="" /></button>'
-				+ '		<button onclick="background_switch(\'assets/images/boxed_background/1.jpg\');" class="pointer switcher_thumb"><img src="/assets/images/boxed_background/1_thumb.jpg" width="27" height="27" alt="" /></button>'
-				+ '		<button onclick="background_switch(\'assets/images/boxed_background/2.jpg\');" class="pointer switcher_thumb"><img src="/assets/images/boxed_background/2_thumb.jpg" width="27" height="27" alt="" /></button>'
-				+ '		<button onclick="background_switch(\'assets/images/boxed_background/3.jpg\');" class="pointer switcher_thumb"><img src="/assets/images/boxed_background/3_thumb.jpg" width="27" height="27" alt="" /></button>'
-				+ '		<button onclick="background_switch(\'assets/images/boxed_background/4.jpg\');" class="pointer switcher_thumb"><img src="/assets/images/boxed_background/4_thumb.jpg" width="27" height="27" alt="" /></button>'
+				+ '		<button onclick="background_switch(\'none\');" class="pointer switcher_thumb"><img src="assets/images/boxed_background/none.jpg" width="27" height="27" alt="" /></button>'
+				+ '		<button onclick="background_switch(\'assets/images/boxed_background/1.jpg\');" class="pointer switcher_thumb"><img src="assets/images/boxed_background/1_thumb.jpg" width="27" height="27" alt="" /></button>'
+				+ '		<button onclick="background_switch(\'assets/images/boxed_background/2.jpg\');" class="pointer switcher_thumb"><img src="assets/images/boxed_background/2_thumb.jpg" width="27" height="27" alt="" /></button>'
+				+ '		<button onclick="background_switch(\'assets/images/boxed_background/3.jpg\');" class="pointer switcher_thumb"><img src="assets/images/boxed_background/3_thumb.jpg" width="27" height="27" alt="" /></button>'
+				+ '		<button onclick="background_switch(\'assets/images/boxed_background/4.jpg\');" class="pointer switcher_thumb"><img src="assets/images/boxed_background/4_thumb.jpg" width="27" height="27" alt="" /></button>'
 
 				+ '		<hr />'
 
@@ -90,7 +90,7 @@ jQuery(document).ready(function() {
 				+ '<!-- /STYLESWITCHER -->';
 
 	// ADD CLASS
-	jQuery("head").append('<link href="/assets/plugins/styleswitcher/styleswitcher.css" rel="stylesheet" type="text/css" />');
+	jQuery("head").append('<link href="assets/plugins/styleswitcher/styleswitcher.css" rel="stylesheet" type="text/css" />');
 	jQuery("body").append(_sw);
 	jQuery("#switcher, #showSwitcher").removeClass('hide');
 
@@ -125,7 +125,7 @@ jQuery(document).ready(function() {
 
 		if(color_skin == 'dark') {
 			jQuery("#css_dark_skin").remove();
-			jQuery("head").append('<link id="css_dark_skin" href="/assets/css/layout-dark.css" rel="stylesheet" type="text/css" title="dark" />');
+			jQuery("head").append('<link id="css_dark_skin" href="assets/css/layout-dark.css" rel="stylesheet" type="text/css" title="dark" />');
 			createCookie("color_skin", 'dark', 365);
 			jQuery("a.logo img").attr('src', 'assets/images/logo_dark.png');
 		} else {
@@ -150,6 +150,20 @@ jQuery(document).ready(function() {
 			createCookie("is_boxed", '', -1);
 			jQuery('body').removeClass('transparent');
 		}
+
+		/* 
+			IE Fix - boxed & sticky header 
+			@Styleswitcher bug only.
+		*/
+		if(jQuery('html').hasClass('ie')) {
+			jQuery(window).scroll(function() {
+				if(jQuery('body').hasClass('boxed')) {
+					jQuery("#header").removeClass('sticky');
+					jQuery("#header").removeClass('affix');
+				}
+			});
+		}
+
 	});
 
 
@@ -174,7 +188,7 @@ jQuery(document).ready(function() {
 			var color_skin = readCookie('color_skin');
 			if(color_skin == 'dark') {
 				jQuery("#css_dark_skin").remove();
-				jQuery("head").append('<link id="css_dark_skin" href="/assets/css/layout-dark.css" rel="stylesheet" type="text/css" title="dark" />');
+				jQuery("head").append('<link id="css_dark_skin" href="assets/css/layout-dark.css" rel="stylesheet" type="text/css" title="dark" />');
 				jQuery("#is_dark").trigger('click');
 				jQuery("a.logo img").attr('src', 'assets/images/logo_dark.png');
 			}
