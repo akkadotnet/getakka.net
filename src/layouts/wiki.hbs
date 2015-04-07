@@ -10,7 +10,7 @@ layout: master.hbs
 						<ul class="breadcrumb"><!-- breadcrumb -->
 							<li><a href="/">Home</a></li>
 							<li><a href="/wiki/">Wiki</a></li>
-							<li class="active">{{title }}<a href="https://github.com/akkadotnet/akka.net/edit/dev/documentation/wiki/{{title }}.md" > (edit)</a></li>							
+							<li class="active">{{title }}<a href="https://github.com/akkadotnet/akka.net/edit/dev/documentation/wiki/{{title }}.md" > (edit)</a></li>
 						</ul><!-- /breadcrumb -->
 
 						<h2><!-- Page Title -->
@@ -19,7 +19,7 @@ layout: master.hbs
 
 					</header>
 
-				</div>			
+				</div>
 			</section>
 			<!-- /PAGE TOP -->
 
@@ -30,7 +30,7 @@ layout: master.hbs
 					<div class="row">
 
 						<!-- RIGHT COLUMNS -->
-						<div class="col-md-3" id="toc">	
+						<div class="col-md-3" id="toc">
 						</div>
 						<!-- /RIGHT COLUMNS -->
 
@@ -38,14 +38,15 @@ layout: master.hbs
 						<div class="col-md-9">
 							<div id="main_content">
 
-								{{#gfm }} 
+								{{#gfm }}
 								{{> body }}
-								{{/gfm }} 
+								{{/gfm }}
 
+								{{#unless page.no_comments }}
 								<div class="sky-form boxed">
 									<header>Leave a comment</header>
 									<div style="padding:12px;">
-									<div id="disqus_thread"></div>
+										<div id="disqus_thread"></div>
 					                <script type="text/javascript">
 					                    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
 					                    var disqus_shortname = 'akkanet'; // required: replace example with your forum shortname
@@ -61,9 +62,11 @@ layout: master.hbs
 					                <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
 						            </div>
 						        </div>
+
 							</div>
 
 						</div>
+						{{/unless}}
 						<!-- /LEFT COLUMNS -->
 
 
