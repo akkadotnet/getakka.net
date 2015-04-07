@@ -31,7 +31,7 @@ See the chapter for C# or F#.
 * Supervisor hierarchies with "let-it-crash" semantics.
 * Supervisor hierarchies can span over multiple virtual machines to provide truly fault-tolerant systems.
 * Excellent for writing highly fault-tolerant systems that self-heal and never stop.
-See [Fault Tolerance](../Fault%20tolerance).
+See [Fault Tolerance](Fault%20tolerance).
 
 ### Location Transparency
 Everything in Akka is designed to work in a distributed environment: all interactions of actors use pure message passing and everything is asynchronous.
