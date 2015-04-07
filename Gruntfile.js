@@ -6,7 +6,7 @@ module.exports = function(grunt) {
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
-        open : {
+    /*    open : {
           dev : {
             path: 'http://127.0.0.1:8080/'
           }
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
                 // run in parallel with other tasks
                 runInBackground: false
             }
-        },
+        },*/
         copy: {
             "assets" : { //copy assets from source to output folder
                 files: [
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
     });
 
     grunt.loadNpmTasks('grunt-open');
-    grunt.loadNpmTasks('grunt-http-server');
+   // grunt.loadNpmTasks('grunt-http-server');
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
@@ -73,7 +73,7 @@ module.exports = function(grunt) {
     grunt.registerTask('default', [
     	'copy',             //copy documentation to src, copy resources from src to output
         'assemble',         //build pages
-        'open',
-        'http-server'       //start server
+    //    'open',
+    //    'http-server'       //start server
         ]);
 };
