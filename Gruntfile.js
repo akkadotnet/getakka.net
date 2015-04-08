@@ -83,4 +83,10 @@ module.exports = function(grunt) {
         'open',
         'http-server'  // start server
     ]);
+
+    grunt.registerTask('prod', [
+        'clean', // clean out any deleted files
+        'copy',  // copy documentation to src, copy resources from src to output
+        'assemble',  // build pages
+    ]);
 };
