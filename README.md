@@ -4,8 +4,8 @@
 
 ### Clone the repository.
 ```
-> git clone https://github.com/akkadotnet/getakka.net.git getakka
-> cd getakka
+> git clone https://github.com/akkadotnet/getakka.net.git getakkanet
+> cd getakkanet
 ```
 
 ### Install the package
