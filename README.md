@@ -2,6 +2,10 @@
 
 ## Local usage
 
+### Install Node.JS
+
+Follow the instructions on this page https://github.com/joyent/node/wiki/Installation
+
 ### Clone the repository.
 ```
 > git clone https://github.com/akkadotnet/getakka.net.git getakkanet
