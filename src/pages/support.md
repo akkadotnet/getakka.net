@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: master.hbs
 ---
 
 # Companies Supporting Akka.NET
