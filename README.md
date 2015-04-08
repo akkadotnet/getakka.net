@@ -37,8 +37,8 @@ This can take a few minutes as we use a free build server.
 
 Contributions to the wiki documentation can be done in a few different ways;
 
-Fork and Clone the repository apply your modifications to the files inside `src/wiki/`.
-Commit back to your Github Fork and create a pull request.
+Fork and Clone this repository, then apply your modifications to the files inside `src/wiki/`.
+`Commit` and `Push` your changes back to your Github Fork and create a pull request.
 See `Local usage` for more info on how to preview your local changes.
 
 Or.
