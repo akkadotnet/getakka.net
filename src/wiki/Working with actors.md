@@ -558,7 +558,7 @@ protected override void PreRestart(Exception reason, object message)
 
 Please note, that the child actors are still restarted, but no new ActorRef is created. One can recursively apply the same principles for the children, ensuring that their PreStart() method is called only at the creation of their refs.
 
-For more information see [[What Restarting Means]].
+For more information see [What Restarting Means](Supervision#what-restarting-means).
 
 ### Initialization via message passing
 There are cases when it is impossible to pass all the information needed for actor initialization in the constructor, for example in the presence of circular dependencies. In this case the actor should listen for an initialization message, and use Become() or a finite state-machine state transition to encode the initialized and uninitialized states of the actor.
