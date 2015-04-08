@@ -25,8 +25,8 @@ Follow the instructions on this page https://github.com/joyent/node/wiki/Install
 Once the site is generated, a browser will be opened, displaying the result.
 
 ### Live reloads
-When running the site locally, the grunt script will be watcing the `/src/` folder for changes.
-If any change is detected, this will trigger a regenreation of the content and your browser will be live reloaded.
+When running the site locally, the grunt script will be watching the `/src/` folder for changes.
+If any change is detected, this will trigger a regeneration of the content and your browser will be live reloaded.
 
 ## Deploying changes to the live site
 

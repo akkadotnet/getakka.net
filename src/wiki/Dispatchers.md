@@ -101,19 +101,19 @@ There are 4 different types of message dispatchers:
 
 * Dispatcher
   * This is an event-based dispatcher that binds a set of Actors to a thread pool. It is the default dispatcher used if one is not specified.
-  * Sharability: Unlimited
+  * Shareability: Unlimited
   * Mailboxes: Any, creates one per Actor
   * Use cases: Default dispatcher, Bulkheading
 
 * PinnedDispatcher
   * This dispatcher dedicates a unique thread for each actor using it; i.e. each actor will have its own thread pool with only one thread in the pool.
-  * Sharability: None
+  * Shareability: None
   * Mailboxes: Any, creates one per Actor
   * Use cases: Bulkheading
 
 * CallingThreadDispatcher
   * This dispatcher runs invocations on the current thread only. This dispatcher does not create any new threads, but it can be used from different threads concurrently for the same actor. See CallingThreadDispatcher for details and restrictions.
-  * Sharability: Unlimited
+  * Shareability: Unlimited
   * Mailboxes: Any, creates one per Actor per Thread (on demand)
   * Use cases: Testing
   * Driven by: The calling thread (duh)
