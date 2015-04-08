@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 		'watch': {
 		  css: {
 		    files: 'src/**/*.*',
-		    tasks: ['sync','assemble'],
+		    tasks: ['sync','newer:assemble'],
 		    options: {
 		      livereload: true,
 		    },
@@ -91,11 +91,12 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-livereload');
     grunt.loadNpmTasks('grunt-git');
     grunt.loadNpmTasks('assemble');
+    grunt.loadNpmTasks('grunt-newer');
 
     grunt.registerTask('default', [
         'clean', // clean out any deleted files
         'sync',  // copy documentation to src, copy resources from src to output
-        'assemble',  // build pages
+        'newer:assemble',  // build pages
         'open',
         'http-server',  // start server
         'watch'
