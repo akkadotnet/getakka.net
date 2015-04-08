@@ -45,3 +45,8 @@ Or.
 You can use the `Edit on Github` link on each Wikipage on the live site, this will take you to an edit mode version of the page here on github.
 If you do not have commit rights for this repository, Github will allow you to do an ad hoc pull request right there.
 
+
+## Markdown compatibility
+
+We use Marked.JS for markdown rendering.
+Thus, any editor based on this will give you the best preview/edit experience, such as Atom.IO or Stackedit.io.
