@@ -11,7 +11,21 @@ module.exports = function(grunt) {
             path: 'http://127.0.0.1:8080/'
           }
         },
-
+        'livereload' : {
+		    options : {
+		      base : 'web',
+		    },
+		    files : ['web/**/*']
+		},
+		'watch': {
+		  css: {
+		    files: 'src/**/*.*',
+		    tasks: ['assemble'],
+		    options: {
+		      livereload: true,
+		    },
+		  },
+		},
         'http-server': {
             'dev': {
                 root: "web",
@@ -23,7 +37,7 @@ module.exports = function(grunt) {
                 // server default file extension
                 ext: "html",
                 // run in parallel with other tasks
-                runInBackground: false
+                runInBackground: true
             }
         },
         copy: {
@@ -73,6 +87,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-text-replace');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-livereload');
     grunt.loadNpmTasks('grunt-git');
     grunt.loadNpmTasks('assemble');
 
@@ -81,7 +97,8 @@ module.exports = function(grunt) {
         'copy',  // copy documentation to src, copy resources from src to output
         'assemble',  // build pages
         'open',
-        'http-server'  // start server
+        'http-server',  // start server
+        'watch'
     ]);
 
     grunt.registerTask('prod', [
