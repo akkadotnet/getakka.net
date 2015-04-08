@@ -49,4 +49,4 @@ If you do not have commit rights for this repository, Github will allow you to d
 ## Markdown compatibility
 
 We use Marked.JS for markdown rendering.
-Thus, any editor based on this will give you the best preview/edit experience, such as Atom.IO or Stackedit.io.
+Thus, any editor based on this will give you the best preview/edit experience, such as https://atom.io/ or https://stackedit.io/.
