@@ -27,6 +27,7 @@ If any change is detected, this will trigger a regenreation of the content and y
 ## Deploying changes to the live site
 
 The live site http://GetAkka.NET will be redeployed whenever a change is made to this repository.
+This can take a few minutes as we use a free build server.
 
 ## Contributing to the documentation
 
