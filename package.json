@@ -8,6 +8,7 @@
   },
   "devDependencies": {
     "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-compass": "^1.0.3",
     "grunt-contrib-copy": "^0.7.0",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-git": "^0.3.4",

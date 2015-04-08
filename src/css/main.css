@@ -1,0 +1,13 @@
+/* line 1, ../_scss/_highlighting.scss */
+.thinger {
+  color: green;
+}
+
+/* line 2, ../_scss/_custom.scss */
+#topNav ul.nav > li a {
+  color: yellow !important;
+}
+/* line 5, ../_scss/_custom.scss */
+#topNav ul.nav > li a.testing {
+  color: yellow;
+}
