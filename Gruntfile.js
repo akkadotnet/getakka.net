@@ -20,7 +20,7 @@ module.exports = function(grunt) {
 		'watch': {
 		  css: {
 		    files: 'src/**/*.*',
-		    tasks: ['assemble'],
+		    tasks: ['sync','assemble'],
 		    options: {
 		      livereload: true,
 		    },
@@ -40,7 +40,7 @@ module.exports = function(grunt) {
                 runInBackground: true
             }
         },
-        copy: {
+        sync: {
             "assets" : { // copy assets from source to output folder
                 files: [
                     {
@@ -85,6 +85,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-http-server');
     grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-sync');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-livereload');
@@ -93,7 +94,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'clean', // clean out any deleted files
-        'copy',  // copy documentation to src, copy resources from src to output
+        'sync',  // copy documentation to src, copy resources from src to output
         'assemble',  // build pages
         'open',
         'http-server',  // start server
@@ -102,7 +103,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('prod', [
         'clean', // clean out any deleted files
-        'copy',  // copy documentation to src, copy resources from src to output
+        'sync',  // copy documentation to src, copy resources from src to output
         'assemble',  // build pages
     ]);
 };
