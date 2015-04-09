@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 		'watch': {
 		  all: {
 		    files: 'src/**/*.*',
-		    tasks: ['compass', 'newer:assemble', 'sync'],
+		    tasks: ['compass', 'newer:assemble', 'sync'], // only build changed pages
 		    options: {
 		      livereload: true,
 		    },
@@ -107,7 +107,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'clean', // clean out any deleted files
-        'newer:assemble',  // build pages
+        'assemble',  // build pages from scratch on startup
         'compass',
         'sync',  // copy documentation to src, copy resources from src to output
         'open',
