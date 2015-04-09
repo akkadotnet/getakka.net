@@ -1,6 +1,6 @@
 ---
 layout: wiki.hbs
-title: index
+title: Akka.NET Wiki Index
 ---
 # Akka.NET WIKI
 
@@ -13,16 +13,18 @@ title: index
 - [Use-case and Deployment Scenarios](Use case and Deployment Scenarios)
 - [Examples of use-cases for Akka](Examples of use cases for Akka)
 
-### General
-
-- [Terminology, Concepts](Terminology)
-- [Actor Systems](ActorSystem)
-- [What is an Actor?](Actors)
-- [Supervision and Monitoring](Supervision)
-- [Actor References, Paths and Addresses](Addressing)
-- [Location Transparency](Remoting)
-- [Message Delivery Reliability](Message delivery reliability)
-- [Configuration](Configuration)
+## Akka.NET Concepts
+- [Terminology, Concepts](concepts/terminology)
+- [Actor Systems](concepts/actorsystems)
+- [What is an Actor?](concepts/actors)
+- [What is a Message?](concepts/messages)
+    - [Immutability](concepts/messages#messages-are-immutable)
+- [Supervision and Monitoring](concepts/supervision)
+- [Actor References, Paths and Addresses](concepts/addressing)
+- [Location Transparency](concepts/location-transparency)
+- [Message Delivery Reliability](concepts/message-delivery-reliability)
+- [Configuration](concepts/configuration)
+    - [HOCON](concepts/hocon)
 
 ### Actors
 
