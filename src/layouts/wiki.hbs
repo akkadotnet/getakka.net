@@ -40,7 +40,7 @@ layout: master.hbs
 								{{> body }}
 								{{/gfm }}
 
-								{{#unless page.allow_comments }}
+								{{#if page.allow_comments }}
 								<div class="sky-form boxed">
 									<header>Leave a comment</header>
 									<div style="padding:12px;">
@@ -64,7 +64,7 @@ layout: master.hbs
 							</div>
 
 						</div>
-						{{/unless}}
+						{{/if}}
 						<!-- /LEFT COLUMNS -->
 
 
