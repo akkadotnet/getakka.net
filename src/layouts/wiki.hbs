@@ -4,9 +4,7 @@ layout: master.hbs
 			<!-- PAGE TOP -->
 			<section class="page-title">
 				<div class="container">
-
 					<header>
-
 						<ul class="breadcrumb"><!-- breadcrumb -->
 							<li><a href="/">Home</a></li>
 							<li><a href="/wiki/">Wiki</a></li>
@@ -42,7 +40,7 @@ layout: master.hbs
 								{{> body }}
 								{{/gfm }}
 
-								{{#unless page.allow_comments }}
+								{{#if page.allow_comments }}
 								<div class="sky-form boxed">
 									<header>Leave a comment</header>
 									<div style="padding:12px;">
@@ -66,7 +64,7 @@ layout: master.hbs
 							</div>
 
 						</div>
-						{{/unless}}
+						{{/if}}
 						<!-- /LEFT COLUMNS -->
 
 

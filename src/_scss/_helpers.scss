@@ -1,0 +1,50 @@
+// HELPERS
+.text-center {text-align: center!important;}
+.text-left {text-align: left!important;}
+.text-right {text-align: right!important;}
+.text-bold {font-weight: bold!important;}
+.text-underline {text-decoration: underline!important;}
+.text-italic {font-style: italic!important;}
+.text-red {color: red;}
+.left {float: left!important;}
+.right {float: right!important;}
+
+.center {
+  float: none;
+  margin: 0 auto;
+  display: block;
+}
+
+.inline-block {
+  display: inline-block!important;
+  vertical-align: top;
+  zoom: 1; /* Fix for IE7 */
+  *display: inline; /* Fix for IE7 */
+}
+
+.hidden {display: none!important;}
+.hide-for-small {display: inherit!important;}
+.show-for-small {display: none!important;}
+
+.clearfix:before,
+.clearfix:after {
+  content:"";
+  display:table;
+}
+.clearfix:after {
+  clear:both;
+}
+.clearfix {
+  zoom:1; /* For IE 6/7 (trigger hasLayout) */
+}
+
+
+// MEDIA QUERIES
+// large screen only
+@media only screen and (max-width: 768px) {}
+
+// small screen only
+@media only screen and (max-width: 480px) {
+  .hide-for-small {display: none!important;}
+  .show-for-small {display: inherit!important;}
+}

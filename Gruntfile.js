@@ -3,6 +3,8 @@ module.exports = function(grunt) {
     var source = "src/"
     var layouts = source + 'layouts';
     var assets = source + 'assets';
+    var scss = source + '_scss';
+    var cssOutputDir = source + 'css';
 
     grunt.initConfig({
         pkg: grunt.file.readJSON('package.json'),
@@ -18,14 +20,23 @@ module.exports = function(grunt) {
 		    files : ['web/**/*']
 		},
 		'watch': {
-		  css: {
+		  all: {
 		    files: 'src/**/*.*',
-		    tasks: ['sync','newer:assemble'],
+		    tasks: ['compass', 'newer:assemble', 'sync'],
 		    options: {
 		      livereload: true,
 		    },
 		  },
 		},
+        compass: {
+            dist: {
+                options: {
+                    sassDir: scss,
+                    cssDir: cssOutputDir,
+                    outputStyle: 'compressed',
+                }
+            }
+        },
         'http-server': {
             'dev': {
                 root: "web",
@@ -41,16 +52,15 @@ module.exports = function(grunt) {
             }
         },
         sync: {
-            "assets" : { // copy assets from source to output folder
+            "assets" : { // copy files from source to output folder
                 files: [
                     {
                         expand: true,
                         cwd   : source,
-                        src   : ['**/*.*','!**/*.hbs','!**/*.md','!**/.htm'],
+                        src   : ['**/*.*','!**/*.hbs','!**/*.md','!**/.htm', '!**/*.scss'],
                         dest  : output
                     },
-
-                ]
+                ],
             }
         },
 
@@ -64,6 +74,7 @@ module.exports = function(grunt) {
                 flatten: false,
                 expand: true,
                 layoutdir: layouts,
+                partials: ['src/partials/**/*.html', 'src/partials/**/*.md' ],
                 helpers: ['helper-gfm.js'],
                 assets: assets
             },
@@ -88,6 +99,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-sync');
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-compass');
     grunt.loadNpmTasks('grunt-livereload');
     grunt.loadNpmTasks('grunt-git');
     grunt.loadNpmTasks('assemble');
@@ -95,8 +107,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask('default', [
         'clean', // clean out any deleted files
-        'sync',  // copy documentation to src, copy resources from src to output
         'newer:assemble',  // build pages
+        'compass',
+        'sync',  // copy documentation to src, copy resources from src to output
         'open',
         'http-server',  // start server
         'watch'
@@ -104,6 +117,7 @@ module.exports = function(grunt) {
 
     grunt.registerTask('prod', [
         'clean', // clean out any deleted files
+        'compass', // build SCSS => CSS
         'sync',  // copy documentation to src, copy resources from src to output
         'assemble',  // build pages
     ]);
