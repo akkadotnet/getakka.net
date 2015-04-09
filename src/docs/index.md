@@ -18,7 +18,7 @@ title: Akka.NET Documentation
 
 ## Akka.NET Concepts
 - [Terminology, Concepts](concepts/terminology)
-- [Actor Systems](concepts/actorsystems)
+- [Actor Systems](concepts/actorsystem)
 - [What is an Actor?](concepts/actors)
 - [What is a Message?](concepts/messages)
     - [Immutability](concepts/messages#messages-are-immutable)
