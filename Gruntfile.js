@@ -57,7 +57,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd   : source,
-                        src   : ['**/*.*','!**/*.hbs','!**/*.md','!**/.htm', '!**/*.scss'],
+                        src   : ['**/*.*','!**/*.hbs','!**/*.md','!**/.htm', '!**/*.scss', '!_data/**/*'],
                         dest  : output
                     },
                 ],
@@ -74,9 +74,10 @@ module.exports = function(grunt) {
                 flatten: false,
                 expand: true,
                 layoutdir: layouts,
-                partials: ['src/partials/**/*.html', 'src/partials/**/*.md' ],
+                partials: ['src/partials/**/*'],
                 helpers: ['helper-gfm.js'],
-                assets: assets
+                assets: assets,
+                data: 'src/_data/*'
             },
 
             "pages": { //build all pages, hbs and markdown

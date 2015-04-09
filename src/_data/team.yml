@@ -1,0 +1,30 @@
+- name: Roger Alsing
+  title: Founder / Core team
+  twitter: http://twitter.com/rogeralsing
+  github: https://github.com/rogeralsing
+  github_user_num: 647031
+  description: Roger is the original creator of the Akka.NET project. C# developer and mentor living in Sweden. Open source enthusiast. Started programming at the age of 10 on the mighty Commodore64. <a href="http://twitter.com/rogeralsing">Follow Roger on Twitter</a> or at his <a href="http://rogeralsing.com/">personal blog</a>. Works at <a href="http://Nethouse.se">Nethouse.se</a>
+- name: Aaron Stannard
+  title: Founder / Core team
+  twitter: http://twitter.com/aaronontheweb
+  github: https://github.com/aaronontheweb
+  github_user_num: 326939
+  description: Aaron is Founder and CTO at <a href="http://petabridge.com">Petabridge, a .NET data platform company</a>. Aaron's one of the original contributors to Akka.NET, authoring the Akka.Remote module and Helios, the underlying socket server. Prior to working at Petabridge Aaron founded MarkedUp Analytics, a Cassandra and Akka.NET-powered real-time app analytics and marketing automation company for app developers.
+- name: Håkan Canberger
+  title: Core team
+  twitter: http://twitter.com/hcanber
+  github: https://github.com/hcanber
+  github_user_num: 800302
+  description: Håkan developed the Akka.NET TestKit and internals, and by day is a developer &amp; architect at <a href="http://www.ving.se/">Thomas Cook</a>. Follow Håkan <a href="https://twitter.com/hcanber">on Twitter</a> or at <a href="http://blog.canberger.se/">his personal blog</a>.
+- name: Bartosz Sypytkowski
+  title: Core team
+  twitter: http://twitter.com/Horusiath
+  github: https://github.com/Horusiath
+  github_user_num: 679705
+  description: Bartosz wrote the Akka.NET F# API, and works at <a href="http://rd.samsung.pl/?lang=en">Samsung R&D, Poland</a>. Follow <a href="https://twitter.com/horusiath">Bartosz on Twitter</a> or at <a href="http://bartoszsypytkowski.com/">his personal blog</a>.
+- name: David Smith
+  title: Core team
+  twitter: http://twitter.com/smalldave
+  github: https://github.com/smalldave
+  github_user_num: 1242903
+  description: David contributed Akka.Cluster and MultiNodeTestkit, and is a developer at <a href="https://www.travelrepublic.co.uk/">Travel Republic</a> in the UK. Follow David on <a href="https://github.com/smalldave">GitHub</a>.
