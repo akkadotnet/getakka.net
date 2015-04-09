@@ -1,9 +1,13 @@
 ---
 layout: wiki.hbs
-title: Akka.NET Wiki Index
+title: Akka.NET Documentation
 ---
-# Akka.NET WIKI
 
+## Akka.NET API Docs
+- [1.0 Stable API](http://api.getakka.net/docs/unstable/index.html)
+- [1.1 Unstable API](http://api.getakka.net/docs/unstable/index.html)
+
+## Akka.NET Framework
 ### Introduction
 
 - [What is Akka?](What is Akka)
@@ -75,5 +79,5 @@ title: Akka.NET Wiki Index
 ### Additional Information
 
 - [Frequently Asked Questions](FAQ)
-- [Online resources](Resources)  
-- [Books](Books)  
+- [Online resources](Resources)
+- [Books](Books)
