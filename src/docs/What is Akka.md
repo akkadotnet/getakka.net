@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: What is Akka
 ---
 # What is Akka?

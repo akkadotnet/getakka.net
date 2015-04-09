@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Supervision
 ---
 This chapter outlines the concept behind supervision, the primitives offered and their semantics.
@@ -91,13 +91,13 @@ public class MyActor : UntypedActor
 
     // if any child, e.g. the logger above. throws an exception
     // apply the rules below
-    // e.g. Restart the child, if 10 exceptions occur in 30 seconds or 
+    // e.g. Restart the child, if 10 exceptions occur in 30 seconds or
     // less, then stop the actor
     protected override SupervisorStrategy SupervisorStrategy()
     {
         return new OneForOneStrategy( //or AllForOneStrategy
-            maxNumberOfRetries: 10, 
-            duration: TimeSpan.FromSeconds(30), 
+            maxNumberOfRetries: 10,
+            duration: TimeSpan.FromSeconds(30),
             decider: x =>
             {
                 //Maybe we consider ArithmeticException to not be application critical
@@ -111,7 +111,7 @@ public class MyActor : UntypedActor
                 else return Directive.Restart;
             });
     }
-    
+
     ...
 }
 ```

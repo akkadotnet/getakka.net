@@ -1,12 +1,12 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Home
 ---
 # Documentation
 
 Wiki guidelines:
 
-Start with a H1 header 
+Start with a H1 header
 ```
 # My header
 ```
@@ -28,7 +28,7 @@ HOCON configurations are declared as:
     }
     ```
 
-Github does not have HOCON support, but on the Akka.NET site, we do have a syntax highlighter for it. 
+Github does not have HOCON support, but on the Akka.NET site, we do have a syntax highlighter for it.
 
 Notifications are done using backquote notation followed by `**warning**` or `**notification**`
 

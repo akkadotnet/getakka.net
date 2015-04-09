@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Configuration
 ---
 # HOCON Configuration
@@ -14,7 +14,7 @@ akka {
     }
     remote {
           helios.tcp {
-              transport-class = 
+              transport-class =
                 "Akka.Remote.Transport.Helios.HeliosTcpTransport, Akka.Remote"
               transport-protocol = tcp
               port = 8091
@@ -28,7 +28,7 @@ akka {
 ```csharp
 var config = ConfigurationFactory.ParseString(@"
 akka.remote.helios.tcp {
-              transport-class = 
+              transport-class =
            ""Akka.Remote.Transport.Helios.HeliosTcpTransport, Akka.Remote""
               transport-protocol = tcp
               port = 8091
@@ -53,7 +53,7 @@ This is the correct form.<br/>
 <?xml version="1.0" encoding="utf-8" ?>
 <configuration>
   <configSections>
-    <section name="akka" 
+    <section name="akka"
              type="Akka.Configuration.Hocon.AkkaConfigurationSection, Akka" />
   </configSections>
 
@@ -76,7 +76,7 @@ This is the correct form.<br/>
             }
             remote {
               helios.tcp {
-                  transport-class = 
+                  transport-class =
             "Akka.Remote.Transport.Helios.HeliosTcpTransport, Akka.Remote"
                   #applied-adapters = []
                   transport-protocol = tcp
@@ -106,7 +106,7 @@ The fluent configuration support is experimental and might change or be removed.
 var fluentConfig = FluentConfig.Begin()
     .StdOutLogLevel(LogLevel.DebugLevel)
     .LogConfigOnStart(true)
-    .LogLevel(LogLevel.ErrorLevel)   
+    .LogLevel(LogLevel.ErrorLevel)
     .LogLocal(
         receive: true,
         autoReceive: true,

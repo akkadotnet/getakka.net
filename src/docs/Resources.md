@@ -1,6 +1,7 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Resources
+active_selector: resources
 ---
 # Videos
 

@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Working with actors
 ---
 # Working with actors
@@ -19,17 +19,17 @@ Here is an example:
 using Akka;
 using Akka.Actor;
 using Akka.Event;
- 
+
 public class MyActor: ReceiveActor
 {
   LoggingAdapter log = Logging.GetLogger(Context);
- 
+
   public MyActor()
   {
     Receive<string>(message => {
       log.Info("Received String message: {0}", message);
       Sender.Tell(message);
-    });  
+    });
     Receive<SomeMessage(message => {...});
   }
 }
@@ -102,7 +102,7 @@ The remaining visible methods are user-overridable life-cycle hooks which are de
 ```csharp
 public override void PreStart() {
 }
- 
+
 protected override void PreRestart(Exception reason, object message) {
   foreach (ActorRef each in Context.GetChildren()) {
     Context.Unwatch(each);
@@ -110,11 +110,11 @@ protected override void PreRestart(Exception reason, object message) {
   }
   PostStop();
 }
- 
+
 protected override void PostRestart(Exception reason) {
   PreStart();
 }
- 
+
 protected override void PostStop() {
 }
 ```
@@ -284,7 +284,7 @@ catch (Exception e) {
 
 If the actor does not complete the task, it will expire after the timeout period, specified as parameter to the Ask method, and the task will be cancelled and throw a TaskCancelledException.
 
-For more information on Tasks, check out the [MSDN documentation](https://msdn.microsoft.com/en-us/library/dd537609(v=vs.110).aspx). 
+For more information on Tasks, check out the [MSDN documentation](https://msdn.microsoft.com/en-us/library/dd537609(v=vs.110).aspx).
 
 >**Warning**<br/>
 When using task callbacks inside actors, you need to carefully avoid closing over the containing actor’s reference, i.e. do not call methods or access mutable state on the enclosing actor from within the callback. This would break the actor encapsulation and may introduce synchronization bugs and race conditions because the callback will be scheduled concurrently to the enclosing actor. Unfortunately there is not yet a way to detect these illegal accesses at compile time. See also: [[Actors and shared mutable state]]
@@ -325,7 +325,7 @@ If you want to have a handle for replying to a message, you can use Sender, whic
 protected override void OnReceive(object message)
 {
   var result = calculateResult();
-  
+
   // do not forget the second argument!
   Sender.Tell(result, Self);
 }
@@ -459,7 +459,7 @@ This variant of the Become method is useful for many different things, such as t
 The other way of using Become does not replace but add to the top of the behavior stack. In this case care must be taken to ensure that the number of “pop” operations (i.e. Unbecome) matches the number of “push” ones in the long run, otherwise this amounts to a memory leak (which is why this behavior is not the default).
 
 ```csharp
-  
+
 public class Swapper : UntypedActor
 {
     public static readonly object SWAP = new object();

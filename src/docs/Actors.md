@@ -1,12 +1,12 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Actors
 ---
 # Actors
 
 The previous section about [Actor Systems](ActorSystem) explained how actors form hierarchies and are the smallest unit when building an application. This section looks at one such actor in isolation, explaining the concepts you encounter while implementing it. For a more in depth reference with all the details please refer to F# API or C# API.
 
-An actor is a container for [State](#state), [Behavior](#behavior), a [Mailbox](#mailbox), [Children](#children) and a [Supervisor Strategy](#supervisor-strategy). All of this is encapsulated behind an Actor Reference(`ActorRef`). 
+An actor is a container for [State](#state), [Behavior](#behavior), a [Mailbox](#mailbox), [Children](#children) and a [Supervisor Strategy](#supervisor-strategy). All of this is encapsulated behind an Actor Reference(`ActorRef`).
 
 ![Actor](images/actor.png)
 

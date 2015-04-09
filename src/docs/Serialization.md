@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Serialization
 ---
 Akka has a built-in Extension for serialization, and it is both possible to use the built-in serializers and to write your own.
@@ -12,11 +12,11 @@ For Akka to know which Serializer to use for what, you need edit your Configurat
 ```hocon
 akka {
   actor {
-     serializers { 
-        json = "Akka.Serialization.NewtonSoftJsonSerializer" 
-        java = "Akka.Serialization.JavaSerializer" # not used, reserves serializer identifier 
-        bytes = "Akka.Serialization.ByteArraySerializer" 
-     } 
+     serializers {
+        json = "Akka.Serialization.NewtonSoftJsonSerializer"
+        java = "Akka.Serialization.JavaSerializer" # not used, reserves serializer identifier
+        bytes = "Akka.Serialization.ByteArraySerializer"
+     }
   }
 }
 ```
@@ -25,18 +25,18 @@ After you've bound names to different implementations of Serializer you need to 
 ```hocon
 akka {
   actor {
-     serializers { 
-        json = "Akka.Serialization.NewtonSoftJsonSerializer" 
-        java = "Akka.Serialization.JavaSerializer" # not used, reserves serializer identifier 
-        bytes = "Akka.Serialization.ByteArraySerializer" 
+     serializers {
+        json = "Akka.Serialization.NewtonSoftJsonSerializer"
+        java = "Akka.Serialization.JavaSerializer" # not used, reserves serializer identifier
+        bytes = "Akka.Serialization.ByteArraySerializer"
         myown = "Acme.Inc.MySerializer, MyAssembly"
-     } 
- 
-    serialization-bindings { 
-      "System.Byte[]" = bytes 
-      "System.Object" = json 
+     }
+
+    serialization-bindings {
+      "System.Byte[]" = bytes
+      "System.Object" = json
       "Acme.Inc.MyMessage, MyAssembly" = myown
-    } 
+    }
   }
 }
 ```
@@ -76,23 +76,23 @@ If you want to programmatically serialize/deserialize using Akka Serialization, 
 using Akka.Actor;
 using Akka.Serialization;
 ActorSystem system = ActorSystem.Create("example");
- 
+
 // Get the Serialization Extension
 Serialization serialization = system.Serialization;
 
 // Have something to serialize
 string original = "woohoo";
- 
+
 // Find the Serializer for it
 Serializer serializer = serialization.FindSerializerFor(original);
- 
+
 // Turn it into bytes
 byte[] bytes = serializer.ToBinary(original);
- 
+
 // Turn it back into an object,
 // the nulls are for the class manifest and for the classloader
 string back = (string) serializer.FromBinary(bytes);
- 
+
 // Voilá!
 Assert.AreEqual(original, back);
 ```
@@ -105,26 +105,26 @@ First you need to create a class definition of your Serializer, which is done by
 ```csharp
 using Akka.Actor.*;
 using Akka.Serialization;
-public class MyOwnSerializer : Serializer 
+public class MyOwnSerializer : Serializer
 {
   // This is whether "FromBinary" requires a "clazz" or not
   public override bool IncludeManifest() {
     return false;
   }
- 
+
   // Pick a unique identifier for your Serializer,
   // you've got a couple of billions to choose from,
   // 0 - 16 is reserved by Akka itself
   public override int Identifier() {
     return 1234567;
   }
- 
+
   // "ToBinary" serializes the given object to an Array of Bytes
   public override byte[] ToBinary(object obj) {
     // Put the code that serializes the object here
     // ... ...
   }
- 
+
   // "fromBinary" deserializes the given array,
   // using the type hint (if any, see "IncludeManifest" above)
   public override object FromBinaryJava(byte[] bytes, Type type) {
@@ -143,9 +143,9 @@ import akka.serialization.*;
 // Serialize
 // (beneath toBinary)
 String identifier = Serialization.serializedActorPath(theActorRef);
- 
+
 // Then just serialize the identifier however you like
- 
+
 // Deserialize
 // (beneath fromBinary)
 final ActorRef deserializedActorRef = extendedSystem.provider().resolveActorRef(
@@ -156,11 +156,11 @@ This assumes that serialization happens in the context of sending a message thro
 ```chsarp
 public class ExternalAddressExt implements Extension {
   private final ExtendedActorSystem system;
- 
+
   public ExternalAddressExt(ExtendedActorSystem system) {
     this.system = system;
   }
- 
+
   public Address getAddressFor(Address remoteAddress) {
     final scala.Option<Address> optAddr = system.provider()
       .getExternalAddressFor(remoteAddress);
@@ -172,20 +172,20 @@ public class ExternalAddressExt implements Extension {
     }
   }
 }
- 
+
 public class ExternalAddress extends
   AbstractExtensionId<ExternalAddressExt> implements ExtensionIdProvider {
   public static final ExternalAddress ID = new ExternalAddress();
- 
+
   public ExternalAddress lookup() {
     return ID;
   }
- 
+
   public ExternalAddressExt createExtension(ExtendedActorSystem system) {
     return new ExternalAddressExt(system);
   }
 }
- 
+
 public class ExternalAddressExample {
   public String serializeTo(ActorRef ref, Address remote) {
     return ref.path().toSerializationFormatWithAddress(
@@ -205,24 +205,24 @@ There is also a default remote address which is the one used by cluster support 
 ```csharp
 public class DefaultAddressExt implements Extension {
   private final ExtendedActorSystem system;
- 
+
   public DefaultAddressExt(ExtendedActorSystem system) {
     this.system = system;
   }
- 
+
   public Address getAddress() {
     return system.provider().getDefaultAddress();
   }
 }
- 
+
 public class DefaultAddress extends
     AbstractExtensionId<DefaultAddressExt> implements ExtensionIdProvider {
   public static final DefaultAddress ID = new DefaultAddress();
- 
+
   public DefaultAddress lookup() {
     return ID;
   }
- 
+
   public DefaultAddressExt createExtension(ExtendedActorSystem system) {
     return new DefaultAddressExt(system);
   }

@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Persistence
 ---
 ## Persistence
@@ -41,7 +41,7 @@ In case when a manual recovery cycle initialization is necessary, it may be invo
 
 ### Persistent views
 
-While persistent actor may be used to producing and persisting an events, views are used only to read internal state based on them. Like persistent actor, view has a `PersistenceId` to specify collection of events to be resent to current view. This value should however be correlated with PersistentId of actor - producer of the events. 
+While persistent actor may be used to producing and persisting an events, views are used only to read internal state based on them. Like persistent actor, view has a `PersistenceId` to specify collection of events to be resent to current view. This value should however be correlated with PersistentId of actor - producer of the events.
 
 Other members:
 

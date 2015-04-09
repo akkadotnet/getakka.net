@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Props
 ---
 ## Props
@@ -12,7 +12,7 @@ Props is a configuration class to specify options for the creation of actors, th
 ```
 
 >**Warning**<br/>
-In the second line, using `new`; Do note that the arguments passed in will be evaluated *once*, when the `Props` are created. 
+In the second line, using `new`; Do note that the arguments passed in will be evaluated *once*, when the `Props` are created.
 This is because the arguments can be passed to remote systems for [remote deployment](Remote deploy).
 The behavior is somewhat odd since a lambda containing a `new` statement generally evaluate the entire expression every time it is invoked.
 
@@ -20,28 +20,28 @@ The behavior is somewhat odd since a lambda containing a `new` statement general
 It is a good idea to provide static factory methods on the UntypedActor which help keeping the creation of suitable Props as close to the actor definition as possible. This also allows usage of the Creator-based methods which statically verify that the used constructor actually exists instead relying only on a runtime check.
 ```csharp
 public class DemoActor : ReceiveActor {
-  
+
   /**
    * Create Props for an actor of this type.
    * @param magicNumber The magic number to be passed to this actor’s constructor.
    * @return a Props for creating this actor, which can then be further configured
    *         (e.g. calling `.withDispatcher()` on it)
    */
-  public static Props Props(int magicNumber) 
+  public static Props Props(int magicNumber)
   {
     return Props.Create(() => new DemoActor(magicNumber));
   }
-  
+
   private int magicNumber;
- 
-  public DemoActor(int magicNumber) 
+
+  public DemoActor(int magicNumber)
   {
     this.magicNumber = magicNumber;
     ...some receive declarations here
     //Receive<string>(str => ..);
   }
 }
- 
+
 system.ActorOf(DemoActor.Props(42), "demo");
 ```
 ### Creating Actors with Props
@@ -56,7 +56,7 @@ ActorRef myActor = system.ActorOf(Props.Create(typeof(MyActor)),
 Using the ActorSystem will create top-level actors, supervised by the actor system’s provided guardian actor, while using an actor’s context will create a child actor.
 
 ```csharp
-class A : ReceiveActor 
+class A : ReceiveActor
 {
   ActorRef child =
       Context.ActorOf(Props.Create(typeof(MyActor)), "myChild");

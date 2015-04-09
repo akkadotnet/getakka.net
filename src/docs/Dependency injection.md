@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Dependency injection
 ---
 # Dependency Injection
@@ -9,11 +9,11 @@ The basic functionality is provided by a `DependencyResolver` class, that can cr
 
 ```csharp
 // Create your DI container of preference
-var someContainer = ... ; 
+var someContainer = ... ;
 
 // Create the actor system
 var system = ActorSystem.Create("MySystem");
-            
+
 // Create the dependency resolver for the actor system
 IDependencyResolver propsResolver = new XyzDependencyResolver(someContainer, system);
 
@@ -21,7 +21,7 @@ IDependencyResolver propsResolver = new XyzDependencyResolver(someContainer, sys
 system.ActorOf(propsResolver.Create<TypedWorker>(), "Worker1");
 system.ActorOf(propsResolver.Create<TypedWorker>(), "Worker2");
 
-``` 
+```
 
 Currenty, the following Akka.NET Dependency Injection plugins are available:
 
@@ -69,7 +69,7 @@ container.Bind<IWorkerService>()To(typeof)WorkerService));
 // Create the ActorSystem and Dependency Resolver
 var system = ActorSystem.Create("MySystem");
 var propsResolver = new NinjectDependencyResolver(container,system);
-``` 
+```
 
 Support for additional dependency injection frameworks may be added in the future, but you can easily implement your own by implementing an [Actor Producer Extension](DI Core).
 

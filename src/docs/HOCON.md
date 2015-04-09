@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: HOCON
 ---
 # HOCON (Human-Optimized Config Object Notation)

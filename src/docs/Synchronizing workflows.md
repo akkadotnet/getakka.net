@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Synchronizing workflows
 ---
 # Synchronizing workflows
@@ -10,8 +10,8 @@ title: Synchronizing workflows
 //jobs in these classes
 public class SubTaskStarted {}
 public class SubTaskEnded {}
-public class TasksDone {} 
-public class TasksFailed {} 
+public class TasksDone {}
+public class TasksFailed {}
 
 public class JobSynchronizer : ReceiveActor
 {
@@ -19,13 +19,13 @@ public class JobSynchronizer : ReceiveActor
 
      //TODO: don't use a counter incase of lost messages.
      //use a dict of actorref , bool for completion status per actor instead
-     private int _jobCount; 
-    
+     private int _jobCount;
+
      public JobSynchronizer(ActorRef notifyStatus)
      {
           SetReceiveTimeout(TimeSpan.FromSeconds(5));
           _notifyStatus = notifyStatus ;
-          Receive<SubTaskStarted>(_ => 
+          Receive<SubTaskStarted>(_ =>
           {
              _jobCount ++;
              CheckAllDone();
@@ -59,7 +59,7 @@ public class Worker : ReceiveActor
      public Worker(ActorRef synchronizer)
      {
            _synchronizer = synchronizer;
-           Receive<DoSomeWork>(work => 
+           Receive<DoSomeWork>(work =>
            {
                 //notify the synchronizer that we are starting to do some work
                 _synchronizer.Tell(new SubTaskStarted());
@@ -69,7 +69,7 @@ public class Worker : ReceiveActor
                 {
                     //tell self do do more work
                     //(or fork out to Children to do more work)
-                    self.Tell(new Work(dir));                     
+                    self.Tell(new Work(dir));
                 }
 
                 //do more work, e.g. process files

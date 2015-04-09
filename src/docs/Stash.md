@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Stash
 ---
 ## Stash
@@ -19,7 +19,7 @@ These interfaces require you to provide a Stash property on your actor. The prop
 public class MyActorWithStash : UntypedActor, WithUnboundedStash
 {
     public IStash Stash { get; set; }
-    
+
     ...
 }
 ```

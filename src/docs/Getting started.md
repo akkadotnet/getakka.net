@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Getting started
 ---
 # Getting started with Akka.NET
@@ -101,9 +101,9 @@ namespace ConsoleApplication11
     {
         public GreetingActor()
         {
-            // Tell the actor to respond 
+            // Tell the actor to respond
             // to the Greet message
-            Receive<Greet>(greet => 
+            Receive<Greet>(greet =>
                Console.WriteLine("Hello {0}", greet.Who));
         }
     }
@@ -144,7 +144,7 @@ namespace ConsoleApplication11
     {
         public GreetingActor()
         {
-            Receive<Greet>(greet => 
+            Receive<Greet>(greet =>
                Console.WriteLine("Hello {0}", greet.Who));
         }
     }
@@ -156,7 +156,7 @@ namespace ConsoleApplication11
             //create a new actor system (a container for your actors)
             var system = ActorSystem.Create("MySystem");
             //create your actor and get a reference to it.
-            //this will be an "ActorRef", which is not a 
+            //this will be an "ActorRef", which is not a
             //reference to the actual actor instance
             //but rather a client or proxy to it
             var greeter = system.ActorOf<GreetingActor>("greeter");

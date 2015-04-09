@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: The Obligatory Hello World
 ---
 #  The Obligatory Hello World
@@ -65,8 +65,8 @@ type Greet = Greet of string
 
 let system = ActorSystem.Create "MySystem"
 
-// Use F# computation expression with tail-recursive loop 
-// to create an actor message handler and return a reference 
+// Use F# computation expression with tail-recursive loop
+// to create an actor message handler and return a reference
 let greeter = spawn system "greeter" <| fun mailbox ->
     let rec loop() = actor {
         let! msg = mailbox.Receive()

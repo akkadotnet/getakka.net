@@ -1,9 +1,9 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Books
 ---
 
-# Books 
+# Books
 
 ##  Manning Publications Co.
 ### Akka

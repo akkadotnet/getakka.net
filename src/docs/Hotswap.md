@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Hotswap
 ---
 ```csharp
@@ -14,7 +14,7 @@ public class GreetingActor : UntypedActor
                 Become(OtherReceive);
             });
     }
-    
+
     void OtherReceive(object message)
     {
         Pattern.Match(message)

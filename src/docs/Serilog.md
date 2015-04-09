@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Serilog
 ---
 # Using Serilog
@@ -7,7 +7,7 @@ title: Serilog
 ## Setup
 Install the package __Akka.Logger.Serilog__ to utilize [Serilog](http://serilog.net/)
 
-``` 
+```
 PM> Install-Package Akka.Logger.Serilog
 ```
 

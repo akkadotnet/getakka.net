@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Use case and Deployment Scenarios
 ---
 # Deployment Scenarios
@@ -29,7 +29,7 @@ namespace Foo.Bar
 
             using (var system = ActorSystem.Create("my-actor-server", fluentConfig))
             {
-                //start two services 
+                //start two services
                 var service1= system.ActorOf<Service1>("service1");
                 var service2 = system.ActorOf<Service2>("service2");
                 Console.ReadKey();

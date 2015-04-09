@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Routing
 ---
 ## TL;DR RoundRobin Group router example
@@ -40,7 +40,7 @@ The broadcast router will as the name implies, broadcast any message to all of i
 ![Broadcast Router](images/BroadcastRouter.png)
 
 ### RoundRobin
-A Router that uses round-robin to select a connection. For concurrent calls, round robin is just a best effort. 
+A Router that uses round-robin to select a connection. For concurrent calls, round robin is just a best effort.
 
 ![Round Robin Router](images/RoundRobinRouter.png)
 
@@ -109,8 +109,8 @@ By using a `ConsistentHash` router we can now process multiple commands in paral
 ![ConsistentHash Router example](images/ConsistentHash2.png)
 
 ### ScatterGatherFirstCompleted
-Simple router that broadcasts the message to all routees, and replies with the first response. 
-You have to defin the 'within: Duration' parameter (f.e: within = 10 seconds). 
+Simple router that broadcasts the message to all routees, and replies with the first response.
+You have to defin the 'within: Duration' parameter (f.e: within = 10 seconds).
 
 ![ScatterGatherFirstCompleted Router](images/ScatterGatherFirstCompletedRouter.png)
 

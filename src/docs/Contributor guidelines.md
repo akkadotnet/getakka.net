@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Contributor guidelines
 ---
 # Contributor guidelines
@@ -31,7 +31,7 @@ e.g.
 
 ```csharp
 [Fact(DisplayName=
-@"If a parent receives a Terminated event for a child actor, 
+@"If a parent receives a Terminated event for a child actor,
 the parent should no longer supervise it")]
 public void ClearChildUponTerminated()
 {

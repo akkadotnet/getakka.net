@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Message delivery reliability
 ---
 # Message Delivery Reliability
@@ -119,7 +119,7 @@ illustrated in the following:
   Actor ``A1`` sends messages ``M1``, ``M2``, ``M3`` to ``A2``
 
   Actor ``A3`` sends messages ``M4``, ``M5``, ``M6`` to ``A2``
-  
+
   This means that:
       1) If ``M1`` is delivered it must be delivered before ``M2`` and ``M3``
       2) If ``M2`` is delivered it must be delivered before ``M3``
@@ -332,7 +332,7 @@ sender’s code more than is gained in debug output clarity.
 
 The dead letter service follows the same rules with respect to delivery
 guarantees as all other message sends, hence it cannot be used to implement
-guaranteed delivery. 
+guaranteed delivery.
 
 ###How do I Receive Dead Letters?
 

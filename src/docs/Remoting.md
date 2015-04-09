@@ -1,5 +1,5 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: Remoting
 ---
 The previous section describes how actor paths are used to enable location transparency. This special feature deserves some extra explanation, because the related term “transparent remoting” was used quite differently in the context of programming languages, platforms and technologies.
@@ -66,14 +66,14 @@ akka {
             hostname = localhost
         }
     }
-} 
+}
 ");
 
 using(var system = ActorSystem.Create("MyClient", config))
 {
     //get a reference to the remote actor
     var greeter = system
-        .ActorSelection("akka.tcp://MyServer@localhost:8080/user/greeter");    
+        .ActorSelection("akka.tcp://MyServer@localhost:8080/user/greeter");
     //send a message to the remote actor
     greeter.Tell(new Greet { Who = "Roger" });
 

@@ -1,10 +1,10 @@
 ---
-layout: wiki.hbs
+layout: docs.hbs
 title: ReceiveActor
 ---
 # Using Receive
 
-## Inherit from ReceiveActor 
+## Inherit from ReceiveActor
 
 In order to use the `Receive()` method inside an actor the actor must inherit from `ReceiveActor`.
 Inside the constructor, add a call to `Receive<T>(Action<T> handler)` for every type of message you want to handle:
@@ -65,8 +65,8 @@ Receive<string>(s => Console.WriteLine("Received string: " + s, s => s.Length>5)
 ## Receive using Funcs
 More complex handlers can be specified using the `Receive<T>(Func<T,bool> handler)` overload. These are invoked if the message is of the specified type. The func handler should return `true` if the message was handled, and `false`otherwise. If the handler returns `true`no more handlers will be invoked.
 ```csharp
-Receive<string>(s => 
-  { 
+Receive<string>(s =>
+  {
     if(s.Length>5)
     {
       Console.WriteLine("1: " + s);
@@ -108,7 +108,7 @@ Receive<string>(s => Console.WriteLine("Received string: " + s);  //This will ca
 >**Note**<br/>Note that `Receive<object>(Action<object> handler)` behaves the same as `ReceiveAny()` as it catches all messages. These two are equivalent:
 ```csharp
 ReceiveAny(o => Console.WriteLine("Received object: " + o);
-Receive<object>(0 => Console.WriteLine("Received object: " + o); 
+Receive<object>(0 => Console.WriteLine("Received object: " + o);
 ```
 
 ## Non generic overloads
@@ -123,8 +123,8 @@ Receive(typeof(string), obj => Console.WriteLine(obj.ToString()), obj=> ((string
 ```
 And the non generic Func
 ```csharp
-Receive(typeof(string), obj => 
-  { 
+Receive(typeof(string), obj =>
+  {
     var s = (string) obj;
     if(s.Length>5)
     {
@@ -226,7 +226,7 @@ private void Grumpy()
 ```
 Any state changes or message sends should be in the handler:
 ```csharp
-Receive<string>(s => s == "Grumpy", _ => 
+Receive<string>(s => s == "Grumpy", _ =>
   {
     _state = State.Grumpy;
     Sender.Tell("I just became grumpy", Self);
@@ -259,7 +259,7 @@ public class MoodActor : ReceiveActor
 
   private void Angry()
   {
-    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm angry")); 
+    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm angry"));
     Receive<string>(s => s == "Angry", _ => Sender.Tell("I'm already angry!", Self));
     ReceiveMoodSwitchers();
   }
