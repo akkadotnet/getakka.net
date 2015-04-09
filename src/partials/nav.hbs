@@ -1,0 +1,56 @@
+<div id="topNav">
+  <div class="container">
+    <!-- Mobile Menu Button -->
+    <button class="btn btn-mobile" data-toggle="collapse" data-target=".nav-main-collapse">
+      <i class="fa fa-bars"></i>
+    </button>
+
+    <!-- Search -->
+    <form class="search" method="get" action="/search">
+      <input type="text" class="form-control" name="q" value="" placeholder="Search">
+      <button class="fa fa-search"></button>
+    </form>
+    <!-- /Search -->
+
+    <!-- Top Nav -->
+    <div class="navbar-collapse nav-main-collapse collapse inline-block">
+      <nav class="nav-main">
+
+      {{!
+        NOTE
+
+        For a regular link, remove "dropdown" class from LI tag and "dropdown-toggle" class from the href.
+        Direct Link Example:
+
+        <li>
+          <a href="#">HOME</a>
+        </li>
+      }}
+
+        <!-- pageurl {{ page.url }} -->
+        <ul id="topMain" class="nav nav-pills nav-main">
+          <li class="mega-menu{% if page.active_selector == 'home' %} active{% endif %}">
+            <a href="/">
+              HOME<span>&nbsp;</span>
+            </a>
+          </li>
+          <li class="mega-menu{% if page.active_selector == 'docs' %} active{% endif %}">
+            <a href="/docs/">DOCUMENTATION<span>&nbsp;</span></a>
+          </li>
+          <li class="mega-menu">
+            <a href="{{site.github_url}}">CODE<span>&nbsp;</span></a>
+          </li>
+          <li class="mega-menu">
+            <a href="{{site.google_group_url}}">MAILING LIST<span>&nbsp;</span></a>
+          </li>
+          <li class="mega-menu {% if page.active_selector == 'support' %} active{% endif %}">
+            <a href="/support/">COMMERCIAL SUPPORT<span>&nbsp;</span></a>
+          </li>
+          <li class="mega-menu">
+            <a href="{{site.bootcamp_url}}">BOOTCAMP<span>&nbsp;</span></a>
+          </li>
+        </ul>
+
+      </nav>
+    </div>
+</div>

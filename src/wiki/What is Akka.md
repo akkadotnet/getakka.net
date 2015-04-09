@@ -6,7 +6,7 @@ title: What is Akka
 
 ## Scalable, distributed real-time transaction processing
 
-We believe that writing correct concurrent, fault-tolerant and scalable applications is too hard: {{site.twitter_url}}
+We believe that writing correct concurrent, fault-tolerant and scalable applications is too hard.
 
 Most of the time, that's because we are using the wrong tools and the wrong level of abstraction. Akka is here to change that.
 
