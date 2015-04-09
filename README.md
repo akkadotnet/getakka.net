@@ -39,6 +39,9 @@ If any change is detected, this will trigger a regeneration of the content and y
 The live site http://GetAkka.NET will be redeployed whenever a change is made to this repository.
 This can take a few minutes as we use a free build server.
 
+## Making style changes
+Edit the appropriate file in `/_scss`. The SCSS files then get compiled automatically by `grunt-contrib-compass` into the `screen.css` file.
+
 ## Contributing to the documentation
 
 Contributions to the wiki documentation can be done in a few different ways;
