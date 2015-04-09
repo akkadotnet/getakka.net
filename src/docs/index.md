@@ -8,7 +8,6 @@ title: Akka.NET Documentation
 
 ## Akka.NET Framework
 ### Introduction
-
 - [What is Akka?](What is Akka)
 - [Why Akka?](Why Akka)
 - [Getting Started](Getting started)
@@ -30,8 +29,6 @@ title: Akka.NET Documentation
     - [HOCON](concepts/hocon)
 
 ### Actors
-
-- [Actors](Actors)
 - [Working with actors](Working with actors)
 - [F# API](FSharp API)
 - [ReceiveActors](ReceiveActor)
@@ -49,12 +46,10 @@ title: Akka.NET Documentation
 - [Stash](Stash)
 
 ### Networking
-
 - [Remoting](Remoting)
 - [Serialization](Serialization)
 
 ### Utilities
-
 - [EventBus](EventBus)
 - [EventStream](EventStream)
 - [Logging](Logging)
@@ -63,20 +58,17 @@ title: Akka.NET Documentation
 - [Circuit Breaker](CircuitBreaker)
 
 ### Information for Akka Developers
-
 - [Building and Distributing Akka.NET](Building and Distributing Akka.NET)
 - [Contributor guidelines](Contributor guidelines)
 - [Documentation Guidelines](Documentation guidelines)
 - [Team](Team)
 
 ### Project Information
-
 - [Licenses](Licenses)
 - [Sponsors](Sponsors)
 - [Project](Project)
 
 ### Additional Information
-
 - [Frequently Asked Questions](FAQ)
 - [Online resources](Resources)
 - [Books](Books)
