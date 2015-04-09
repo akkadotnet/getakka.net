@@ -9,7 +9,7 @@ title: DI Core
 
 #What is it?
 
-**Akka.DI.Core** is an **ActorSystem extension** library for the Akka.NET framework that provides a simple way to create an Actor Dependency Resolver that can be used an alternative to the basic capabilities of [Props](http://akkadotnet.github.io/wiki/Props) when you have Actors with multiple dependencies.  
+**Akka.DI.Core** is an **ActorSystem extension** library for the Akka.NET framework that provides a simple way to create an Actor Dependency Resolver that can be used an alternative to the basic capabilities of [Props](http://akkadotnet.github.io/docs/Props) when you have Actors with multiple dependencies.
 
 #How do you create an Extension?
 
@@ -26,12 +26,12 @@ public class WindsorDependencyResolver : IDependencyResolver
 	{
 	    throw new NotImplementedException();
 	}
-	
+
 	Func<ActorBase> CreateActorFactory(string ActorName)
 	{
 	    throw new NotImplementedException();
 	}
-	
+
 	Props Create<TActor>()
 	{
 	    throw new NotImplementedException();
@@ -81,7 +81,7 @@ Type GetType(string actorName)
     return firstTry ?? searchForType();
 }
 ```
-	
+
 Secondly you need to implement the CreateActorFactory method which will be used by the extension to create the Actor. This implementation will depend upon the API of the container.
 
 ```csharp
@@ -91,7 +91,7 @@ public Func<ActorBase> CreateActorFactory(string actorName)
 }
 ```
 
-Lastly, you implement the Create<TActor> which is used register the Props configuration for the referenced Actor Type with the ActorSystem. This method will always be the same implementation. 
+Lastly, you implement the Create<TActor> which is used register the Props configuration for the referenced Actor Type with the ActorSystem. This method will always be the same implementation.
 
 ```csharp
 public Props Create<TActor>() where TActor : ActorBase
@@ -111,17 +111,17 @@ container.Register(Component.For<TypedWorker>().Named("TypedWorker").LifestyleTr
 using (var system = ActorSystem.Create("MySystem"))
 {
    //Create the dependency resolver
-   IDependencyResolver propsResolver = 
+   IDependencyResolver propsResolver =
 		new WindsorDependencyResolver(container,system);
 
 		system.ActorOf(propsResolver.Create<TypedWorker>(), "Worker1");
 		system.ActorOf(propsResolver.Create<TypedWorker>(), "Worker2");
 
-    var hashGroup = 
+    var hashGroup =
         system.ActorOf(Props.Empty.WithRouter(new ConsistentHashingGroup(config)));
 
-    TypedActorMessage msg = 
-       new TypedActorMessage { Id = 1, 
+    TypedActorMessage msg =
+       new TypedActorMessage { Id = 1,
                                Name = Guid.NewGuid().ToString() };
      hashGroup.Tell(msg);
 }

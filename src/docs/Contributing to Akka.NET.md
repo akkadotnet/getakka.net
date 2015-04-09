@@ -18,4 +18,4 @@ If you want to contribute code to Akka.NET, here's how:
 See [Contributor guidelines](Contributor guidelines)
 
 ## Building Akka.NET
-For instructions on how to build Akka.NET, please see [Building and Distributing Akka.NET](https://akkadotnet.github.io/wiki/Building%20and%20Distributing%20Akka.NET).
+For instructions on how to build Akka.NET, please see [Building and Distributing Akka.NET](https://akkadotnet.github.io/docs/Building%20and%20Distributing%20Akka.NET).
