@@ -33,7 +33,7 @@ module.exports = function(grunt) {
                 options: {
                     sassDir: scss,
                     cssDir: cssOutputDir,
-                    lineNumbers: false,
+                    outputStyle: 'compressed',
                 }
             }
         },
