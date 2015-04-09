@@ -70,7 +70,7 @@ module.exports = function(grunt) {
 
         assemble: {
             options: {
-                layout: "wiki.hbs",
+                layout: "docs.hbs",
                 flatten: false,
                 expand: true,
                 layoutdir: layouts,
