@@ -12,14 +12,14 @@ pre {
     border: 0px solid white;
     padding: 0px;
     border-radius: 0;
+    box-shadow: none;
 }
 
 .hljs {
     padding: 15px;
     border-radius: 0;
-    // border: 1px solid #ececec;
-    // border-left-width: 10px;
-    border: none;
+    border: 1px solid #ececec;
+    border-left-width: 10px;
 }
 
 /* Alerts */
