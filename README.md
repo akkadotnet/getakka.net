@@ -12,6 +12,12 @@ Follow the instructions on this page https://github.com/joyent/node/wiki/Install
 > cd getakkanet
 ```
 
+### Make sure `grunt-cli` is installed
+```
+> npm install -g grunt-cli
+```
+
+
 ### Install the package
 ```
 > npm install -d
