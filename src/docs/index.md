@@ -4,8 +4,7 @@ title: Akka.NET Documentation
 ---
 
 ## Akka.NET API Docs
-- [1.0 Stable API](http://api.getakka.net/docs/unstable/index.html)
-- [1.1 Unstable API](http://api.getakka.net/docs/unstable/index.html)
+- [1.0 Stable API](http://api.getakka.net/docs/stable/index.html)
 
 ## Akka.NET Framework
 ### Introduction
