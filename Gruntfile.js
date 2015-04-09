@@ -70,12 +70,12 @@ module.exports = function(grunt) {
 
         assemble: {
             options: {
-                layout: "wiki.hbs",
+                layout: "docs.hbs",
                 flatten: false,
                 expand: true,
                 layoutdir: layouts,
                 partials: ['src/partials/**/*'],
-                helpers: ['helper-gfm.js'],
+                helpers: ['helper-gfm.js', 'helper-ifEq.js'],
                 assets: assets,
                 data: 'src/_data/*'
             },
@@ -85,7 +85,7 @@ module.exports = function(grunt) {
                     {
                         expand: true,
                         cwd: source,
-                        src: ['*.hbs','pages/*.hbs','**/*.md','help/**/*.htm'],
+                        src: ['*.hbs','pages/**/*.hbs','**/*.md','help/**/*.htm'],
                         dest: output,
                         ext: '.html'
                     }
