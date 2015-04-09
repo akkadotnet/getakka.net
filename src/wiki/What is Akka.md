@@ -6,11 +6,11 @@ title: What is Akka
 
 ## Scalable, distributed real-time transaction processing
 
-We believe that writing correct concurrent, fault-tolerant and scalable applications is too hard. 
+We believe that writing correct concurrent, fault-tolerant and scalable applications is too hard: {{site.twitter_url}}
 
-Most of the time, that's because we are using the wrong tools and the wrong level of abstraction. Akka is here to change that. 
+Most of the time, that's because we are using the wrong tools and the wrong level of abstraction. Akka is here to change that.
 
-By using the Actor Model, we raise the abstraction level and provide a better platform to build scalable, resilient and responsive applications—see the [Reactive Manifesto](http://www.reactivemanifesto.org/) for more details. 
+By using the Actor Model, we raise the abstraction level and provide a better platform to build scalable, resilient and responsive applications—see the [Reactive Manifesto](http://www.reactivemanifesto.org/) for more details.
 
 For fault-tolerance we adopt the "let it crash" model which the telecom industry has used with great success to build applications that self-heal and systems that never stop. Actors also provide the abstraction for transparent distribution and the basis for truly scalable and fault-tolerant applications.
 
@@ -49,7 +49,7 @@ You can find more details in the respective chapter for Java or Scala.
 
 -->
 
-<!-- 
+<!--
 TODO
 ## C# and F# APIs
 Akka has both a C# Documentation and a F# Documentation. -->
@@ -57,7 +57,7 @@ Akka has both a C# Documentation and a F# Documentation. -->
 ## Commercial Support
 Akka.NET is supported by [Petabridge, a company making distributed, realtime computing easy for .NET developers](http://petabridge.com).
 
-<!-- 
+<!--
 TODO
 ## Akka can be used in two different ways
 -->
