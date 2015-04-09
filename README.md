@@ -42,6 +42,11 @@ This can take a few minutes as we use a free build server.
 ## Making style changes
 Edit the appropriate file in `/_scss`. The SCSS files then get compiled automatically by `grunt-contrib-compass` into the `screen.css` file.
 
+## Adding data
+In short, to add sitewide data you can add it to `src/_data/site.yml` and it will then be accessible via handlebars in all templates. For example, `site.yml` defines `url`, which is then accessed in the templates like so: `{{site.url}}`.
+
+For more details / advanced usage, read the docs on [`options.data`](http://assemble.io/docs/options-data.html).
+
 ## Contributing to the documentation
 
 Contributions to the wiki documentation can be done in a few different ways;
