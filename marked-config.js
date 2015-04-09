@@ -14,7 +14,7 @@ marked.setOptions({
         try {
             var highlighted = hljs.highlight(lang,code,true).value;
             return highlighted;
-        } catch (err) {            
+        } catch (err) {
             var highlighted2 = hljs.highlightAuto(code).value;
             return highlighted2;
         }
@@ -24,12 +24,14 @@ marked.setOptions({
     imgCss: "img-responsive",
     blockQuoteCallback: function (blockquote) {
         var warning = S(blockquote).toLowerCase().startsWith("<blockquote>\n<p><strong>warning");
-        var note = S(blockquote).toLowerCase().startsWith("<blockquote>\n<p><strong>note");
-        blockquote = blockquote.replace('&lt;br/&gt;', '<br/>').replace('</blockquote>', '</div>');
         if (warning) {
+            blockquote = blockquote.replace('&lt;br/&gt;', '<br/>').replace('</blockquote>', '</div>');
             blockquote = blockquote.replace('<blockquote>', '<div class="alert alert-warning">');
         }
+
+        var note = S(blockquote).toLowerCase().startsWith("<blockquote>\n<p><strong>note");
         if (note) {
+            blockquote = blockquote.replace('&lt;br/&gt;', '<br/>').replace('</blockquote>', '</div>');
             blockquote = blockquote.replace('<blockquote>', '<div class="alert alert-default">');
         }
         return blockquote;
