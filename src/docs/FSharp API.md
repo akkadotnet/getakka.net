@@ -25,7 +25,7 @@ F# also gives you it's own actor system Configuration module with support of fol
 
 Unlike C# actors, which represent object oriented nature of the language, F# is able to define an actor's logic in more functional way. It is done by using `actor` computation expression. In most of the cases, an expression inside `actor` is expected to be represented as self-invoking recursive function - also invoking an other functions while maintaining recursive cycle is allowed, i.e. to change actor's behavior or even to create more advanced constructs like Finite State Machines.
 
-It's important to remember, that each actor returning point should point to the next recursive function call - any other value returned will result in stopping current actor (see: [Actor Lifecycle](http://akkadotnet.github.io/docs/Actor%20lifecycle)).
+It's important to remember, that each actor returning point should point to the next recursive function call - any other value returned will result in stopping current actor (see: [Actor Lifecycle](Actor lifecycle)).
 
 Example:
 
@@ -94,11 +94,11 @@ let disposableActor (mailbox:Actor<_>) =
 
 To be able to specify more precise actor creation behavior, you may use `spawnOpt` and `spawne` methods, both taking a list of `SpawnOption` values. Each specific option should be present only once in the collection. When a conflict occurs (more than one option of specified type has been found), the latest value found inside the list will be chosen.
 
--   `SpawnOption.Deploy(Akka.Actor.Deploy)` - defines deployment strategy for created actors (see: Deploy). This option may be used along with `spawne` function to enable remote actors deployment.
--   `SpawnOption.Router(Akka.Routing.RouterConfig)` - defines an actor to be a router as well as it's routing specifics (see: [Routing](http://akkadotnet.github.io/docs/Routing)).
--   `SpawnOption.SupervisiorStrategy(Akka.Actor.SupervisiorStrategy)` - defines a supervisor strategy of the current actor. It will affect it's children (see: [Supervision](http://akkadotnet.github.io/docs/Supervision)).
--   `SpawnOption.Dispatcher(string)` - defines a type of the dispatcher used for resources management for the created actors. (See: [Dispatchers](http://akkadotnet.github.io/docs/Dispatchers))
--   `SpawnOption.Mailbox(string)` - defines a type of the mailbox used for the created actors. (See: [Mailboxes](http://akkadotnet.github.io/docs/Mailbox))
+-   `SpawnOption.Deploy(Akka.Actor.Deploy)` - defines deployment strategy for created actors (see: [[Deploy]]). This option may be used along with `spawne` function to enable remote actors deployment.
+-   `SpawnOption.Router(Akka.Routing.RouterConfig)` - defines an actor to be a router as well as it's routing specifics (see: [Routing](Routing)).
+-   `SpawnOption.SupervisiorStrategy(Akka.Actor.SupervisiorStrategy)` - defines a supervisor strategy of the current actor. It will affect it's children (see: [Supervision](Supervision)).
+-   `SpawnOption.Dispatcher(string)` - defines a type of the dispatcher used for resources management for the created actors. (See: [Dispatchers](Dispatchers))
+-   `SpawnOption.Mailbox(string)` - defines a type of the mailbox used for the created actors. (See: [Mailboxes](Mailbox))
 
 Example (deploy actor remotely):
 
@@ -122,7 +122,7 @@ async { let! response = aref <? request }
 
 ### Actor selection
 
-Actors may be referenced not only by `ActorRef`s, but also through actor path selection (see: [Addressing](http://akkadotnet.github.io/docs/Addressing)). With F# API you may select an actor with known path using `select` function:
+Actors may be referenced not only by `ActorRef`s, but also through actor path selection (see: [Addressing](Addressing)). With F# API you may select an actor with known path using `select` function:
 
 -   `select (path : string) (selector : ActorRefFactory) : ActorSelection` - where path is a valid URI string used to recognize actor path, and the selector is either actor system or actor itself.
 
@@ -167,7 +167,7 @@ Monitored actors will automatically send a `Terminated` message to their watcher
 
 ### Actor supervisor strategies
 
-Actors have a place in their system's hierarchy trees. To manage failures done by the child actors, their parents/supervisors may decide to use specific supervisor strategies (see: [Supervision](http://akkadotnet.github.io/docs/Supervision)) in order to react to the specific types of errors. In F# this may be configured using functions of the `Strategy` module:
+Actors have a place in their system's hierarchy trees. To manage failures done by the child actors, their parents/supervisors may decide to use specific supervisor strategies (see: [Supervision](Supervision)) in order to react to the specific types of errors. In F# this may be configured using functions of the `Strategy` module:
 
 -   `Strategy.OneForOne (decider : exn -> Directive) : SupervisorStrategy` - returns a supervisor strategy applicable only to child actor which faulted during execution.
 -   `Strategy.OneForOne (decider : exn -> Directive, ?retries : int, ?timeout : TimeSpan) : SupervisorStrategy` - returns a supervisor strategy applicable only to child actor which faulted during execution. [retries] param defines a number of times, an actor could be restarted. If it's a negative value, there is not limit. [timeout] param defines a time window for number of retries to occur.
