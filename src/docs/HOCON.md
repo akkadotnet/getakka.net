@@ -104,7 +104,7 @@ between them as long as they have at least one ASCII newline
 
 The last element in an array or last field in an object may be
 followed by a single comma. This extra comma is ignored.
-
+`
  - `[1,2,3,]` and `[1,2,3]` are the same array.
  - `[1\n2\n3]` and `[1,2,3]` are the same array.
  - `[1,2,3,,]` is invalid because it has two trailing commas.
@@ -164,7 +164,7 @@ each other.
 
 These two are equivalent:
 
-```hocon
+```javascript
 {
     "foo" : { "a" : 42 },
     "foo" : { "b" : 43 }
@@ -177,7 +177,7 @@ These two are equivalent:
 
 And these two are equivalent:
 
-```hocon
+```javascript
 {
     "foo" : { "a" : 42 },
     "foo" : null,
@@ -362,7 +362,7 @@ involved or not.
 
 Here are several ways to define `a` to the same object value:
 
-```hocon
+```javascript
 // one object
 a : { b : 1, c : 2 }
 // two objects that are merged via concatenation rules
@@ -374,7 +374,7 @@ a : { c : 2 }
 
 Here are several ways to define `a` to the same array value:
 
-```hocon
+```javascript
     // one array
     a : [ 1, 2, 3, 4 ]
     // two arrays that are concatenated
@@ -387,14 +387,14 @@ Here are several ways to define `a` to the same array value:
 
 A common use of object concatenation is "inheritance":
 
-```hocon
+```javascript
 data-center-generic = { cluster-size = 6 }
 data-center-east = ${data-center-generic} { name = "east" }
 ```
 
 A common use of array concatenation is to add to paths:
 
-```hocon
+```javascript
 path = [ /bin ]
 path = ${path} [ /usr/bin ]
 ```
@@ -405,7 +405,7 @@ Arrays allow you to use newlines instead of commas, but not
 whitespace instead of commas. Non-newline whitespace will produce
 concatenation rather than separate elements.
 
-```hocon
+```javascript
 // this is an array with one element, the string "1 2 3 4"
 [ 1 2 3 4 ]
 // this is an array of four integers
@@ -424,7 +424,7 @@ concatenation rather than separate elements.
 If this gets confusing, just use commas. The concatenation
 behavior is useful rather than surprising in cases like:
 
-```hocon
+```javascript
 [ This is an unquoted string my name is ${name}, Hello ${world} ]
 [ ${a} ${b}, ${x} ${y} ]
 ```
@@ -488,48 +488,48 @@ field in the most-nested object.
 
 In other words:
 
-```hocon
+```javascript
 foo.bar : 42
 ```
 
 is equivalent to:
 
-```hocon
+```javascript
 foo { bar : 42 }
 ```
 
 and:
 
-```hocon
+```javascript
 foo.bar.baz : 42
 ```
 is equivalent to:
 
-```hocon
+```javascript
 foo { bar { baz : 42 } }
 ```
 and so on. These values are merged in the usual way; which implies
 that:
 
-```hocon
+```javascript
 a.x : 42, a.y : 43
 ```
 
 is equivalent to:
 
-```hocon
+```javascript
 a { x : 42, y : 43 }
 ```
 
 Because path expressions work like value concatenations, you can
 have whitespace in keys:
 
-```hocon
+```javascript
 a b c : 42
 ```
 is equivalent to:
 
-```hocon
+```javascript
 "a b c" : 42
 ```
 
@@ -568,13 +568,13 @@ Substitutions are not parsed inside quoted strings. To get a
 string containing a substitution, you must use value concatenation
 with the substitution in the unquoted portion:
 
-```hocon
+```javascript
 key : ${animal.favorite} is my favorite animal
 ```
 
 Or you could quote the non-substitution portion:
 
-```hocon
+```javascript
 key : ${animal.favorite}" is my favorite animal"
 ```
 
@@ -641,7 +641,7 @@ The big picture:
 The idea is to allow a new value for a field to be based on the
 older value:
 
-```hocon
+```javascript
 path : "a:b:c"
 path : ${path}":d"
 ```
@@ -702,13 +702,13 @@ Fields may have `+=` as a separator rather than `:` or `=`. A
 field with `+=` transforms into a self-referential array
 concatenation, like this:
 
-```hocon
+```javascript
 a += b
 ```
 
 becomes:
 
-```hocon
+```javascript
 a = ${?a} [b]
 ```
 
@@ -727,7 +727,7 @@ implementation of the config lib which does not support `+=`.
 In isolation (with no merges involved), a self-referential field
 is an error because the substitution cannot be resolved:
 
-```hocon
+```javascript
 foo : ${foo} // an error
 ```
 
@@ -736,12 +736,12 @@ however, the substitution can be resolved to that earlier value.
 When merging two objects, the self-reference in the overriding
 field refers to the overridden field. Say you have:
 
-```hocon
+```javascript
 foo : { a : 1 }
 ```
 and then:
 
-```hocon
+```javascript
 foo : ${foo}
 ```
 
@@ -750,13 +750,13 @@ field.
 
 It would be an error if these two fields were reversed, so first:
 
-```hocon
+```javascript
 foo : ${foo}
 ```
 
 and then second:
 
-```hocon
+```javascript
 foo : { a : 1 }
 ```
 
@@ -769,7 +769,7 @@ of `foo` for a value, the error should be treated as "undefined"
 rather than "intractable cycle"; as a result, the optional
 substitution syntax `${?foo}` does not create a cycle:
 
-```hocon
+```javascript
 foo : ${?foo} // this field just disappears silently
 ```
 
@@ -777,7 +777,7 @@ If a substitution is hidden by a value that could not be merged
 with it (by a non-object value) then it is never evaluated and no
 error will be reported. So for example:
 
-```hocon
+```javascript
 foo : ${does-not-exist}
 foo : 42
 ```
@@ -790,7 +790,7 @@ foo : 42`, where the initial self-reference must simply be ignored.
 A self-reference resolves to the value "below" even if it's part
 of a path expression. So for example:
 
-```hocon
+```javascript
  foo : { a : { c : 1 } }
  foo : ${foo.a}
  foo : { a : 2 }
@@ -808,7 +808,7 @@ inside that object or array.
 Implementations must be careful to allow objects to refer to paths
 within themselves, for example:
 
-```hocon
+```javascript
  bar : { foo : 42,
          baz : ${bar.foo}
        }
@@ -823,7 +823,7 @@ Because there is no inherent cycle here, the substitution must
 "look forward" (including looking at the field currently being
 defined). To make this clearer, `bar.baz` would be `43` in:
 
-```hocon
+```javascript
 bar : { foo : 42,
         baz : ${bar.foo}
       }
@@ -833,7 +833,7 @@ bar : { foo : 43 }
 Mutually-referring objects should also work, and are not
 self-referential (so they look forward):
 
-```hocon
+```javascript
  // bar.a should end up as 4
  bar : { a : ${foo.d}, b : 1 }
  bar.b = 3
@@ -846,7 +846,7 @@ Another tricky case is an optional self-reference in a value
 concatenation, in this example `a` should be `foo` not `foofoo`
 because the self reference has to "look back" to an undefined `a`:
 
-```hocon
+```javascript
 a = ${?a}foo
 ```
 
@@ -864,13 +864,13 @@ In general, in resolving a substitution the implementation must:
 
 For example, this is not possible to resolve:
 
-```hocon
+```javascript
 bar : ${foo}
 foo : ${bar}
 ```
 A multi-step loop like this should also be detected as invalid:
 
-```hocon
+```javascript
 a : ${b}
 b : ${c}
 c : ${a}
@@ -880,7 +880,7 @@ Some cases have undefined behavior because the behavior depends on
 the order in which two fields are resolved, and that order is not
 defined. For example:
 
-```hocon
+```javascript
 a : 1
 b : 2
 a : ${b}
@@ -942,7 +942,7 @@ of a key's path expression.
 
 It may appear later in the key:
 
-```hocon
+```javascript
 # this is valid
 { foo include : 42 }
 # equivalent to
@@ -950,7 +950,7 @@ It may appear later in the key:
 ```
 It may appear as an object or array value:
 
-```hocon
+```javascript
 { foo : include } # value is the string "include"
 [ include ]       # array of one string "include"
 ```
@@ -958,7 +958,7 @@ It may appear as an object or array value:
 You can quote `"include"` if you want a key that starts with the
 word `"include"`, only unquoted `include` is special:
 
-```hocon
+```javascript
 { "include" : 42 }
 ```
 
@@ -1008,13 +1008,13 @@ be "fixed up" to be relative to the app's configuration root.
 
 Say for example that the root configuration is this:
 
-```hocon
+```javascript
 { a : { include "foo.conf" } }
 ```
 
 And "foo.conf" might look like this:
 
-```hocon
+```javascript
 { x : 10, y : ${x} }
 ```
 
@@ -1025,7 +1025,7 @@ object at key `a`, however, then it must be fixed up to be
 
 Say that the root configuration redefines `a.x`, like this:
 
-```hocon
+```javascript
 {
     a : { include "foo.conf" }
     a : { x : 42 }
@@ -1062,7 +1062,7 @@ have some documented mapping to JSON's type system.
 If an implementation supports multiple formats, then the extension
 may be omitted from the name of included files:
 
-```hocon
+```javascript
 include "foo"
 ```
 
@@ -1077,7 +1077,7 @@ should be parsed next-to-last.
 
 In short, `include "foo"` might be equivalent to:
 
-```hocon
+```javascript
 include "foo.properties"
 include "foo.json"
 include "foo.conf"
@@ -1169,19 +1169,19 @@ there isn't a good way to define arrays. To provide some mechanism
 for this, implementations should support converting objects with
 numeric keys into arrays. For example, this object:
 
-```hocon
+```javascript
 { "0" : "a", "1" : "b" }
 ```
 
 could be treated as:
 
-```hocon
+```javascript
 [ "a", "b" ]
 ```
 
 This allows creating an array in a properties file like this:
 
-```hocon
+```javascript
 foo.0 = "a"
 foo.1 = "b"
 ```
@@ -1439,7 +1439,7 @@ intractable case where a single key needs to refer to both a
 parent object and a string value. For example, say the Java
 properties file has:
 
-```hocon
+```javascript
 a=hello
 a.b=world
 ```
