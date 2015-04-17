@@ -38,12 +38,12 @@ title: Akka.NET Documentation
 - [Fault Tolerance](Fault tolerance)
 - [Dispatchers](Dispatchers)
 - [Mailboxes](Mailbox)
-- [Routing](Routing)
 - [Actor lifecycle](Actor lifecycle)
 - [Props](Props)
 - [Receive timeout](Receive timeout)
 - [Dependency injection](Dependency injection)
 - [Stash](Stash)
+- [Routers](working-with-actors/Routers)
 
 ### Networking
 - [Remoting](Remoting)
