@@ -42,7 +42,8 @@ title: Akka.NET Documentation
 - [Props](Props)
 - [Receive timeout](Receive timeout)
 - [Dependency injection](Dependency injection)
-- [Stash](Stash)
+- [Switchable Behaviors](working-with-actors/Switchable Behaviors)
+- [Stashing Messages](working-with-actors/Stashing Messages)
 - [Routers](working-with-actors/Routers)
 
 ### Networking
