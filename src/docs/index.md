@@ -37,7 +37,7 @@ title: Akka.NET Documentation
 - [Persistence](Persistence)
 - [Fault Tolerance](Fault tolerance)
 - [Dispatchers](Dispatchers)
-- [Mailboxes](Mailbox)
+- [Mailboxes](working-with-actors/Mailbox)
 - [Actor lifecycle](Actor lifecycle)
 - [Props](Props)
 - [Receive timeout](Receive timeout)
