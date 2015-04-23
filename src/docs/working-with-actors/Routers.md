@@ -7,7 +7,7 @@ title: Routers
 
 A *router* is a special type of actor whose job is to route messages to other actors called *routees*. Different routers use different *strategies* to route messages efficiently.
 
-Routers can be used inside or outside of an actor, and you can manage the routees yourself or use a self contained router actor with configuration capabilities.
+Routers can be used inside or outside of an actor, and you can manage the routees yourself or use a self contained router actor with configuration capabilities, and can also [resize dynamically](#dynamically-resizable-pools) under load.
 
 Akka.NET comes with several useful routers you can choose right out of the box, according to your application's needs. But it is also possible to create your own.
 
@@ -500,6 +500,48 @@ SmallestMailboxPool defined in code:
 ```cs
 var router = system.ActorOf(Props.Create<Worker>().WithRouter(new SmallestMailboxPool(5)), "some-pool");
 ```
+
+## Dynamically Resizable Pools
+
+Routers pools can be dynamically resized to adjust the responsiveness of the system under load.
+
+This is done by adding a `resizer` section to your router configuration:
+
+```hocon
+akka.actor.deployment {
+    /my-router {
+        router = round-robin-pool
+        resizer {
+            enabled = on
+            lower-bound = 1
+            upper-bound = 10
+        }
+    }
+}
+```
+
+You can also set a resizer in code when creating a router.
+
+```cs
+new RoundRobinPool(5, new DefaultResizer(1, 10))
+```
+These are settings you usually change in the resizer:
+
+* `enabled` - Turns on or off the resizer. The default is `off`.
+* `lower-bound` - The minimum number of routees that should remain active. The default is `1`.
+* `upper-bound` - The maximum number of routees that should be created. The default is `10`.
+
+The default resizer works by checking the pool size every X messages, and deciding to increase or decrease the pool accordingly. The following settings are used to fine-tune the resizer and are considered *good enough* for most cases, but can be changed if needed:
+
+* `messages-per-resize` - The # of messages to route before checking if resize is needed. The default is `10`.
+* `rampup-rate` - Percentage to increase the pool size. The default is `0.2`, meaning it will increase the pool size in 20% when resizing.
+* `backoff-rate` - Percentage to decrease the pool size. The default is `0.1`, meaning it will decrease the pool size in 10% when resizing.
+* `pressure-threshold` - A threshold used to decide if the pool should be increased. The default is `1`, meaning it will decide to increase the pool if all routees are busy and have at least 1 message in the mailbox.
+    * `0` - the routee is busy and have no messages in the mailbox
+    * `1` - the routee is busy and have at least 1 message waiting in the mailbox
+    * `N` - the routee is busy and have N messages waiting in the mailbox (where N > 1)
+* `backoff-threshold` - A threshold used to decide if the pool should be decreased. The default is `0.3`, meaning it will decide to decrease the pool if less than 30% of the routers are busy.
+
 
 ## Advanced
 
