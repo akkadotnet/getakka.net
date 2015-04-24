@@ -36,7 +36,7 @@ title: Akka.NET Documentation
 - [Finite State Machines](FSM)
 - [Persistence](Persistence)
 - [Fault Tolerance](Fault tolerance)
-- [Dispatchers](Dispatchers)
+- [Dispatchers](working-with-actors/Dispatchers)
 - [Mailboxes](working-with-actors/Mailbox)
 - [Actor lifecycle](Actor lifecycle)
 - [Props](Props)
