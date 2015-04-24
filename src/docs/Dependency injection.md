@@ -75,7 +75,7 @@ In order to use this plugin, install the Nuget package with `Install-Package Akk
 // Create and build your container
 var container = new Ninject.StandardKernel();
 container.Bind<TypedWorker>().To(typeof(TypedWorker));
-container.Bind<IWorkerService>()To(typeof)WorkerService));
+container.Bind<IWorkerService>().To(typeof)WorkerService));
 
 // Create the ActorSystem and Dependency Resolver
 var system = ActorSystem.Create("MySystem");
