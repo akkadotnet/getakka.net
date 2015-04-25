@@ -52,6 +52,10 @@ var system = ActorSystem.Create("MySystem");
 var greeter = system.ActorOf<GreetingActor>("greeter");
 //send a message to the actor
 greeter.Tell(new Greet("World"));
+
+//this prevents the app from exiting
+//Before the async work is done
+Console.ReadLine();
 ```
 See also:
 - [[Untyped actors]].
