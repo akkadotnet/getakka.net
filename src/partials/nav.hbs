@@ -29,16 +29,14 @@
 
         <!-- pageurl {{ page.url }} -->
         <ul id="topMain" class="nav nav-pills nav-main">
-          <li class="mega-menu {{#ifEq page.active_selector 'home' }} active{{/ifEq}}">
-            <a href="/">
-              HOME<span>&nbsp;</span>
-            </a>
-          </li>
           <li class="mega-menu {{#ifEq page.layout 'docs.hbs' }} active{{/ifEq}}">
             <a href="/docs/">DOCUMENTATION<span>&nbsp;</span></a>
           </li>
           <li class="mega-menu">
             <a href="{{site.github_url}}">CODE<span>&nbsp;</span></a>
+          </li>
+          <li class="mega-menu">
+            <a href="{{site.gitter_url}}">PROJECT CHAT<span>&nbsp;</span></a>
           </li>
           <li class="mega-menu">
             <a href="{{site.google_group_url}}">MAILING LIST<span>&nbsp;</span></a>
