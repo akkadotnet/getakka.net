@@ -82,9 +82,11 @@ var system = ActorSystem.Create("MySystem");
 var propsResolver = new NinjectDependencyResolver(container,system);
 ```
 
+## Other frameworks
+
 Support for additional dependency injection frameworks may be added in the future, but you can easily implement your own by implementing an [Actor Producer Extension](DI Core).
 
-> **Warning** You might be tempted at times to use an IndirectActorProducer which always returns the same instance, e.g. by using a static field. This is not supported, as it goes against the meaning of an actor restart, which is described here: [What Restarting Means](Supervision#what-restarting-means).
+> **Warning** You might be tempted at times to use an `IndirectActorProducer` which always returns the same instance, e.g. by using a static field. This is not supported, as it goes against the meaning of an actor restart, which is described here: [What Restarting Means](Supervision#what-restarting-means).
 
 When using a dependency injection framework, there are a few things you have to keep in mind.
 
@@ -93,6 +95,4 @@ This is due to the fact that Akka explicitly manages the lifecycle of its Actors
 
 This also means that when injecting dependencies into your Actor, using a `Singleton` or `Transient` scope is **fine**. But having that dependency scoped per `httpwebrequest` for example **won't** work.
 
-
 Techniques for dependency injection and integration with dependency injection frameworks are described in more depth in the [Using Akka with Dependency Injection](http://letitcrash.com/post/55958814293/akka-dependency-injection) guideline.
-
