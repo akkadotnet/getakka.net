@@ -12,7 +12,10 @@ title: Akka.NET Documentation
 - [Why Akka?](Why Akka)
 - [Getting Started](Getting started)
 - [The Obligatory Hello World](The Obligatory Hello World)
-- [Use-case and Deployment Scenarios](Use case and Deployment Scenarios)
+- Use-case and Deployment Scenarios
+	- [Console](deployment-scenarios/Console)
+	- [ASP.NET](deployment-scenarios/ASP NET)
+	- [Windows Service](deployment-scenarios/Windows Service)
 - [Examples of use-cases for Akka](Examples of use cases for Akka)
 
 ## Akka.NET Concepts
