@@ -3,9 +3,13 @@ layout: docs.hbs
 title: Dependency injection
 ---
 # Dependency Injection
-If your Actor has a constructor that takes parameters then those need to be part of the Props as well. But there are cases when a factory method must be used, for example when the actual constructor arguments are determined by a dependency injection framework.
+If your actor has a constructor that takes parameters then those need
+to be part of the `Props` as well, as described above. But there are cases when
+a factory method must be used, for example when the actual constructor arguments
+are determined by a dependency injection framework.
 
-The basic functionality is provided by a `DependencyResolver` class, that can create `Props` using the DI container.
+The basic functionality is provided by a `DependencyResolver` class,
+that can create `Props` using the DI container.
 
 ```csharp
 // Create your DI container of preference
@@ -23,22 +27,12 @@ system.ActorOf(propsResolver.Create<TypedWorker>(), "Worker2");
 
 ```
 
-Creating child Actors from inside an Actor can be done using the DI() extension method.
-
-```csharp
-//In for example the PreStart...
-protected override void PreStart()
-{
-	myWorker = Context.DI().ActorOf<TypedWorker>("childWorker");
-}
-
-```
-
-Currenty, the following Akka.NET Dependency Injection plugins are available:
+Currently the following Akka.NET Dependency Injection plugins are available:
 
 ## AutoFac
 
-In order to use this plugin, install the Nuget package with `Install-Package Akka.DI.AutoFac`, then follow the instructions:
+In order to use this plugin, install the Nuget package with
+`Install-Package Akka.DI.AutoFac`, then follow the instructions:
 
 ```csharp
 // Create and build your container
@@ -54,7 +48,8 @@ var propsResolver = new AutoFacDependencyResolver(container, system);
 
 ## CastleWindsor
 
-In order to use this plugin, install the Nuget package with `Install-Package Akka.DI.CastleWindsor`, then follow the instructions:
+In order to use this plugin, install the Nuget package with
+`Install-Package Akka.DI.CastleWindsor`, then follow the instructions:
 
 ```csharp
 // Create and build your container
@@ -69,13 +64,14 @@ var propsResolver = new WindsorDependencyResolver(container, system);
 
 ## Ninject
 
-In order to use this plugin, install the Nuget package with `Install-Package Akka.DI.Ninject`, then follow the instructions:
+In order to use this plugin, install the Nuget package with
+`Install-Package Akka.DI.Ninject`, then follow the instructions:
 
 ```csharp
 // Create and build your container
 var container = new Ninject.StandardKernel();
 container.Bind<TypedWorker>().To(typeof(TypedWorker));
-container.Bind<IWorkerService>().To(typeof)WorkerService));
+container.Bind<IWorkerService>()To(typeof)WorkerService));
 
 // Create the ActorSystem and Dependency Resolver
 var system = ActorSystem.Create("MySystem");
@@ -84,15 +80,28 @@ var propsResolver = new NinjectDependencyResolver(container,system);
 
 ## Other frameworks
 
-Support for additional dependency injection frameworks may be added in the future, but you can easily implement your own by implementing an [Actor Producer Extension](DI Core).
+Support for additional dependency injection frameworks may be added in the
+future, but you can easily implement your own by implementing an
+[Actor Producer Extension](DI Core).
 
-> **Warning** You might be tempted at times to use an `IndirectActorProducer` which always returns the same instance, e.g. by using a static field. This is not supported, as it goes against the meaning of an actor restart, which is described here: [What Restarting Means](Supervision#what-restarting-means).
+> **Warning** You might be tempted at times to use an `IndirectActorProducer`
+which always returns the same instance, e.g. by using a static field. This is
+not supported, as it goes against the meaning of an actor restart, which is
+described here: [What Restarting Means](Supervision#what-restarting-means).
 
-When using a dependency injection framework, there are a few things you have to keep in mind.
+When using a dependency injection framework, there are a few things you have
+to keep in mind.
 
-When scoping **Actor** type dependencies using your DI container only `TransientLifestyle` or `InstancePerDependency` like scopes are supported.
-This is due to the fact that Akka explicitly manages the lifecycle of its Actors. So any scope which interferes with that is not supported.
+When scoping actor type dependencies using your DI container, only
+`TransientLifestyle` or `InstancePerDependency` like scopes are supported.
+This is due to the fact that Akka explicitly manages the lifecycle of its
+actors. So any scope which interferes with that is not supported.
 
-This also means that when injecting dependencies into your Actor, using a `Singleton` or `Transient` scope is **fine**. But having that dependency scoped per `httpwebrequest` for example **won't** work.
+This also means that when injecting dependencies into your actor, using a
+Singleton or Transient scope is fine. But having that dependency scoped per
+httpwebrequest for example won't work.
 
-Techniques for dependency injection and integration with dependency injection frameworks are described in more depth in the [Using Akka with Dependency Injection](http://letitcrash.com/post/55958814293/akka-dependency-injection) guideline.
+Techniques for dependency injection and integration with dependency injection
+frameworks are described in more depth in the
+[Using Akka with Dependency Injection](http://letitcrash.com/post/55958814293/akka-dependency-injection)
+guideline.
