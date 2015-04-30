@@ -61,7 +61,7 @@ title: Akka.NET Documentation
 - [Circuit Breaker](CircuitBreaker)
 
 ### Information for Akka Developers
-- [Building and Distributing Akka.NET](Building and Distributing Akka.NET)
+- [Building and Distributing Akka.NET](Building and Distributing Akka)
 - [Contributor guidelines](Contributor guidelines)
 - [Documentation Guidelines](Documentation guidelines)
 - [Team](Team)
