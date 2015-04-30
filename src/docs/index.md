@@ -55,7 +55,6 @@ title: Akka.NET Documentation
 
 ### Utilities
 - [EventBus](EventBus)
-- [EventStream](EventStream)
 - [Logging](Logging)
   - [Using Serilog](Serilog)
 - [Scheduler](Scheduler)
