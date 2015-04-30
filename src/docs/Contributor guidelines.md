@@ -35,4 +35,6 @@ e.g.
 the parent should no longer supervise it")]
 public void ClearChildUponTerminated()
 {
+  ...
+}
 ```

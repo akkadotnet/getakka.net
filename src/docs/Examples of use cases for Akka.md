@@ -4,7 +4,7 @@ title: Examples of use cases for Akka
 ---
 >**Note**<br/>
 This describes how JVM Akka has been used.
-Akka.NET is still in Beta and production examples rare.
+Akka.NET is still relatively new and production examples are rare.
 
 We see Akka being adopted by many large organizations in a big range of industries all from investment and merchant banking, retail and social media, simulation, gaming and betting, automobile and traffic systems, health care, data analytics and much more. Any system that have the need for high-throughput and low latency is a good candidate for using Akka.
 
