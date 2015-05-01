@@ -18,7 +18,7 @@ active_selector: resources
 * [Up, Up, and Out: Scaling Software with Akka](https://www.youtube.com/watch?v=GBvtE61Wrto) - Introduction to Akka
 * [The Actor Model in F# and Akka.Net](https://www.youtube.com/watch?v=RiWXo_5CAvg) - Intro to Akka and the F# API.
 * [Building Reactive Applications with Akka](https://www.youtube.com/watch?v=6Cb1wSVRI-Q) - Jonas Bonér (creator of original Akka project) explains the Reactive Model and Akka.
-* [Akka.NET & F# (in Polish)](https://www.youtube.com/watch?v=_6vDp2-VCjc)
+* [Distributed Programming Using Akka.NET Framework (in Polish)](https://www.youtube.com/watch?v=_6vDp2-VCjc)
 * [Intro to Akka.NET (in Swedish)](https://www.youtube.com/watch?v=Ta6qLA9OsjE)
 
 ## Podcasts
