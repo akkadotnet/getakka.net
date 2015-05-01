@@ -194,12 +194,3 @@ using (var system = ActorSystem.Create("MySystem"))
     router.Tell(message);
 }
 ```
-
-## Creating Child Actors using DI ##
-When you want to create child actors from within your existing actors using
-Dependency Injection you can use the Actor Content extension just like in
-the following example.
-
-```csharp
-Context.DI().ActorOf<TypedActor>().Tell(message);
-```
