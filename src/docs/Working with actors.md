@@ -351,7 +351,8 @@ Upon ActorSystem.Shutdown, the system guardian actors will be stopped, and the a
 The PostStop hook is invoked after an actor is fully stopped. This enables cleaning up of resources:
 
 ```csharp
-protected override void PostStop() {
+protected override void PostStop()
+{
     // clean up resources here ...
 }
 ```

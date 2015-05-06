@@ -111,7 +111,7 @@ When you want to create child actors from within your existing actors using
 Dependency Injection you can use the Actor Content extension just like in
 the following example.
 
-``csharp
+```csharp
 // For example in the PreStart...
 protected override void PreStart()
 {
