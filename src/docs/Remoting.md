@@ -2,6 +2,9 @@
 layout: docs.hbs
 title: Remoting
 ---
+
+# Remoting
+
 The previous section describes how actor paths are used to enable location transparency. This special feature deserves some extra explanation, because the related term “transparent remoting” was used quite differently in the context of programming languages, platforms and technologies.
 
 ##Distributed by Default
@@ -14,7 +17,7 @@ Another consequence is that everything needs to be aware of all interactions bei
 
 Message size can also be a concern. While in-process messages are only bound by CLR restrictions, physical memory and operating system, remote transport layer sets the maximum size to 128 kB by default (minimum: 32 kB). If any of the messages sent remotely is larger than that, maximum frame size in the config file has to be changed to appropriate value:
 
-```csharp
+```hocon
 akka {
     helios.tcp {
         # Maximum frame size: 4 MB

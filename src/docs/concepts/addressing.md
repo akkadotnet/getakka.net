@@ -1,7 +1,10 @@
 ---
 layout: docs.hbs
-title: "Actor References, Paths and Addresses"
+title: Actor References, Paths and Addresses
 ---
+
+# Actor References, Paths and Addresses
+
 This chapter describes how actors are identified and located within a possibly distributed actor system. It ties into the central idea that Actor Systems form intrinsic supervision hierarchies as well as that communication between actors is transparent with respect to their placement across multiple network nodes.
 
 ![Actor path](../images/ActorPath.png)

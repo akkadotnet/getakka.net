@@ -64,7 +64,7 @@ which is available on `ActorSystem` and `ActorContext`.
 ```csharp
 // ActorSystem is a heavy object: create only one per application
 ActorSystem system = ActorSystem.Create("MySystem");
-ActorRef myActor = system.ActorOf(Props.Create(typeof(MyActor)), "myactor");
+IActorRef myActor = system.ActorOf(Props.Create(typeof(MyActor)), "myactor");
 ```
 Using the `ActorSystem` will create top-level actors, supervised by the actor
 system’s provided guardian actor, while using an actor’s context will create

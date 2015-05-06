@@ -66,8 +66,8 @@ my-custom-mailbox {
       {
           var issue = message as Issue;
 
-          if (issue != null) {
-
+          if (issue != null)
+          {
               if (issue.IsSecurityFlaw)
                   return 0;
 
