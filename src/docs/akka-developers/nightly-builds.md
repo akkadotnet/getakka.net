@@ -18,3 +18,7 @@ Once you've done that you can use the Package Manager in Visual Studio and consu
 ![Consume pre-release nightly Akka.NET builds from Nuget](../images/akka-developers/nightly-builds.png)
 
 > Make sure you allow for *pre-release* builds - otherwise you won't see the nightly builds!
+
+## Build Frequency and Details
+
+The nightly builds are generated nightly at midnight UTC if there have been modifications to the `dev` branch of Akka.NET since the previous build.
