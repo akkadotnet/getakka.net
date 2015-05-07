@@ -10,8 +10,8 @@ This is an informal spec, but hopefully it's clear.
 ## Goals / Background
 
 The primary goal is: keep the semantics (tree structure; set of
-types; encoding/escaping) from JSON, but make it more convenient
-as a human-editable config file format.
+types; encoding/escaping) from JSON (JavaScript Object Notation),
+but make it more convenient as a human-editable config file format.
 
 The following features are desirable, to support human usage:
 
@@ -165,26 +165,30 @@ each other.
 
 These two are equivalent:
 
-    {
-        "foo" : { "a" : 42 },
-        "foo" : { "b" : 43 }
-    }
+```hocon
+{
+    "foo" : { "a" : 42 },
+    "foo" : { "b" : 43 }
+}
 
-    {
-        "foo" : { "a" : 42, "b" : 43 }
-    }
+{
+    "foo" : { "a" : 42, "b" : 43 }
+}
+```
 
 And these two are equivalent:
 
-    {
-        "foo" : { "a" : 42 },
-        "foo" : null,
-        "foo" : { "b" : 43 }
-    }
+```hocon
+{
+    "foo" : { "a" : 42 },
+    "foo" : null,
+    "foo" : { "b" : 43 }
+}
 
-    {
-        "foo" : { "b" : 43 }
-    }
+{
+    "foo" : { "b" : 43 }
+}
+```
 
 The intermediate setting of `"foo"` to `null` prevents the object merge.
 
@@ -359,34 +363,42 @@ involved or not.
 
 Here are several ways to define `a` to the same object value:
 
-    // one object
-    a : { b : 1, c : 2 }
-    // two objects that are merged via concatenation rules
-    a : { b : 1 } { c : 2 }
-    // two fields that are merged
-    a : { b : 1 }
-    a : { c : 2 }
+```hocon
+// one object
+a : { b : 1, c : 2 }
+// two objects that are merged via concatenation rules
+a : { b : 1 } { c : 2 }
+// two fields that are merged
+a : { b : 1 }
+a : { c : 2 }
+```
 
 Here are several ways to define `a` to the same array value:
 
-    // one array
-    a : [ 1, 2, 3, 4 ]
-    // two arrays that are concatenated
-    a : [ 1, 2 ] [ 3, 4 ]
-    // a later definition referring to an earlier
-    // (see "self-referential substitutions" below)
-    a : [ 1, 2 ]
-    a : ${a} [ 3, 4 ]
+```hocon
+// one array
+a : [ 1, 2, 3, 4 ]
+// two arrays that are concatenated
+a : [ 1, 2 ] [ 3, 4 ]
+// a later definition referring to an earlier
+// (see "self-referential substitutions" below)
+a : [ 1, 2 ]
+a : ${a} [ 3, 4 ]
+```
 
 A common use of object concatenation is "inheritance":
 
-    data-center-generic = { cluster-size = 6 }
-    data-center-east = ${data-center-generic} { name = "east" }
+```hocon
+data-center-generic = { cluster-size = 6 }
+data-center-east = ${data-center-generic} { name = "east" }
+```
 
 A common use of array concatenation is to add to paths:
 
-    path = [ /bin ]
-    path = ${path} [ /usr/bin ]
+```hocon
+path = [ /bin ]
+path = ${path} [ /usr/bin ]
+```
 
 #### Note: Arrays without commas or newlines
 
@@ -394,25 +406,29 @@ Arrays allow you to use newlines instead of commas, but not
 whitespace instead of commas. Non-newline whitespace will produce
 concatenation rather than separate elements.
 
-    // this is an array with one element, the string "1 2 3 4"
-    [ 1 2 3 4 ]
-    // this is an array of four integers
-    [ 1
-      2
-      3
-      4 ]
+```hocon
+// this is an array with one element, the string "1 2 3 4"
+[ 1 2 3 4 ]
+// this is an array of four integers
+[ 1
+  2
+  3
+  4 ]
 
-    // an array of one element, the array [ 1, 2, 3, 4 ]
-    [ [ 1, 2 ] [ 3, 4 ] ]
-    // an array of two arrays
-    [ [ 1, 2 ]
-      [ 3, 4 ] ]
+// an array of one element, the array [ 1, 2, 3, 4 ]
+[ [ 1, 2 ] [ 3, 4 ] ]
+// an array of two arrays
+[ [ 1, 2 ]
+  [ 3, 4 ] ]
+```
 
 If this gets confusing, just use commas. The concatenation
 behavior is useful rather than surprising in cases like:
 
-    [ This is an unquoted string my name is ${name}, Hello ${world} ]
-    [ ${a} ${b}, ${x} ${y} ]
+```hocon
+[ This is an unquoted string my name is ${name}, Hello ${world} ]
+[ ${a} ${b}, ${x} ${y} ]
+```
 
 Non-newline whitespace is never an element or field separator.
 
@@ -474,37 +490,53 @@ field in the most-nested object.
 
 In other words:
 
-    foo.bar : 42
+```hocon
+foo.bar : 42
+```
 
 is equivalent to:
 
-    foo { bar : 42 }
+```hocon
+foo { bar : 42 }
+```
 
 and:
 
-    foo.bar.baz : 42
+```hocon
+foo.bar.baz : 42
+```
 
 is equivalent to:
 
-    foo { bar { baz : 42 } }
+```hocon
+foo { bar { baz : 42 } }
+```
 
 and so on. These values are merged in the usual way; which implies
 that:
 
-    a.x : 42, a.y : 43
+```hocon
+a.x : 42, a.y : 43
+```
 
 is equivalent to:
 
-    a { x : 42, y : 43 }
+```hocon
+a { x : 42, y : 43 }
+```
 
 Because path expressions work like value concatenations, you can
 have whitespace in keys:
 
-    a b c : 42
+```hocon
+a b c : 42
+```
 
 is equivalent to:
 
-    "a b c" : 42
+```hocon
+"a b c" : 42
+```
 
 Because path expressions are always converted to strings, even
 single values that would normally have another type become
@@ -541,11 +573,15 @@ Substitutions are not parsed inside quoted strings. To get a
 string containing a substitution, you must use value concatenation
 with the substitution in the unquoted portion:
 
-    key : ${animal.favorite} is my favorite animal
+```hocon
+key : ${animal.favorite} is my favorite animal
+```
 
 Or you could quote the non-substitution portion:
 
-    key : ${animal.favorite}" is my favorite animal"
+```hocon
+key : ${animal.favorite}" is my favorite animal"
+```
 
 Substitutions are resolved by looking up the path in the
 configuration. The path begins with the root configuration object,
@@ -610,8 +646,10 @@ The big picture:
 The idea is to allow a new value for a field to be based on the
 older value:
 
-    path : "a:b:c"
-    path : ${path}":d"
+```hocon
+path : "a:b:c"
+path : ${path}":d"
+```
 
 A _self-referential field_ is one which:
 
@@ -669,11 +707,15 @@ Fields may have `+=` as a separator rather than `:` or `=`. A
 field with `+=` transforms into a self-referential array
 concatenation, like this:
 
-    a += b
+```hocon
+a += b
+```
 
 becomes:
 
-    a = ${?a} [b]
+```hocon
+a = ${?a} [b]
+```
 
 `+=` appends an element to a previous array. If the previous value
 was not an array, an error will result just as it would in the
@@ -690,29 +732,39 @@ implementation of the config lib which does not support `+=`.
 In isolation (with no merges involved), a self-referential field
 is an error because the substitution cannot be resolved:
 
-    foo : ${foo} // an error
+```hocon
+foo : ${foo} // an error
+```
 
 When `foo : ${foo}` is merged with an earlier value for `foo`,
 however, the substitution can be resolved to that earlier value.
 When merging two objects, the self-reference in the overriding
 field refers to the overridden field. Say you have:
 
-    foo : { a : 1 }
+```hocon
+foo : { a : 1 }
+```
 
 and then:
 
-    foo : ${foo}
+```hocon
+foo : ${foo}
+```
 
 Then `${foo}` resolves to `{ a : 1 }`, the value of the overridden
 field.
 
 It would be an error if these two fields were reversed, so first:
 
-    foo : ${foo}
+```hocon
+foo : ${foo}
+```
 
 and then second:
 
-    foo : { a : 1 }
+```hocon
+foo : { a : 1 }
+```
 
 Here the `${foo}` self-reference comes before `foo` has a value,
 so it is undefined, exactly as if the substitution referenced a
@@ -723,14 +775,18 @@ of `foo` for a value, the error should be treated as "undefined"
 rather than "intractable cycle"; as a result, the optional
 substitution syntax `${?foo}` does not create a cycle:
 
-    foo : ${?foo} // this field just disappears silently
+```hocon
+foo : ${?foo} // this field just disappears silently
+```
 
 If a substitution is hidden by a value that could not be merged
 with it (by a non-object value) then it is never evaluated and no
 error will be reported. So for example:
 
-    foo : ${does-not-exist}
-    foo : 42
+```hocon
+foo : ${does-not-exist}
+foo : 42
+```
 
 In this case, no matter what `${does-not-exist}` resolves to, we
 know `foo` is `42`, so `${does-not-exist}` is never evaluated and
@@ -740,9 +796,11 @@ foo : 42`, where the initial self-reference must simply be ignored.
 A self-reference resolves to the value "below" even if it's part
 of a path expression. So for example:
 
-    foo : { a : { c : 1 } }
-    foo : ${foo.a}
-    foo : { a : 2 }
+```hocon
+foo : { a : { c : 1 } }
+foo : ${foo.a}
+foo : { a : 2 }
+```
 
 Here, `${foo.a}` would refer to `{ c : 1 }` rather than `2` and so
 the final merge would be `{ a : 2, c : 1 }`.
@@ -756,9 +814,11 @@ inside that object or array.
 Implementations must be careful to allow objects to refer to paths
 within themselves, for example:
 
-    bar : { foo : 42,
-            baz : ${bar.foo}
-          }
+```hocon
+bar : { foo : 42,
+        baz : ${bar.foo}
+      }
+```
 
 Here, if an implementation resolved all substitutions in `bar` as
 part of resolving the substitution `${bar.foo}`, there would be a
@@ -769,20 +829,24 @@ Because there is no inherent cycle here, the substitution must
 "look forward" (including looking at the field currently being
 defined). To make this clearer, `bar.baz` would be `43` in:
 
-    bar : { foo : 42,
-            baz : ${bar.foo}
-          }
-    bar : { foo : 43 }
+```hocon
+bar : { foo : 42,
+        baz : ${bar.foo}
+      }
+bar : { foo : 43 }
+```
 
 Mutually-referring objects should also work, and are not
 self-referential (so they look forward):
 
-    // bar.a should end up as 4
-    bar : { a : ${foo.d}, b : 1 }
-    bar.b = 3
-    // foo.c should end up as 3
-    foo : { c : ${bar.b}, d : 2 }
-    foo.d = 4
+```hocon
+// bar.a should end up as 4
+bar : { a : ${foo.d}, b : 1 }
+bar.b = 3
+// foo.c should end up as 3
+foo : { c : ${bar.b}, d : 2 }
+foo.d = 4
+```
 
 Another tricky case is an optional self-reference in a value
 concatenation, in this example `a` should be `foo` not `foofoo`
@@ -804,23 +868,29 @@ In general, in resolving a substitution the implementation must:
 
 For example, this is not possible to resolve:
 
-    bar : ${foo}
-    foo : ${bar}
+```hocon
+bar : ${foo}
+foo : ${bar}
+```
 
 A multi-step loop like this should also be detected as invalid:
 
-    a : ${b}
-    b : ${c}
-    c : ${a}
+```hocon
+a : ${b}
+b : ${c}
+c : ${a}
+```
 
 Some cases have undefined behavior because the behavior depends on
 the order in which two fields are resolved, and that order is not
 defined. For example:
 
-    a : 1
-    b : 2
-    a : ${b}
-    b : ${a}
+```hocon
+a : 1
+b : 2
+a : ${b}
+b : ${a}
+```
 
 Implementations are allowed to handle this by setting both `a` and
 `b` to 1, setting both to `2`, or generating an error. Ideally
@@ -1027,4 +1097,3 @@ way to get rid of default fallback values they don't want.
 
 Config keys are encouraged to be `hyphen-separated` rather than
 `camelCase`.
-
