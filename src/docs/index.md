@@ -62,6 +62,7 @@ title: Akka.NET Documentation
 
 ### Information for Akka Developers
 - [Building and Distributing Akka.NET](Building and Distributing Akka)
+- [Getting Access to Nightly Akka.NET Builds](akka-developers/nightly-builds)
 - [Contributor guidelines](Contributor guidelines)
 - [Documentation Guidelines](Documentation guidelines)
 - [Team](Team)
