@@ -5,11 +5,10 @@ title: Dispatchers
 
 # Dispatchers
 
-## What Dispatchers Do?
-
+## What Do Dispatchers Do?
 Dispatchers are responsible for scheduling all code that run inside the `ActorSystem`. Dispatchers are one of the most important parts of Akka.NET, as they control the throughput and time share for each of the actors, giving each one a fair share of resources.
 
-By default, all actors share a single **Global Dispatcher**. Unless you change the configuration, this dispatcher uses the *.NET Thread Pool* behind the scenes, which is optimized for most common scenarios. That means the default configuration should be *good enough* for most cases.
+By default, all actors share a single **Global Dispatcher**. Unless you change the configuration, this dispatcher uses the *.NET Thread Pool* behind the scenes, which is optimized for most common scenarios. **That means the default configuration should be *good enough* for most cases.**
 
 #### Why should I use different dispatchers?
 
@@ -72,7 +71,7 @@ Some dispatcher configurations are available out-of-the-box for convenience. You
 * **default-dispatcher** - A configuration that uses the [ThreadPoolDispatcher](#ThreadPoolDispatcher). As the name says, this is the default dispatcher configuration used by the global dispatcher, and you don't need to define anything during deployment to use it.
 * **task-dispatcher** - A configuration that uses the [TaskDispatcher](#TaskDispatcher).
 * **default-fork-join-dispatcher** - A configuration that uses the [ForkJoinDispatcher].
-* **synchronized-dispatcher** - A configuration that uses the [SynchronizedDispatcher].
+* **synchronized-dispatcher** - A configuration that uses the [SynchronizedDispatcher](#SynchronizedDispatcher).
 
 ## Built-in Dispatchers
 
@@ -80,7 +79,7 @@ These are the underlying dispatchers built-in to Akka.NET:
 
 * ### ThreadPoolDispatcher
 
-  It schedules code to run in the [.NET Thread Pool](https://msdn.microsoft.com/en-us/library/System.Threading.ThreadPool.aspx), which is *good enough* for most cases.
+  It schedules code to run in the [.NET Thread Pool](https://msdn.microsoft.com/en-us/library/System.Threading.ThreadPool.aspx), which is ***good enough* for most cases.**
 
   The `type` used in the HOCON configuration for this dispatcher is just `Dispatcher`.
 
@@ -104,7 +103,7 @@ These are the underlying dispatchers built-in to Akka.NET:
   }
   ```
 
-* ### PinnedDispather
+* ### PinnedDispatcher
 
   The `PinnedDispatcher` uses a single dedicated thread to schedule code executions. Ideally, this dispatcher should be using sparingly.
 
@@ -138,7 +137,7 @@ These are the underlying dispatchers built-in to Akka.NET:
 
 * ### SynchronizedDispatcher
 
-  The `SynchronizedDispatcher` uses the *current* [SyncrhonizationContext](https://msdn.microsoft.com/en-us/magazine/gg598924.aspx) to schedule executions.
+  The `SynchronizedDispatcher` uses the *current* [SynchronizationContext](https://msdn.microsoft.com/en-us/magazine/gg598924.aspx) to schedule executions.
 
   You may use this dispatcher to create actors that update UIs in a reactive manner. An application that displays real-time updates of stock prices may have a dedicated actor to update the UI controls directly for example.
 
@@ -151,7 +150,7 @@ These are the underlying dispatchers built-in to Akka.NET:
       type = "SynchronizedDispatcher"
       throughput = 10
   }
-  ```  
+  ```
 
   In order to use this dispatcher, you must create the actor from the syncrhonization context you want to run-it. For example:
 
@@ -166,7 +165,7 @@ These are the underlying dispatchers built-in to Akka.NET:
 
 The following configuration keys are available for any dispatcher configuration:
 
-* `type` - (Required) The type of dispatcher to be used: `Dispatcher`, `TaskDispatcher`, `PinnedDispather`, `ForkJoinDispatcher` or `SynchronizedDispatcher`.
+* `type` - (Required) The type of dispatcher to be used: `Dispatcher`, `TaskDispatcher`, `PinnedDispatcher`, `ForkJoinDispatcher` or `SynchronizedDispatcher`.
 * `throughput` - (Required) The maximum # of messages processed each time the actor is activated. Most dispatchers default to `100`.
 * `throughput-deadline-time` - The maximum amount of time to process messages when the actor is activated, or `0` for no limit. The default is `0`.
 
