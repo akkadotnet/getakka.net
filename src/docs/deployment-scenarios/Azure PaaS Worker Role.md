@@ -8,8 +8,9 @@ The following sample assumes that you have created a new Azure Paas Cloud Servic
 empty Worker Role. The Cloud Service project templates are added to Visual Studio by installing the 
 [Azure .Net SDK](http://azure.microsoft.com/en-gb/downloads/).
 
-The Azure PaaS Worker Role implementation is very similar to the [Akka.Net Windows Service Sample](./Windows Service)
+The Worker Role implementation can be tested locally using the Azure Compute Emulator before deploying to the cloud.
 
+The Azure PaaS Worker Role implementation is very similar to the [Akka.Net Windows Service Sample](./Windows Service). 
 The quickest way to get started with Akka.Net is to create a simple Worker Role which invokes the top-level
 user-actor in the RunAsync() method, as follows:
 
@@ -74,5 +75,3 @@ namespace MyActorWorkerRole
     }
 }
 ```
-
-Ensure that your akka.net implementation is working locally by running through the local Azure Worker Role emulator first.
