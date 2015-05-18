@@ -16,6 +16,7 @@ title: Akka.NET Documentation
 	- [Console](deployment-scenarios/Console)
 	- [ASP.NET](deployment-scenarios/ASP NET)
 	- [Windows Service](deployment-scenarios/Windows Service)
+	- [Azure PaaS Worker Role](deployment-scenarios/Azure PaaS Worker Role)
 - [Examples of use-cases for Akka](Examples of use cases for Akka)
 
 ## Akka.NET Concepts
