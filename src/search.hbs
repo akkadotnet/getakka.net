@@ -1,0 +1,119 @@
+---
+layout: master.hbs
+title: Search
+---
+<section class="page-title">
+    <div class="container">
+        <header>
+            <ul class="breadcrumb"><!-- breadcrumb -->
+                <li><a href="/">Home</a></li>
+                <li class="active">Search</li>
+            </ul><!-- /breadcrumb -->
+
+            <h2><!-- Page Title -->
+                <strong>Search</strong> Results
+            </h2><!-- /Page Title -->
+        </header>
+    </div>
+</section>
+
+<!-- CONTENT -->
+<section>
+    <div class="container">
+        <div class="row">
+            <!-- LEFT COLUMNS -->
+            <div class="col-md-12">
+                <div>
+                    <script>
+                      (function() {
+                        var cx = '017109940528009776806:a5ohe5v5nj4';
+                        var gcse = document.createElement('script');
+                        gcse.type = 'text/javascript';
+                        gcse.async = true;
+                        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                            '//cse.google.com/cse.js?cx=' + cx;
+                        var s = document.getElementsByTagName('script')[0];
+                        s.parentNode.insertBefore(gcse, s);
+                      })();
+                    </script>
+                    <gcse:searchresults-only></gcse:searchresults-only>
+                </div>
+            </div>
+            <!-- /LEFT COLUMNS -->
+        </div>
+    </div>
+</section>
+<!-- /CONTENT -->
+
+<div class="three spacing"></div>
+
+<style type='text/css'>
+
+    /* Use a different font family for search results */
+    .gs-title, .gs-snippet {
+        font-family: sans-serif;
+    }
+
+    /* Add a border between individual search results
+    .gs-webResult {
+        border: 1px solid #eee;
+        padding: 1em;
+    } */
+
+    /* Do no display the count of search results
+    .gsc-result-info {
+        display: none;
+    }*/
+
+    /* Hide the Google branding in search results */
+    .gcsc-branding {
+        display: none;
+    }
+
+    /* Hide the thumbnail images in search results
+    .gsc-thumbnail {
+        display: none;
+    }*/
+
+    /* Hide the snippets in Google search results
+    .gs-snippet {
+        display: none;
+    } */
+
+    /* Change the font size of the title of search results */
+    .gs-title a {
+        color: #a94545;
+        text-decoration: none;
+    }
+
+    /* Change the font size of snippets inside search results */
+    .gs-snippet {
+
+    }
+
+    /* Google Custom Search highlights matching words in bold, toggle that */
+    .gs-title b, .gs-snippet b {
+       font-weight: bold;
+       background-color: #fffff0;
+    }
+
+    /* Do no display the URL of web pages in search results */
+    .gsc-url-top, .gsc-url-bottom {
+       color: #a94545;
+    }
+
+    .gsc-url-top, .gsc-url-bottom a {
+       color: #a94545;
+    }
+
+    /* Highlight the pagination buttons at the bottom of search results */
+    .gsc-cursor-page {
+
+    }
+
+    gsc-table-cell-snippet-close gsc-url-bottom gs-visibleUrl-long {
+    	font-weight: normal;
+    	color: green;
+    }
+
+</style>

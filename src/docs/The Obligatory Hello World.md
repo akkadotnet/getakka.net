@@ -8,7 +8,7 @@ This example shows how to define and consume actors in both C# and F#
 ## Hello World using the C# API
 #### Define a message:
 ```csharp
-//Create an (immutable) message type that your actor will respond to
+// Create an (immutable) message type that your actor will respond to
 public class Greet
 {
     public Greet(string who)
@@ -20,7 +20,7 @@ public class Greet
 ```
 #### Define your actor using the `ReceiveActor` API
 ```csharp
-//Create the actor class
+// Create the actor class
 public class GreetingActor : ReceiveActor
 {
     public GreetingActor()
@@ -44,14 +44,20 @@ public class GreetingActor : TypedActor , IHandle<Greet>
 
 #### Usage:
 ```csharp
-//create a new actor system (a container for your actors)
+// Create a new actor system (a container for your actors)
 var system = ActorSystem.Create("MySystem");
-//create your actor and get a reference to it.
-//this will be an "ActorRef", which is not a reference to the actual actor instance
-//but rather a client or proxy to it
+
+// Create your actor and get a reference to it.
+// This will be an "IActorRef", which is not a reference to the actual actor
+// instance but rather a client or proxy to it.
 var greeter = system.ActorOf<GreetingActor>("greeter");
-//send a message to the actor
+
+// Send a message to the actor.
 greeter.Tell(new Greet("World"));
+
+// This prevents the app from exiting
+// before the async work is done.
+Console.ReadLine();
 ```
 See also:
 - [[Untyped actors]].

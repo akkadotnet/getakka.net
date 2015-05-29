@@ -2,9 +2,9 @@
 layout: docs.hbs
 title: Building and Distributing Akka.NET
 ---
-Akka.Net has an official beta [NuGet package](http://www.nuget.org/packages/Akka).
+Akka.Net has an official [NuGet package](http://www.nuget.org/packages/Akka).
 
-To install Akka.net, run the following command in the Package Manager Console:
+To install Akka.NET, run the following command in the Package Manager Console:
 ````
    PM> Install-Package Akka -Pre
 ````
@@ -13,7 +13,8 @@ You can also build it locally from the source code.
 
 ## Building Akka.NET with Fake
 
-The build as been ported to [Fake](http://fsharp.github.io/FAKE/) to make it even easier to compile.
+The build as been ported to [Fake](http://fsharp.github.io/FAKE/) to make it
+even easier to compile.
 
 Clone the source code from GitHub (currently only on the dev branch):
 
@@ -38,7 +39,9 @@ The ```all``` targets runs the following targets in order:
 
 ### Version management
 
-The build uses the last version number specified in the [RELEASE_NOTES.md](https://github.com/akkadotnet/akka.net/blob/dev/RELEASE_NOTES.md) file.
+The build uses the last version number specified in the
+[RELEASE_NOTES.md](https://github.com/akkadotnet/akka.net/blob/dev/RELEASE_NOTES.md)
+file.
 
 The release notes are also used in nuget packages.
 

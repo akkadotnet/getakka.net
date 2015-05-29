@@ -17,7 +17,7 @@ _log.Debug("Some message");
 ```
 
 ## Standard Loggers
-Akka .NET comes with two built in loggers.
+Akka.NET comes with two built in loggers.
 
 * __StandardOutLogger__
 * __BusLogging__
@@ -43,7 +43,7 @@ akka {
 
 ## Logging Unhandled messages
 
-It is possible to configure akka so that Unhandled Messages are logged as Debug log events for debug purposes. This can be achieved using the following configuration setting:
+It is possible to configure akka so that Unhandled messages are logged as Debug log events for debug purposes. This can be achieved using the following configuration setting:
 
 ```hocon
 akka {

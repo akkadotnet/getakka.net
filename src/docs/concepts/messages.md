@@ -15,18 +15,21 @@ In Akka.NET messages are simple POCO classes:
 
 #### `C#`
 ```csharp
-public class MyMessage{
-	public MyMessage(string name){
-		Name = name;
-	}
-	public string Name {get;private set;}
+public class MyMessage
+{
+    public MyMessage(string name)
+    {
+        Name = name;
+    }
+
+    public string Name {get;private set;}
 }
 ```
 
 #### `F#`
 ```fsharp
 type MyMessage =
-	| Name of string
+    | Name of string
 ```
 
 Akka.NET allows you to automatically pass around these messages to any actor, whether it's an actor running inside your application's local process or a remote actor running on a different machine. Akka.NET can automatically serialize and route your message to its intended recipient(s.)
@@ -42,37 +45,42 @@ using Akka.Actor;
 
 
 /* message definition */
-public class MyMessage{
-	public MyMessage(string name){
-		Name = name;
-	}
-	public string Name {get;private set;}
+public class MyMessage
+{
+    public MyMessage(string name)
+    {
+        Name = name;
+    }
+
+    public string Name {get;private set;}
 }
 
 public class Hi{}
 
 /* actor definition */
-public class MyActor : ReceiveActor{
+public class MyActor : ReceiveActor
+{
+    string lastActorName;
 
-	string lastActorName;
-
-	public MyActor(){
-		Receive<MyMessage>(msg => {
-			lastActorName = msg.Name;
-		});
-		Receive<Hi>(hi => Console.WriteLine("Hi {0}!",lastActorName));
-	}
+    public MyActor()
+    {
+        Receive<MyMessage>(msg =>
+        {
+            lastActorName = msg.Name;
+        });
+        Receive<Hi>(hi => Console.WriteLine("Hi {0}!",lastActorName));
+    }
 }
 
 public class Program
 {
-	public static void Main()
-	{
-		var mySystem = ActorSystem.Create("MySystem");
-		var myActor = mySystem.ActorOf(Props.Create<MyActor>());
-		myActor.Tell(new MyMessage("AkkaDotNetUser"));
-		myActor.Tell(new Hi());
-	}
+    public static void Main()
+    {
+        var mySystem = ActorSystem.Create("MySystem");
+        var myActor = mySystem.ActorOf(Props.Create<MyActor>());
+        myActor.Tell(new MyMessage("AkkaDotNetUser"));
+        myActor.Tell(new Hi());
+    }
 }
 ```
 

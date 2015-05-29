@@ -12,7 +12,11 @@ title: Akka.NET Documentation
 - [Why Akka?](Why Akka)
 - [Getting Started](Getting started)
 - [The Obligatory Hello World](The Obligatory Hello World)
-- [Use-case and Deployment Scenarios](Use case and Deployment Scenarios)
+- Use-case and Deployment Scenarios
+	- [Console](deployment-scenarios/Console)
+	- [ASP.NET](deployment-scenarios/ASP NET)
+	- [Windows Service](deployment-scenarios/Windows Service)
+	- [Azure PaaS Worker Role](deployment-scenarios/Azure PaaS Worker Role)
 - [Examples of use-cases for Akka](Examples of use cases for Akka)
 
 ## Akka.NET Concepts
@@ -36,14 +40,15 @@ title: Akka.NET Documentation
 - [Finite State Machines](FSM)
 - [Persistence](Persistence)
 - [Fault Tolerance](Fault tolerance)
-- [Dispatchers](Dispatchers)
-- [Mailboxes](Mailbox)
-- [Routing](Routing)
+- [Dispatchers](working-with-actors/Dispatchers)
+- [Mailboxes](working-with-actors/Mailbox)
 - [Actor lifecycle](Actor lifecycle)
 - [Props](Props)
 - [Receive timeout](Receive timeout)
 - [Dependency injection](Dependency injection)
-- [Stash](Stash)
+- [Switchable Behaviors](working-with-actors/Switchable Behaviors)
+- [Stashing Messages](working-with-actors/Stashing Messages)
+- [Routers](working-with-actors/Routers)
 
 ### Networking
 - [Remoting](Remoting)
@@ -51,14 +56,14 @@ title: Akka.NET Documentation
 
 ### Utilities
 - [EventBus](EventBus)
-- [EventStream](EventStream)
 - [Logging](Logging)
   - [Using Serilog](Serilog)
 - [Scheduler](Scheduler)
 - [Circuit Breaker](CircuitBreaker)
 
 ### Information for Akka Developers
-- [Building and Distributing Akka.NET](Building and Distributing Akka.NET)
+- [Building and Distributing Akka.NET](Building and Distributing Akka)
+- [Getting Access to Nightly Akka.NET Builds](akka-developers/nightly-builds)
 - [Contributor guidelines](Contributor guidelines)
 - [Documentation Guidelines](Documentation guidelines)
 - [Team](Team)

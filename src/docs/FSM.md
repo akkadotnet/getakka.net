@@ -34,7 +34,7 @@ public class MyFSM : FSM<int, object>
         Initialize();
     }
 
-    public ActorRef Target { get; private set; }
+    public IActorRef Target { get; private set; }
 
     protected override void PreRestart(Exception reason, object message)
     {
