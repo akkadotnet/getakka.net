@@ -36,7 +36,6 @@ title: Akka.NET Documentation
 - [Working with actors](Working with actors)
 - [F# API](FSharp API)
 - [ReceiveActors](ReceiveActor)
-- [Typed Actors](TypedActor)
 - [Finite State Machines](FSM)
 - [Persistence](Persistence)
 - [Fault Tolerance](Fault tolerance)
