@@ -14,6 +14,7 @@ active_selector: resources
 * [An Actor Model Example with Akka.NET](http://blog.geist.no/an-actor-model-example-with-akka-net/) - intro to the actor model and Netflix-esque example
 * [Akka.NET Concurrency Control](http://rogeralsing.com/2014/11/10/akka-net-concurrency-control/) - an example of making lock-free bank account transactions with Akka.NET
 * [How actors recover from failure](https://petabridge.com/blog/how-actors-recover-from-failure-hierarchy-and-supervision/) - Discussion of [supervision](http://getakka.net/docs/concepts/supervision), actor hierarchies, and building resilient systems with the error kernel pattern.
+* [When should I use `ActorSelection`?](https://petabridge.com/blog/when-should-I-use-actor-selection/) - a discussion of when to use `ActorSelection`s vs. `IActorRef`s and intro to a few best practices.
 
 ## Videos
 #### Introductory topic videos
