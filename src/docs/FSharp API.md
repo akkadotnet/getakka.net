@@ -244,7 +244,7 @@ akka {
         loggers = [ "Akka.Event.DefaultLogger, Akka" ]
 
         # Options: OFF, ERROR, WARNING, INFO, DEBUG
-        logLevel = "DEBUG"
+        loglevel = "DEBUG"
     }
 }
 ```
