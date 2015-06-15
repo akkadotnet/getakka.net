@@ -71,7 +71,7 @@ Predicates can be specified *before* the action handler or *after*. These two
 declarations are equivalent:
 ```csharp
 Receive<string>(s => s.Length > 5, s => Console.WriteLine("Received string: " + s));
-Receive<string>(s => Console.WriteLine("Received string: " + s, s => s.Length > 5));
+Receive<string>(s => Console.WriteLine("Received string: " + s), s => s.Length > 5);
 ```
 
 ## Receive using Funcs
@@ -89,7 +89,7 @@ Receive<string>(s =>
     }
     return false;
 });
-Receive<string>(s => Console.WriteLine("2: " + s);
+Receive<string>(s => Console.WriteLine("2: " + s));
 ```
 
 **Example**: The actor receives the message "123". Since it's a `string`, the
