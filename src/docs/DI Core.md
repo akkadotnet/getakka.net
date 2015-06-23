@@ -177,8 +177,8 @@ using (var system = ActorSystem.Create("MySystem"))
     IDependencyResolver resolver = new WindsorDependencyResolver(container, system);
 
     // Register the actors with the system
-    system.ActorOf(resolver.Create<TypedWorker>(), "Worker1");
-    system.ActorOf(resolver.Create<TypedWorker>(), "Worker2");
+    system.ActorOf(system.DI().Props<TypedWorker>(), "Worker1");
+    system.ActorOf(system.DI().Props<TypedWorker>(), "Worker2");
 
     // Create the router
     IActorRef router = system.ActorOf(Props.Empty.WithRouter(new ConsistentHashingGroup(config)));
@@ -194,3 +194,4 @@ using (var system = ActorSystem.Create("MySystem"))
     router.Tell(message);
 }
 ```
+
