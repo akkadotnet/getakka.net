@@ -36,22 +36,15 @@ the following example.
 // For example in the PreStart...
 protected override void PreStart()
 {
-    myWorker = Context.DI().ActorOf<TypedWorker>("childWorker");
+	var diExt = Context.System.GetExtension<DIExt>();
+	//which will give you access to the Props producer and thus the entire akka API for creating Actors.
+	var actorProps = diExt.Props(() => new myActor()).WithRouter(/* options here */);
+
+	var myActorRef = Context.ActorOf(actorProps, "myChildActor");
 }
 ```
 
-The `DI().ActorOf<T>` is a convenience method that hides some of the more powerfull features of Akka for the sake of ease of use.
-If you want to use these features you need to use the plugin extension system directly. Like so:
-
-```csharp
-var diExt = Context.System.GetExtension<DIExt>();
-//which will give you access to the Props producer and thus the entire akka API for creating Actors.
-var actorProps = diExt.Props(() => new myActor()).WithRouter(/* options here */);
-
-var myActorRef = Context.ActorOf(actorProps, "myChildActor");
-
-```
-
+> **Information** There is currently still an extension method available for the actor Context. `Context.DI()`. However this has been officially **deprecated** and will be removed in future versions.
 
 ##Notes
 
@@ -135,6 +128,7 @@ var propsResolver = new NinjectDependencyResolver(container,system);
 Support for additional dependency injection frameworks may be added in the
 future, but you can easily implement your own by implementing an
 [Actor Producer Extension](DI Core).
+
 
 
 
