@@ -52,6 +52,7 @@ title: Akka.NET Documentation
 ### Networking
 - [Remoting](Remoting)
 - [Serialization](Serialization)
+- [Akka I/O](IO)
 
 ### Utilities
 - [EventBus](EventBus)
