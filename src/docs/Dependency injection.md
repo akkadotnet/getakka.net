@@ -38,7 +38,7 @@ the following example.
 // For example in the PreStart...
 protected override void PreStart()
 {
-	var actorProps = Context.DI().Props(() => new myActor())
+	var actorProps = Context.DI().Props<MyActor>()
 		.WithRouter(/* options here */);
 	
 	var myActorRef = Context.ActorOf(actorProps, "myChildActor");
