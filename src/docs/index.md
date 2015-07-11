@@ -61,6 +61,9 @@ title: Akka.NET Documentation
 - [Scheduler](Scheduler)
 - [Circuit Breaker](CircuitBreaker)
 
+### Testing
+- [Using the MultiNode Testkit for Testing Distributed ActorSystems](testing/multinode-testkit)
+
 ### Information for Akka Developers
 - [Building and Distributing Akka.NET](Building and Distributing Akka)
 - [Getting Access to Nightly Akka.NET Builds](akka-developers/nightly-builds)
