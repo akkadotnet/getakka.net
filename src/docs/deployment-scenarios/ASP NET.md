@@ -5,6 +5,8 @@ title: ASP.Net deployment scenario
 
 # ASP.NET
 
+### Creating the Akka.NET resources
+
 Hosting inside an ASP.NET application is easy. The Global.asax would be the designated place to start.
 
 ```csharp
@@ -32,7 +34,8 @@ As you can see the main point here is keeping a static reference to your `ActorS
 
 Typically you use a very lightweight `ActorSystem` inside ASP.NET applications, and offload heavy-duty work to a seperate Windows Service via Akka.Remote / Akka.Cluster
 
-Interaction between Controllers and Akka.NET, in this case an Web API Controller:
+### Interaction between Controllers and Akka.NET
+In the sample below, we use an Web API Controller:
 ```csharp
 public class SomeController  : ApiController
 {
