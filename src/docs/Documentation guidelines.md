@@ -18,7 +18,7 @@ To contribute to the website's documentation, go to the github project page [get
 
 ## Code
 
-When documenting code, please use the standard .NET convention of [XML documentation comments](https://msdn.microsoft.com/en-us/library/vstudio/b2s063f7(v=vs.110).aspx). This allows the project to use tools like Sandcastle to generate the API documentation for the project. The latest stable API documentation can be found [here](http://api.getakka.net/docs/stable/index.html).
+When documenting code, please use the standard .NET convention of [XML documentation comments](https://msdn.microsoft.com/en-us/library/vstudio/b2s063f7). This allows the project to use tools like Sandcastle to generate the API documentation for the project. The latest stable API documentation can be found [here](http://api.getakka.net/docs/stable/index.html).
 
 Please be mindful to including *useful* comments when documenting a class or method. *Useful* comments means to include full English sentences when summarizing the code and not relying on pre-generated comments from a tool like GhostDoc. Tools like these are great in what they do *if* supplemented with well reasoned grammar.
 
@@ -56,4 +56,4 @@ public abstract class Serializer
 }
 ```
 
-We've all seen the bad examples at one time or another, but rarely do we see the good examples. A nice rule of thumb to remember is to write the comments you would want to see and readwhile perusing the API documentation.
+We've all seen the bad examples at one time or another, but rarely do we see the good examples. A nice rule of thumb to remember is to write the comments you would want to see and read while perusing the API documentation.
