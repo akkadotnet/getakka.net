@@ -30,7 +30,7 @@ public class MyActor: ReceiveActor
       log.Info("Received String message: {0}", message);
       Sender.Tell(message);
     });
-    Receive<SomeMessage(message => {...});
+    Receive<SomeMessage>(message => {...});
   }
 }
 ```
