@@ -4,7 +4,7 @@ title: I/O
 ---
 ## Akka I/O
 
-The I/O extension provides an non-blocking, event driven API that matches the underlaying transports mechanism.
+The I/O extension provides an non-blocking, event driven API that matches the underlying transports mechanism.
 
 Detail of the I/O extension's design can be found in the [Akka JVM documentation](http://doc.akka.io/docs/akka/snapshot/dev/io-layer.html#io-layer).
 
@@ -155,7 +155,7 @@ class EchoConnection : UntypedActor
 ```
 
 ### Akka IO Transport
-The AkkaIOTransport contrib project impliments an Akka Remote transport based on the I/O extension.
+The AkkaIOTransport contrib project implements an Akka Remote transport based on the I/O extension.
 The following shows how to configure Akka Remote to use the IO Transport.
 
 ```hocon
