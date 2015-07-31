@@ -10,14 +10,6 @@ That being said, however, [Helios - the socket library that powers all of the tr
 
 But in the meantime, we have to create our own security options around Akka.Remote.
 
-## Application-Specific Security Techniques
-Here in this section we will discuss a small number of techniques you can use to enforce different types of security functions within your Akka.Remote applications, including:
-
-1. Private Networks and VPNs and
-2. Restricting Messages to Local-only Senders.
-
-> NOTE: The AkkaTime sample also includes examples of how to implement two-way symmetric encryption over the network, but it's complex and beyond the scope of this course.
-
 ### Secure the Network: Akka.Remote with Virtual Private Networks
 The absolute best practice for securing remote Akka.NET applications today is to make the network around the applications secure - don't use public, open networks! Instead, use a private network to restrict machines that can contact Akka.Remote processes to ones who have your VPN credentials.
 

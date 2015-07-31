@@ -36,7 +36,6 @@ title: Akka.NET Documentation
 - [Creating your first Actor](working-with-actors/creating-actors)
 - [Defining an Actor class](working-with-actors/defining-an-actor)
 - [What's in an Actor](working-with-actors/whats-in-an-actor)
-- [ActorRefs and ActorSelections](working-with-actors/actorrefs-and-actorselections)
 - [Creating actors with Props](working-with-actors/creating-actors-with-props)
 - [Handling Messages](working-with-actors/handling-messages)
 - [Sending Messages](working-with-actors/sending-messages)
@@ -76,11 +75,33 @@ title: Akka.NET Documentation
 - [Detecting & Handling Network Failures (DeathWatch)](remoting/deathwatch)
 - [Network Security](remoting/security)
 
+### Akka.Cluster
+- [Akka.Cluster Overview](clustering/cluster-overview)
+    - [What is a Cluster?](clustering/cluster-overview#what-is-a-cluster-)
+    - [Benefits](clustering/cluster-overview#benefits-of-akka-cluster)
+    - [Use Cases](clustering/cluster-overview#use-cases)
+    - [Terminology](clustering/cluster-overview#key-terms)
+    - [Enabling Akka.Cluster](clustering/cluster-overview#enabling-akka-cluster)
+    - [Cluster Gossip](clustering/cluster-overview#cluster-gossip)
+    - [Nodes](clustering/cluster-overview#nodes)
+    - [How a Cluster Forms](clustering/cluster-overview#how-a-cluster-forms)
+- [Cluster Routing](clustering/cluster-routing)
+    - [How Routers Use Cluster Gossip](clustering/cluster-routing#how-routers-use-cluster-gossip)
+    - [Cluster Routing Strategies](clustering/cluster-routing#cluster-routing-strategies)
+    - [Types of Clustered Routers](clustering/cluster-routing#types-of-clustered-routers)
+    - [Clustered Router Configuration](clustering/cluster-routing#cluster-router-config)
+- [Cluster Configuration](clustering/cluster-configuration)
+    - [Critical Configuration Flags](clustering/cluster-configuration#critical-configuration-options)
+    - [Specifying Minimum Cluster Sizes](clustering/cluster-configuration#specifying-minimum-cluster-sizes)
+- [Accessing the Cluster `ActorSystem` Extension](clustering/cluster-extension)
+    - [Getting a Reference to the `Cluster`](clustering/cluster-extension#getting-a-reference-to-the-cluster-)
+    - [Working With Cluster Gossip](clustering/cluster-extension#working-with-cluster-gossip)
+    - [Cluster Gossip Event Types](clustering/cluster-extension#cluster-gossip-event-types)
+    - [Getting Cluster State](clustering/cluster-extension#getting-cluster-state)
+
 ### Networking
 - [Serialization](Serialization)
 - [Akka I/O](IO)
-- Akka.Cluster
-    + [Cluster Overview](clustering/cluster-overview)
 
 ### Utilities
 - [EventBus](EventBus)
