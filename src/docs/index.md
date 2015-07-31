@@ -33,29 +33,29 @@ title: Akka.NET Documentation
     - [HOCON](concepts/hocon)
 
 ### Working with Actors
--[Creating your first Actor](working-with-actors/creating-actors)
--[Defining an Actor class](working-with-actors/defining-an-actor)
--[What's in an Actor](working-with-actors/whats-in-an-actor)
--[ActorRefs and ActorSelections](working-with-actors/actorrefs-and-actorselections)
--[Creating actors with Props](working-with-actors/creating-actors-with-props)
--[Handling Messages](working-with-actors/handling-messages)
--[Sending Messages](working-with-actors/sending-messages)
+- [Creating your first Actor](working-with-actors/creating-actors)
+- [Defining an Actor class](working-with-actors/defining-an-actor)
+- [What's in an Actor](working-with-actors/whats-in-an-actor)
+- [ActorRefs and ActorSelections](working-with-actors/actorrefs-and-actorselections)
+- [Creating actors with Props](working-with-actors/creating-actors-with-props)
+- [Handling Messages](working-with-actors/handling-messages)
+- [Sending Messages](working-with-actors/sending-messages)
+- [Actor lifecycle](working-with-actors/Actor lifecycle)
+- [Dispatchers](working-with-actors/Dispatchers)
+- [Mailboxes](working-with-actors/Mailbox)
+- [Switchable Behaviors](working-with-actors/Switchable Behaviors)
+- [Stashing Messages](working-with-actors/Stashing Messages)
 
 ### Actors
 - [Working with actors](Working with actors)
 - [F# API](FSharp API)
-- [ReceiveActors](ReceiveActor) --REMOVED
+- [ReceiveActors](ReceiveActor)
 - [Finite State Machines](FSM)
 - [Persistence](Persistence)
 - [Fault Tolerance](Fault tolerance)
-- [Dispatchers](working-with-actors/Dispatchers)
-- [Mailboxes](working-with-actors/Mailbox)
-- [Actor lifecycle](Actor lifecycle)
 - [Props](Props)
 - [Receive timeout](Receive timeout)
 - [Dependency injection](Dependency injection)
-- [Switchable Behaviors](working-with-actors/Switchable Behaviors)
-- [Stashing Messages](working-with-actors/Stashing Messages)
 - [Routers](working-with-actors/Routers)
 
 ### Networking
