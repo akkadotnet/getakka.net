@@ -1,10 +1,13 @@
----
+﻿---
 layout: docs.hbs
-title: ReceiveActor
+title: Defining an Actor class
 ---
-# Using Receive
+#Defining an Actor class
 
-## Inherit from ReceiveActor
+There are various types of Actor API's you can use to define your Actors. Each has its own merits. Which one to use is up to you.
+Lets start with the most common one..
+
+## ReceiveActor API
 
 In order to use the `Receive()` method inside an actor, the actor must
 inherit from `ReceiveActor`. Inside the constructor, add a call to
@@ -24,7 +27,7 @@ private class MyActor : ReceiveActor
 Whenever a message of type `string` is sent to **MyActor**, the first handler
 is invoked and for messages of type `int` the second handler is used.
 
-## Handler priority
+### Handler priority
 If more than one handler matches, the one that appears first is used while the
 others are ignored.
 
@@ -36,7 +39,7 @@ Receive<object>(o => Console.WriteLine("Received object: " + o));      //3
 **Example**: The actor receives a message of type `string`. Only the first
 handler is invoked, even though all three handlers can handle that message.
 
-## Using predicates
+### Using predicates
 By specifying a predicate, you can choose which messages to handle.
 
 ```csharp
@@ -66,7 +69,7 @@ written to the console.
 **Example**: If the actor receives the message "12", then "3: 12" will be
 written on the console.
 
-### Predicates position
+#### Predicates position
 Predicates can be specified *before* the action handler or *after*. These two
 declarations are equivalent:
 ```csharp
@@ -74,7 +77,7 @@ Receive<string>(s => s.Length > 5, s => Console.WriteLine("Received string: " + 
 Receive<string>(s => Console.WriteLine("Received string: " + s), s => s.Length > 5);
 ```
 
-## Receive using Funcs
+### Receive using Funcs
 More complex handlers can be specified using the `Receive<T>(Func<T,bool> handler)`
 overload. These are invoked if the message is of the specified type. The func
 handler should return `true` if the message was handled, and `false`otherwise.
@@ -105,7 +108,7 @@ be called, and "1: 123456" will be written to the console. The handler returns
 handled and can lead to hard found bugs. It's better to let the `Unhandled()`
 publish the message to the `EventStream` as explained below.
 
-## Unmatched messages
+### Unmatched messages
 If the actor receives a message for which no handler matches, the unhandled
 message is published to the `EventStream` wrapped in an `UnhandledMessage`.
 To change this behavior override `Unhandled(object message)`
@@ -116,10 +119,10 @@ protected override void Unhandled(object message)
 }
 ```
 
-Another option is to add a handler last that matches all messages,
+Another option is to add a last handler that matches all messages,
 using `ReceiveAny()`.
 
-## ReceiveAny
+### ReceiveAny
 To catch messages of any type the `ReceiveAny(Action<object> handler)` overload
 can be specified.
 ```csharp
@@ -141,7 +144,7 @@ ReceiveAny(o => Console.WriteLine("Received object: " + o);
 Receive<object>(0 => Console.WriteLine("Received object: " + o);
 ```
 
-## Non generic overloads
+### Non generic overloads
 `Receive` has non generic overloads:
 ```csharp
 Receive(typeof(string), obj => Console.WriteLine(obj.ToString()) );
@@ -165,159 +168,58 @@ Receive(typeof(string), obj =>
   });
 ```
 
-## Become
-You can switch the handler at runtime using `Become()` which replaces the
-current handler with a new one.
+
+## UntypedActor API
+The `UntypedActor` class defines only one abstract method, the above mentioned `OnReceive(object message)`, which implements the behavior of the actor.
+
+If the current actor behavior does not match a received message, it's recommended that you call the unhandled method, which by default publishes a new `Akka.Actor.UnhandledMessage(message, sender, recipient)` on the actor system’s event stream (set configuration item `akka.actor.debug.unhandled` to on to have them converted into actual `Debug` messages).
+
+In addition, it offers:
+
+* `Self` reference to the `ActorRef` of the actor
+
+* `Sender` reference sender Actor of the last received message, typically used as described in Reply to messages
+
+* `SupervisorStrategy` user overridable definition the strategy to use for supervising child actors
+
+This strategy is typically declared inside the actor in order to have access to the actor’s internal state within the decider function: since failure is communicated as a message sent to the supervisor and processed like other messages (albeit outside of the normal behavior), all values and variables within the actor are available, as is the Sender reference (which will be the immediate child reporting the failure; if the original failure occurred within a distant descendant it is still reported one level up at a time).
+
+* `Context` exposes contextual information for the actor and the current message, such as:
+
+  * factory methods to create child actors (actorOf)
+  * system that the actor belongs to
+  * parent supervisor
+  * supervised children
+  * lifecycle monitoring
+  * hotswap behavior stack as described in HotSwap
+
+The remaining visible methods are user-overridable life-cycle hooks which are described in the following:
+
 ```csharp
-public class MoodActor : ReceiveActor
+public override void PreStart()
 {
-  public MoodActor()
-  {
-    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm neutral"));
-    Receive<string>(s => s == "Happy", _ => Become(Happy));
-    Receive<string>(s => s == "Angry", _ => Become(Angry));
-  }
+}
 
-  private void Happy()
-  {
-    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm happy"));
-    Receive<string>(s => s == "Happy", _ => Sender.Tell("I'm already happy!", Self));
-    Receive<string>(s => s == "Angry", _ => Become(Angry));
-  }
+protected override void PreRestart(Exception reason, object message)
+{
+    foreach (ActorRef each in Context.GetChildren())
+    {
+      Context.Unwatch(each);
+      Context.Stop(each);
+    }
+    PostStop();
+}
 
-  private void Angry()
-  {
-    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm angry"));
-    Receive<string>(s => s == "Angry", _ => Sender.Tell("I'm already angry!", Self));
-    Receive<string>(s => s == "Happy", _ => Become(Happy));
-  }
+protected override void PostRestart(Exception reason)
+{
+  PreStart();
+}
+
+protected override void PostStop()
+{
 }
 ```
-Using MoodActor:
-```csharp
-var moodActor = system.ActorOf<MoodActor>();
-moodActor.Tell("Mood?", Self);  // Result: "I'm neutral"
-moodActor.Tell("Happy", Self);  // Result: becomes Happy
-moodActor.Tell("Mood?", Self);  // Result: "I'm happy"
-moodActor.Tell("Happy", Self);  // Result: "I'm already happy!"
-moodActor.Tell("Angry", Self);  // Result: becomes Angry
-moodActor.Tell("Mood?", Self);  // Result: "I'm Angry"
-```
-
-You may use lambdas if you don't want separate methods:
-```csharp
-Receive<string>(s => s == "Grumpy", _ => Become(() =>
-{
-  Receive<string>(s => Sender.Tell("Leave me alone. I'm Grumpy!"));
-}));
-```
-
-## Become/Unbecome
-In the examples above the receive handlers are replaced when `Become()` is
-called. By specifying `discardOld: false` when calling `Become` the current
-handler is pushed on a stack making it possible to switch back to it using
-`Unbecome`:
-```csharp
-public MoodActor()
-{
-  ...
-  Receive<string>(s => s == "Grumpy", _ => Become(Grumpy, discardOld: false));
-}
-...
-private void Grumpy()
-{
-  Receive<string>(s => s == "Snap out of it!", _ => Unbecome());
-  Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm grumpy!"));
-  Receive<string>(_ => Sender.Tell("Leave me alone. I'm Grumpy!"));
-}
-```
-Using MoodActor:
-```csharp
-var moodActor = system.ActorOf<MoodActor>();
-moodActor.Tell("Mood?", Self);            // Result: "I'm neutral"
-moodActor.Tell("Grumpy", Self);           // Result: becomes Grumpy
-moodActor.Tell("Mood?", Self);            // Result: "I'm Grumpy"
-moodActor.Tell("Happy", Self);            // Result: "Leave me alone. I'm Grumpy!"
-moodActor.Tell("Snap out of it!", Self);  // Result: reverts back to neutral using Unbecome
-moodActor.Tell("Mood?", Self);            // Result: "I'm neutral"
-```
-
->**Note**<br/> In this case care must be taken to ensure that the number of
-`Unbecome()` matches the number of `Become(..., discardOld: false)` ones in
-the long run, otherwise this amounts to a memory leak (which is why this
-behavior is not the default).
-
->**Warning**<br/>
-Do not add other statements than Receive in Become-declarations. The result of
-doing so is undefined.
-
-```csharp
-Receive<string>(s => s == "Grumpy", _ => Become(Grumpy, discardOld: false));
-...
-private void Grumpy()
-{
-  _state = State.Grumpy;                      //DO NOT do this
-  Sender.Tell("I just became grumpy", Self);  //DO NOT do this
-  Receive<string>(s => s == "Snap out of it!", s => Unbecome());
-  Receive<string>(s => Sender.Tell("Leave me alone. I'm Grumpy!"));
-}
-```
-Any state changes or message sends should be in the handler:
-```csharp
-Receive<string>(s => s == "Grumpy", _ =>
-  {
-    _state = State.Grumpy;
-    Sender.Tell("I just became grumpy", Self);
-    Become(Grumpy, discardOld: false));
-  });
-...
-private void Grumpy()
-{
-  Receive<string>(s => s == "Snap out of it!", s => Unbecome());
-  Receive<string>(s => Sender.Tell("Leave me alone. I'm Grumpy!"));
-}
-```
-## Chaining Receives
-You can reuse Receive-specifications. In the example below
-`ReceiveMoodSwitchers` contains declarations of how to handle
-messages for switching mood.
-```csharp
-public class MoodActor : ReceiveActor
-{
-  public MoodActor()
-  {
-    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm neutral"));
-    ReceiveMoodSwitchers();
-  }
-
-  private void Happy()
-  {
-    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm happy"));
-    Receive<string>(s => s == "Happy", _ => Sender.Tell("I'm already happy!", Self));
-    ReceiveMoodSwitchers();
-  }
-
-  private void Angry()
-  {
-    Receive<string>(s => s == "Mood?", _ => Sender.Tell("I'm angry"));
-    Receive<string>(s => s == "Angry", _ => Sender.Tell("I'm already angry!", Self));
-    ReceiveMoodSwitchers();
-  }
-
-  private void Grumpy()
-  {
-    Receive<string>(s => s == "Snap out of it!", s => Unbecome());
-    Receive<string>(s => Sender.Tell("Leave me alone. I'm Grumpy!"));
-  }
-
-  private void ReceiveMoodSwitchers()
-  {
-    Receive<string>(s => s == "Happy", _ => Become(Happy));
-    Receive<string>(s => s == "Angry", _ => Become(Angry));
-    Receive<string>(s => s == "Grumpy", _ => Become(Grumpy, discardOld: false));
-  }
-}
-```
+The implementations shown above are the defaults provided by the `UntypedActor` class.
 
 
 ## ActorBase vs ReceiveActor
@@ -327,3 +229,7 @@ Use `ActorBase` if you really, really need speed. ReceiveActors are a bit slower
 and will consume a bit more memory. Let's just hope we get
 [pattern matching in C#](http://www.infoq.com/news/2014/08/Pattern-Matching)
 soon :)
+
+## F# API
+
+TODO
