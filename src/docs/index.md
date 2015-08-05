@@ -68,6 +68,13 @@ title: Akka.NET Documentation
     - [Built-in Transports](remoting/transports#akka-remote-s-built-in-transports)
     - [Custom Transports](remoting/transports#using-custom-transports)
     - [Running Multiple Transports Simultaneously](remoting/transports#running-multiple-transports-simultaneously)
+- [Remote Messaging](remoting/messaging)
+    - [Serialization](remoting/messaging#serialization)
+    - [RemoteActorRefs](remoting/messaging#-remoteactorref-and-location-transparency)
+- [Deploying Actors Remotely](remoting/deployment)
+    - [When to Use Remote Deployment](remoting/deployment#when-to-use-remote-deployment)
+- [Detecting & Handling Network Failures (DeathWatch)](remoting/deathwatch)
+- [Network Security](remoting/security)
 
 ### Networking
 - [Serialization](Serialization)
