@@ -17,6 +17,41 @@ Akka.Remote introduces the following capabilities to Akka.NET applications:
 1. **Remote deployment** - remotely deploy actors via the `ActorOf` method onto remote `ActorSystem` instances, anywhere on the network! The location of your actors on the network becomes a deployment detail in Akka.Remote.
 1. **Multiple network transports** - out of the box Akka.Remote ships with support for TCP, but has the ability to plugin third party transports and active multiple of them at the same time.
 
+##Distributed by Default
+Everything in Akka is designed to work in a distributed setting: all interactions of actors use purely message passing and everything is asynchronous. This effort has been undertaken to ensure that all functions are available equally when running within a single machine or on a cluster of hundreds of machines. The key for enabling this is to go from remote to local by way of optimization instead of trying to go from local to remote by way of generalization. See [this classic paper](http://doc.akka.io/docs/misc/smli_tr-94-29.pdf) for a detailed discussion on why the second approach is bound to fail.
+
+##Ways in which Transparency is Broken
+What is true of Akka need not be true of the application which uses it, since designing for distributed execution poses some restrictions on what is possible. The most obvious one is that all messages sent over the wire must be serializable. While being a little less obvious this includes closures which are used as actor factories (i.e. within Props) if the actor is to be created on a remote node.
+
+Another consequence is that everything needs to be aware of all interactions being fully asynchronous, which in a computer network might mean that it may take several minutes for a message to reach its recipient (depending on configuration). It also means that the probability for a message to be lost is much higher than within one CLR, where it is close to zero (still: no hard guarantee!).
+
+Message size can also be a concern. While in-process messages are only bound by CLR restrictions, physical memory and operating system, remote transport layer sets the maximum size to 128 kB by default (minimum: 32 kB). If any of the messages sent remotely is larger than that, maximum frame size in the config file has to be changed to appropriate value:
+
+```hocon
+akka {
+    helios.tcp {
+        # Maximum frame size: 4 MB
+        maximum-frame-size = 4000000b
+    }
+}
+```
+
+Messages exceeding the maximum size will be dropped.
+
+You also have to be aware that some protocols (e.g. UDP) might not support arbitrarily large messages.
+
+##How is Remoting Used?
+We took the idea of transparency to the limit in that there is nearly no API for the remoting layer of Akka: it is purely driven by configuration. Just write your application according to the principles outlined in the previous sections, then specify remote deployment of actor sub-trees in the configuration file. This way, your application can be scaled out without having to touch the code. The only piece of the API which allows programmatic influence on remote deployment is that Props contain a field which may be set to a specific Deploy instance; this has the same effect as putting an equivalent deployment into the configuration file (if both are given, configuration file wins).
+
+##Peer-to-Peer vs. Client-Server
+Akka Remoting is a communication module for connecting actor systems in a peer-to-peer fashion, and it is the foundation for Akka Clustering. The design of remoting is driven by two (related) design decisions:
+
+1. Communication between involved systems is symmetric: if a system A can connect to a system B then system B must also be able to connect to system A independently.
+2. The role of the communicating systems are symmetric in regards to connection patterns: there is no system that only accepts connections, and there is no system that only initiates connections.
+The consequence of these decisions is that it is not possible to safely create pure client-server setups with predefined roles (violates assumption 2) and using setups involving Network Address Translation or Load Balancers (violates assumption 1).
+
+For client-server setups it is better to use HTTP or [Akka I/O](../IO).
+
 ### Use Cases
 Akka.Remote is most commonly used in distributed applications that run across the network, some examples include:
 
@@ -28,6 +63,9 @@ Akka.Remote is most commonly used in distributed applications that run across th
 > NOTE: Akka.Remote largely serves as plumbing for Akka.Cluster and the other "high availability" modules within Akka.NET. The use cases for using Akka.Remote by itself are largely limited to scenarios that don't require the elasticity and fault-tolerance needs that Akka.Cluster fulfills.
 
 That being said, it's a good idea to understand how Akka.Remote works if you intend to use clustering. So keep reading!
+
+##Marking Points for Scaling Up with Routers
+In addition to being able to run different parts of an actor system on different nodes of a cluster, it is also possible to scale up onto more cores by multiplying actor sub-trees which support parallelization (think for example a search engine processing different queries in parallel). The clones can then be routed to in different fashions, e.g. round-robin. The only thing necessary to achieve this is that the developer needs to declare a certain actor as `“WithRouter”`, then—in its stead—a router actor will be created which will spawn up a configurable number of children of the desired type and route to them in the configured fashion. Once such a router has been declared, its configuration can be freely overridden from the configuration file, including mixing it with the remote deployment of (some of) the children. Read more about this in [Routers](working-with-actors/Routers).
 
 ## Enabling Akka.Remote
 Enabling Akka.Remote in your own applications is simple:
@@ -155,8 +193,6 @@ System 2 will receive the handshake, accept the inbound association, and reply w
 System 1 will then finally deliver the message contained in the `ActorSelection` to the appropriate actor on System 2.
 
 That's how associations work in a nutshell!
-
-#### Recap: Remote Deployments and Remote ActorSelections
 
 #### Internals: How Akka.Remote Associations Work
 
