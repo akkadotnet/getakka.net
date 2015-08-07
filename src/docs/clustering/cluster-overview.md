@@ -57,14 +57,73 @@ Some of the use cases where Akka.Cluster emerges as a natural fit are in:
 ## Key Terms
 Akka.Cluster is concept-heavy, so let's clarify a few terms:
 
-- Node: a logical member of a cluster.
-- Cluster: a set of nodes joined through the membership service. Multiple Akka.NET applications can be a part of a single cluster.
-- Gossip: underlying messages powering the cluster itself.
-- Leader: single node within the cluster who adds/removes nodes from the cluster.
-- Role: a named responsibility or application within the cluster. A cluster can have multiple Akka.NET applications in it, each with its own role. A node may exist in 0+ roles simultaneously.
-- Convergence: when a quorum (simple majority) of gossip messages agree on a change in state of a cluster member.
+- **Node**: a logical member of a cluster.
+- **Cluster**: a set of nodes joined through the membership service. Multiple Akka.NET applications can be a part of a single cluster.
+- **Gossip**: underlying messages powering the cluster itself.
+- **Leader**: single node within the cluster who adds/removes nodes from the cluster.
+- **Role**: a named responsibility or application within the cluster. A cluster can have multiple Akka.NET applications in it, each with its own role. A node may exist in 0+ roles simultaneously.
+- **Convergence**: when a quorum (simple majority) of gossip messages agree on a change in state of a cluster member.
 
-Now let's explore each of these and their role in Akka.Cluster.
+## Enabling Akka.Cluster
+Now that we've gone over some of the concepts and distributed programming concerns behind Akka.Cluster's design, let's focus on how to actually use it inside our own Akka.NET applications.
+
+![Steps to enable Akka.Cluster](images/how-to-enable-akka-cluster.png)
+
+The first step towards using Akka.Cluster is to install the [Akka.Cluster NuGet package](http://www.nuget.org/packages/Akka.Cluster/ "Akka.Cluster NuGet Package"), which you can do inside the Package Manager Console in Visual Studio:
+
+```
+PM> Install-Package Akka.Cluster -pre
+```
+
+> **NOTE:** Akka.Cluster is currently a pre-release nuget package, so you'll need to set the `pre` flag when you install it into your applications. Akka.Cluster will be considered "fully released" [once Akka.NET v1.1 ships](https://waffle.io/akkadotnet/akka.net?milestone=Akka.NET%20v1.1).
+
+Once you've installed Akka.Cluster, we need to update our HOCON configuration to turn on the [`ClusterActorRefProvider`](http://api.getakka.net/docs/stable/html/CC0676F0.htm "Akka.NET API Docs - ClusterActorRefProvider class"), configure an Akka.Remote transport, and enable at least 1 seed node.
+
+> **NOTE:** Akka.Cluster depends on Akka.Remote.
+
+
+#### Seed Node Configuration
+```xml
+akka {
+    actor.provider = "Akka.Cluster.ClusterActorRefProvider, Akka.Cluster"
+    remote {
+        helios.tcp {
+            port = 8081
+            hostname = localhost
+        }
+    }
+    cluster {
+        seed-nodes = ["akka.tcp://ClusterSystem@127.0.0.1:8081"]
+    }
+}
+```
+
+In this instance, we're configuring this node to act as a seed node to the cluster, so it uses *its own Akka.NET `Address`* inside the `cluster.seed-nodes` property.
+
+You can, and should, specify multiple seed nodes inside this field - and seed nodes should refer to themselves.
+
+#### Note: if you're using dedicated seed nodes (such as [Lighthouse](https://github.com/petabridge/lighthouse)), you should run at least 2 or 3. If you only have one seed node and that machine crashes, the cluster will continue operating but no new members can join the cluster!
+
+#### Non-Seed Node Configuration
+```xml
+akka {
+    actor.provider = "Akka.Cluster.ClusterActorRefProvider, Akka.Cluster"
+    remote {
+        helios.tcp {
+            port = 0 #let os pick random port
+            hostname = localhost
+        }
+    }
+    cluster {
+        seed-nodes = ["akka.tcp://ClusterSystem@127.0.0.1:8081"]
+    }
+}
+```
+
+In this case, we've created a non-seed node - it binds its Akka.Remote transport to a random port assigned by the operating system, but it connects to the seed node we assigned in the previous section.
+
+#### Note: All nodes in an Akka.NET cluster must have the same ActorSystem name.
+This is important! Even if you're running multiple separate Akka.NET applications inside a single Akka.NET cluster, they must all share the same `ActorSystem` name - otherwise they will not be permitted to join the cluster.
 
 ## Cluster Gossip
 *This is the most important concept within Akka.Cluster*. This is how nodes are able to join and leave clusters without any configuration changes.
@@ -86,27 +145,7 @@ So in the example above:
 
 Gossip messages will occur regularly over time whenever there is any change in the status of a member of the cluster, such as when a node joins the cluster, leaves the cluster, becomes unreachable by other nodes, etc.
 
-Generally, you will not interact with gossip messages at the application level. But you do need to be aware of them and know that they power the cluster.
-
-### What Types of Gossip Exist?
-Gossip events fall into three categories:
-
-1. Member events
-2. Reachability events
-3. Metrics events (not yet implemented)
-
-#### Member events
-Member events refer to nodes joining / leaving / being removed from the cluster. These events are used by [Akka.Cluster routers](clustering/cluster-routing) to automatically adjust their routee lists.
-
-#### Reachability events
-Reachability events refer to connectivity between nodes.
-
-If node A can no longer reach node B, then B is considered to be "unreachable" to node A. If B becomes unreachable to a large number of nodes, the leader is going to mark the node as "down" and remove it from the cluster.
-
-However, if B is able to communicate with A again then A will begin gossiping that B is once again "reachable."
-
-#### Metrics events (not yet implemented)
-These messages are part of a yet-to-be-released library called Akka.Cluster.Metrics. These events are used to report the CPU and memory utilization of specific nodes within the cluster. This information is then used to power a specific set of routers called **weighted routers**, who can route messages to nodes based on which ones have the most available memory or CPU capacity.
+Generally, you will not interact with gossip messages at the application level. But you do need to be aware of them and know that they power the cluster. To learn more about gossip and event types, see "[Working With Cluster Gossip.](./cluster-extension#working-with-cluster-gossip)"
 
 ## Nodes
 A node is a logical member of a cluster. A node is defined by the address at which it is reachable (hostname:port tuple). Because of this, more than one node can exist simultaneously on a given machine.
@@ -156,24 +195,36 @@ After the gossip has had a chance to propagate across all nodes and the leader h
 The cluster leader is chosen by a leader election algorithm that randomly picks a leader from the available set of nodes when the cluster forms. Usually, the leader is one of the seed nodes.
 
 #### Cluster vs. Role Leader
-Each role within the cluster also has a leader, just for that role. Its primary responsibility is enforcing a minimum number of "up" members within the role (if specified in the [cluster config](clustering/cluster-configuration)).
+Each role within the cluster also has a leader, just for that role. Its primary responsibility is enforcing a minimum number of "up" members within the role (if specified in the [cluster config](./cluster-configuration)).
 
 ### Reachability
-Nodes send each other [heartbeats](https://en.wikipedia.org/wiki/Heartbeat_(computing)) on an ongoing basis. If a node misses enough heartbeats, this will trigger `unreachable` gossip messages from its peers.
+Nodes send each other <a href="https://en.wikipedia.org/wiki/Heartbeat_(computing)">heartbeats</a> on an ongoing basis. If a node misses enough heartbeats, this will trigger `unreachable` gossip messages from its peers.
 
 If the gossip from a quorum of cluster nodes agree that the node is unreachable ("convergence"), the leader will mark it as down and begin removing the node from the cluster.
 
 ## Location Transparency
 [Location transparency](concepts/location-transparency) is the underlying principle powering all of Akka.Remote and Akka.Cluster. The key point is that in a cluster, it's entirely possible that the actors you interface with to do work can be living on any node in the cluster... and you don't have to worry about which one.
 
-## Related Material
-- [Cluster Routing](clustering/cluster-routing)
-- [Cluster `ActorSystem` Extension](clustering/cluster-extension)
-- [Cluster Configuration](clustering/cluster-configuration)
+## Additional Resources
+<iframe width="560" height="315" src="https://www.youtube.com/embed/mUTKvGyxbOA" frameborder="0" allowfullscreen></iframe>
 
-### References & Further Info
 - [How to Create Scalable Clustered Akka.NET Apps Using Akka.Cluster](https://petabridge.com/blog/intro-to-akka-cluster/)
 - [Video: Introduction to Akka.Cluster](https://www.youtube.com/watch?v=mUTKvGyxbOA)
 - [Gossip Protocol](https://en.wikipedia.org/wiki/Gossip_protocol)
 - [High-availability scenarios](https://en.wikipedia.org/wiki/High_availability)
 - [Microservices](http://martinfowler.com/articles/microservices.html)
+
+### Related Documentation
+- [Cluster Routing](./cluster-routing)
+    - [How Routers Use Cluster Gossip](./cluster-routing#how-routers-use-cluster-gossip)
+    - [Cluster Routing Strategies](./cluster-routing#cluster-routing-strategies)
+    - [Types of Clustered Routers](./cluster-routing#types-of-clustered-routers)
+    - [Clustered Router Configuration](./cluster-routing#cluster-router-config)
+- [Cluster Configuration](./cluster-configuration)
+    - [Critical Configuration Flags](./cluster-configuration#critical-configuration-options)
+    - [Specifying Minimum Cluster Sizes](./cluster-configuration#specifying-minimum-cluster-sizes)
+- [Accessing the Cluster `ActorSystem` Extension](./cluster-extension)
+    - [Getting a Reference to the `Cluster`](./cluster-extension#getting-a-reference-to-the-cluster-)
+    - [Working With Cluster Gossip](./cluster-extension#working-with-cluster-gossip)
+    - [Cluster Gossip Event Types](./cluster-extension#cluster-gossip-event-types)
+    - [Getting Cluster State](./cluster-extension#getting-cluster-state)
