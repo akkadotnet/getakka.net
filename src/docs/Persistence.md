@@ -124,6 +124,35 @@ akka {
 }
 ```
 
+### Event adapters
+
+Event adapters are an intermediate layer on top of your journal, that allows to produce different data model depending on stored/recovered event type. It's especially useful in situations like:
+
+- **Event versioning** - since events may change their structure over the course of time, you may specify custom event adapter that will deal with mapping obsolete data types accordingly to current business logic.
+- **Separation of domain model from stored data** in cases when such separation is necessary.
+- **Utilization of persistent backend specific data types** as they allow transition between data understood by actors and specialized format allowed by datastores. Examples of such may be: BSON in MongoDb or JSON data type in PostgreSQL.
+
+For custom event adapter simply create class implementing `IEventAdapter` interface. It's required, that it should either expose parameterless constructor or the one that has `ExtendedActorSystem` as it's only argument. Then in order to use it, you'll need to register it and bind to a particular type of events using HOCON configuration - type assignability rules applies here and the most specific types have precedence over the more general ones:
+
+```
+akka.persistence.journal {
+	<journal_identifier> {
+		event-adapters {
+			tagging = "<fully qualified event adapter type name with assembly>"
+			v1 = "<fully qualified event adapter type name with assembly>"
+			v2 = "<fully qualified event adapter type name with assembly>"
+		}
+
+		event-adapter-bindings {
+			"<fully qualified event type name with assembly>" = v1
+			"<fully qualified event type name with assembly>" = [v2, tagging]
+		}
+	}
+}
+```
+
+Multiple event adapters may be applied to a single type (for recovery). If that is the case, their order will match order of the definition in *event-adapter-bindings* config section. For write side, each adapter may decide to return none, one or many adapted event for each single event provided as an input. In case of multiple adapters attached, each one of them may decide to return it's own set of adapted events. They all will be stored in the same order corresponding to adapters order.
+
 ### Contributing
 
 Akka persistence plugin gives a custom journal and snapshot store creator a built-in set of tests, which can be used to verify correctness of the implemented backend storage plugins. It's available through `Akka.Persistence.TestKit` package and uses [xUnit](http://xunit.github.io/) as the default test framework.
