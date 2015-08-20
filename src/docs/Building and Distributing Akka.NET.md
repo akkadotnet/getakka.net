@@ -53,6 +53,27 @@ To run unit tests from the command line, run the following command:
     build test
 ````
 
+### Running MultiNodeTests
+
+To run the multiple node specifications from the command line, run the following
+command:
+
+````
+    build multinodetests
+````
+
+To run the multinode specifications for a subset of akka, you can supply a filter:
+
+````
+    build multinodetests spec-assembly=<filter>
+````
+
+For example to run only the specifications for Akka.Remote the command would be:
+
+````
+    build multinodetests spec-assembly=remote
+````
+
 ### Creating Nuget distributions
 
 To create nuget packages locally, run the following command:
@@ -70,3 +91,15 @@ or to run also unit tests before publishing:
 ````
    build all nugetkey=<key>
 ````
+
+### Detailed Help from command line
+
+The command line supplies some detailed help on the usage of build.
+
+````
+    build help
+    build helpnuget
+    build helpdocs
+    build helpmultinodetests
+````
+    
