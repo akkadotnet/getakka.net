@@ -30,7 +30,7 @@ Akka.Cluster is a layer of abstraction on top of Akka.Remote, that puts Remoting
 
 Generally, Akka.Remote serves as plumbing for Akka.Cluster and other "high availability" modules within Akka.NET. You would generally only use Akka.Remote by itself in scenarios that don't require the elasticity and fault-tolerance needs that Akka.Cluster provides.
 
-Essentially, Akka.Cluster extends Akka.Remote to provide the basis of scalable
+Essentially, Akka.Cluster extends Akka.Remote to provide the basis of scalable applications.
 
 ## Use Cases
 Akka.Cluster lends itself naturally to [high-availability](https://en.wikipedia.org/wiki/High_availability) scenarios.
