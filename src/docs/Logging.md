@@ -8,7 +8,7 @@ For more info see real Akka's documentation: http://doc.akka.io/docs/akka/2.0/sc
 To log in an actor, create a logger and assign it to a private field:
 
 ``` csharp
-private readonly LoggingAdapter _log = Logging.GetLogger(Context);
+private readonly ILoggingAdapter _log = Logging.GetLogger(Context);
 ```
 
 Use the `Debug`, `Info`, `Warn` and `Error` methods to log.
