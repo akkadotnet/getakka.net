@@ -23,7 +23,7 @@ public class MvcApplication : System.Web.HttpApplication
 
         ActorSystem = ActorSystem.Create("app");
         //here you would register your toplevel actors
-        MyActor = ActorSystem.Create<MyActor>();
+        MyActor = ActorSystem.ActorOf<MyActor>();
     }
 }
 ```
