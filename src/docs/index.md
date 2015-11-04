@@ -44,6 +44,7 @@ title: Akka.NET Documentation
 - [Mailboxes](working-with-actors/Mailbox)
 - [Switchable Behaviors](working-with-actors/Switchable Behaviors)
 - [Stashing Messages](working-with-actors/Stashing Messages)
+- [Stopping Actors](working-with-actors/stopping-actors)
 
 ### Actors
 - [Working with actors](Working with actors)
