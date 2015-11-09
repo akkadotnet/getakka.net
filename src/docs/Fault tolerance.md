@@ -157,3 +157,37 @@ With this parent, the child survives the escalated restart, as demonstrated in
 the last test:
 
 !!!TODO: Port sample code
+
+## BackoffSupervisor
+
+This actor can be used to supervise a child actor and start it again after a back-off duration if the child actor is stopped.
+This is useful in situations where the re-start of the child actor should be delayed e.g. in order to give an external resource time to recover before the child actor tries contacting it again (after being restarted).
+
+Specifically this pattern is useful for for persistent actors, which are stopped in case of persistence failures. Just restarting them immediately would probably fail again (since the data store is probably unavailable). It is better to try again after a delay.
+
+It supports exponential back-off between the given `minBackoff` and `maxBackoff` durations. For example, if `minBackoff` is 3 seconds and `maxBackoff` 30 seconds the start attempts will be delayed with 3, 6, 12, 24, 30, 30 seconds. The exponential back-off counter is reset if the actor is not terminated within the minBackoff duration.
+
+In addition to the calculated exponential back-off an additional random delay based the given `randomFactor` is added, e.g. 0.2 adds up to 20% delay. The reason for adding a random delay is to avoid that all failing actors hit the backend resource at the same time.
+
+You can retrieve the current child ActorRef by sending `BackoffSupervisor.GetCurrentChild.Instance` message to this actor and it will reply with `BackoffSupervisor.CurrentChild` containing the ActorRef of the current child, if any.
+
+The BackoffSupervisor forwards all other messages to the child, if it is currently running.
+
+The child can stop itself and send a PoisonPill to the parent supervisor if it wants to do an intentional stop.
+As long as the `BackoffSupervisor` is in the backoff state, it will deadletter any messages it would normally send to the child.
+
+###example
+```csharp
+ var childProps = Props.Create(() => new MyChildActor());
+ var superVisor = system.ActorOf(
+  Props.Create(() =>
+    new BackoffSupervisor(childProps, "child",
+     TimeSpan.FromSeconds(3), //minBackoff: once it fails, retry after 3 secs
+     TimeSpan.FromSeconds(30), //maxBackoff: max time between retries is 30 secs
+     0.1), //random factor that influences retry times 
+    new OneForOneStrategy(_ => {
+        return Directive.Stop; //The BackoffSupervisor only works on the Stop Directive.
+    })));
+```
+
+
