@@ -102,7 +102,7 @@ public class MyActor : UntypedActor
         return new OneForOneStrategy( //or AllForOneStrategy
             maxNumberOfRetries: 10,
             duration: TimeSpan.FromSeconds(30),
-            decider: x =>
+            decider: Decider.From(x =>
             {
                 //Maybe we consider ArithmeticException to not be application critical
                 //so we just ignore the error and keep going.
@@ -113,7 +113,7 @@ public class MyActor : UntypedActor
 
                 //In all other cases, just restart the failing actor
                 else return Directive.Restart;
-            });
+            }));
     }
 
     ...
