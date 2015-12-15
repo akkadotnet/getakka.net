@@ -4,7 +4,7 @@ title: Actor lifecycle
 ---
 ## Actor Lifecycle
 
-![Actor lifecycle](images/actor_lifecycle.png)
+![Actor lifecycle](../images/actor_lifecycle.png)
 
 A path in an actor system represents a "place" which might be occupied by a living actor. Initially (apart from system initialized actors) a path is empty. When `ActorOf()` is called it assigns an incarnation of the actor described by the passed `Props` to the given path. An actor incarnation is identified by the path and a UID. A restart only swaps the Actor instance defined by the Props but the incarnation and hence the UID remains the same.
 
