@@ -100,9 +100,9 @@ title: Akka.NET Documentation
     - [Cluster Gossip Event Types](clustering/cluster-extension#cluster-gossip-event-types)
     - [Getting Cluster State](clustering/cluster-extension#getting-cluster-state)
 - [Akka.Cluster.Tools module](clustering/cluster-tools)
-		- [Creating cluster singleton actors](clustering/cluster-singleton)
-		- [Cluster distributed publish/subscribe](clustering/distributed-publish-subscribe)
-		- [Communication with cluster without joining to it](clustering/cluster-client)
+    - [Creating cluster singleton actors](clustering/cluster-singleton)
+    - [Cluster distributed publish/subscribe](clustering/distributed-publish-subscribe)
+    - [Communication with cluster without joining to it](clustering/cluster-client)
 - [Akka.Cluster.Sharding module](clustering/cluster-sharding)
 
 ### Networking
