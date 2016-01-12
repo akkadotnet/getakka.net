@@ -93,6 +93,8 @@ akka {
 }
 ```
 
+See [Akka Remote Reference Config File](https://github.com/akkadotnet/akka.net/blob/dev/src/core/Akka.Remote/Configuration/Remote.conf) for additional information on HOCON settings available in akka remote.
+
 ## Addresses, Transports, Endpoints, and Associations
 In the above section we mentioned that you have to bind a *transport* to an IP address and port, we did in that in HOCON inside the `helios.tcp` section. Why did we have to do any of that?
 
