@@ -36,6 +36,10 @@ div.mega-price-table .pricing-table i.fa, /* icons */
 	color:#A94545;
 }
 
+a:visited {
+	color: #793A3A;
+}
+
 p.dropcap.color:first-letter,
 span.badge,
 #toTop:hover,
