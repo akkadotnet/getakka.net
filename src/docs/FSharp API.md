@@ -209,7 +209,7 @@ Example:
 type Message =
     | Subscribe
     | Unsubscribe
-    | Msg of ActorRef * string
+    | Msg of IActorRef * string
 
 let subscriber =
     spawn system "subscriber"
@@ -226,9 +226,13 @@ let publisher =
             publish msg mailbox.Context.System.EventStream))
 
 subscriber <! Subscribe
-publisher  <! Msg (publisher, "hello")
+// Wait 50 milliseconds for subscribe to complete (race condition between subscription and message to subscriber)
+Async.Sleep 50 |> Async.RunSynchronously
+publisher  <! Msg (publisher, "hello") // console output: "*publisher Path* says hello"
 subscriber <! Unsubscribe
-publisher  <! Msg (publisher, "hello again")
+// Again wait 50 milliseconds for unsubscribe to complete
+Async.Sleep 50 |> Async.RunSynchronously
+publisher  <! Msg (publisher, "hello again") // no output, subscriber is not subscribed to stream
 ```
 
 ### Logging
