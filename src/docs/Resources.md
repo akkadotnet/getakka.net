@@ -8,6 +8,9 @@ active_selector: resources
 
 [**Start Bootcamp here.**]({{site.bootcamp_url}})
 
+## Books
+* [Reactive Applications with Akka.NET](https://www.manning.com/books/reactive-applications-with-akka-net) - By Anthony Brown,  Manning Publications Co. 
+
 ## Blog posts
 * [Starting Akka.NET](http://blog.jaywayco.co.uk/starting-akka-net/) - James Conway shares his experience starting Akka.NET and why his company looked to it.
 * [What is an Actor?](https://petabridge.com/blog/akkadotnet-what-is-an-actor/) - Conceptual overview of the basics of actor & actor systems.
