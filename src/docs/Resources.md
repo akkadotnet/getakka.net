@@ -9,7 +9,7 @@ active_selector: resources
 [**Start Bootcamp here.**]({{site.bootcamp_url}})
 
 ## Books
-* [Reactive Applications with Akka.NET](https://www.manning.com/books/reactive-applications-with-akka-net) - By Anthony Brown,  Manning Publications Co. 
+* [Reactive Applications with Akka.NET](https://www.manning.com/books/reactive-applications-with-akka-net) - By Anthony Brown,  Manning Publications Co. **Discount code "getakka37" for 37% discount**
 
 ## Blog posts
 * [Starting Akka.NET](http://blog.jaywayco.co.uk/starting-akka-net/) - James Conway shares his experience starting Akka.NET and why his company looked to it.
