@@ -4,7 +4,7 @@ title: Persistence
 ---
 ## Persistence
 
-Akka.Persistence plugin enables the creation of stateful actors whose internal state may be stored inside persistent data storage and used for recovery in case of restart, migration or VM crash. The core concept behind Akka persistence lays in storing not only the actor's state directly (in the form of snapshots) but also history of all of the changes of that actor's state. This is quite  useful solution common in patterns such as eventsourcing. Changes are immutable by nature, as they describe facts already reported in the history, and can be stored inside event journal in append-only mode. While recovering, the actor restores it's state from the latests snapshot available - which can reduce recovery time - and then recreates it further by replaying events stored inside the journal. Among other features provided by the persistence plugin is support for command query segregation model and point-to-point communication with [at-least-once](concepts/message-delivery-reliability#discussion-what-does-at-most-once-mean-) delivery semantics.
+Akka.Persistence plugin enables the creation of stateful actors whose internal state may be stored inside persistent data storage and used for recovery in case of restart, migration or VM crash. The core concept behind Akka persistence lays in storing not only the actor's state directly (in the form of snapshots) but also history of all of the changes of that actor's state. This is quite  useful solution common in patterns such as eventsourcing. Changes are immutable by nature, as they describe facts already reported in the history, and can be stored inside event journal in append-only mode. While recovering, the actor restores its state from the latests snapshot available - which can reduce recovery time - and then recreates it further by replaying events stored inside the journal. Among other features provided by the persistence plugin is support for command query segregation model and point-to-point communication with [at-least-once](concepts/message-delivery-reliability#discussion-what-does-at-most-once-mean-) delivery semantics.
 
 ### Architecture
 
@@ -18,9 +18,9 @@ Akka.Persistence features are available through new set of actor base classes:
 
 ### Persistent actors
 
-Unlike the default `ActorBase` class, `PersistentActor` and it's derivatives requires the setup of a few more additional members:
+Unlike the default `ActorBase` class, `PersistentActor` and its derivatives requires the setup of a few more additional members:
 
-- `PersistenceId` is a persistent actor's identifier that doesn't change across different actor incarnations. It's used to retrieve an event stream required by the persistent actor to recover it's internal state.
+- `PersistenceId` is a persistent actor's identifier that doesn't change across different actor incarnations. It's used to retrieve an event stream required by the persistent actor to recover its internal state.
 - `ReceiveRecover` is a method invoked during an actor's recovery cycle. Incoming objects may be user-defined events as well as system messages, for example `SnapshotOffer` which is used to deliver latest actor state saved in the snapshot store.
 - `ReceiveCommand` is an equivalent of the basic `Receive` method of default Akka.NET actors.
 
@@ -28,7 +28,7 @@ Persistent actors also offer a set of specialized members:
 
 - `Persist` and `PersistAsync` methods can be used to send events to the event journal in order to store them inside. The second argument is a callback invoked when the journal confirms that events have been stored successfully.
 - `Defer` and `DeferAsync` are used to perform various operations *after* events will be persisted and their callback handlers will be invoked. Unlike the persist methods, defer won't store an event in persistent storage. Defer methods may NOT be invoked in case when the actor is restarted even though the journal will successfully persist events sent.
-- `DeleteMessages` will order attached journal to remove part of it's events. It can be either logical deletion - messages are marked as deleted, but are not removed physically from the backend storage - or a physical one, when the messages are removed physically from the journal.
+- `DeleteMessages` will order attached journal to remove part of its events. It can be either logical deletion - messages are marked as deleted, but are not removed physically from the backend storage - or a physical one, when the messages are removed physically from the journal.
 - `LoadSnapshot` will send a request to the snapshot store to resend the current actor's snapshot.
 - `SaveSnapshot` will send the current actor's internal state as a snapshot to be saved by the configured snapshot store.
 - `DeleteSnapshot` and `DeleteSnapshots` methods may be used to specify snapshots to be removed from the snapshot store in cases where they are no longer needed.
@@ -132,7 +132,7 @@ Event adapters are an intermediate layer on top of your journal, that allows to 
 - **Separation of domain model from stored data** in cases when such separation is necessary.
 - **Utilization of persistent backend specific data types** as they allow transition between data understood by actors and specialized format allowed by datastores. Examples of such may be: BSON in MongoDb or JSON data type in PostgreSQL.
 
-For custom event adapter simply create class implementing `IEventAdapter` interface. It's required, that it should either expose parameterless constructor or the one that has `ExtendedActorSystem` as it's only argument. Then in order to use it, you'll need to register it and bind to a particular type of events using HOCON configuration - type assignability rules applies here and the most specific types have precedence over the more general ones:
+For custom event adapter simply create class implementing `IEventAdapter` interface. It's required, that it should either expose parameterless constructor or the one that has `ExtendedActorSystem` as its only argument. Then in order to use it, you'll need to register it and bind to a particular type of events using HOCON configuration - type assignability rules applies here and the most specific types have precedence over the more general ones:
 
 ```
 akka.persistence.journal {
@@ -151,7 +151,7 @@ akka.persistence.journal {
 }
 ```
 
-Multiple event adapters may be applied to a single type (for recovery). If that is the case, their order will match order of the definition in *event-adapter-bindings* config section. For write side, each adapter may decide to return none, one or many adapted event for each single event provided as an input. In case of multiple adapters attached, each one of them may decide to return it's own set of adapted events. They all will be stored in the same order corresponding to adapters order.
+Multiple event adapters may be applied to a single type (for recovery). If that is the case, their order will match order of the definition in *event-adapter-bindings* config section. For write side, each adapter may decide to return none, one or many adapted event for each single event provided as an input. In case of multiple adapters attached, each one of them may decide to return its own set of adapted events. They all will be stored in the same order corresponding to adapters order.
 
 ### Contributing
 
