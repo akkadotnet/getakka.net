@@ -124,6 +124,7 @@ title: Akka.NET Documentation
 - [Getting Access to Nightly Akka.NET Builds](akka-developers/nightly-builds)
 - [Approving Public API Changes](akka-developers/public-api-changes)
 - [Contributor guidelines](Contributor guidelines)
+- [Contribution ideas](Extension Ideas)
 - [Documentation Guidelines](Documentation guidelines)
 - [Team](Team)
 
@@ -134,5 +135,6 @@ title: Akka.NET Documentation
 
 ### Additional Information
 - [Frequently Asked Questions](FAQ)
+- [Community plugins](Community Plugins)
 - [Online resources](Resources)
 - [Books](Books)
