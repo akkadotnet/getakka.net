@@ -40,7 +40,7 @@ public class DemoActor : ReceiveActor
     /// A Props for creating this actor, which can then be further configured
     /// (e.g. calling `.withDispatcher()` on it)
     /// </returns>
-    public static Props Props(int magicNumber)
+    public static Props CreateProps(int magicNumber)
     {
         return Props.Create(() => new DemoActor(magicNumber));
     }
@@ -55,7 +55,7 @@ public class DemoActor : ReceiveActor
     }
 }
 
-system.ActorOf(DemoActor.Props(42), "demo");
+system.ActorOf(DemoActor.CreateProps(42), "demo");
 ```
 ### Creating Actors with Props
 Actors are created by passing a Props instance into the `ActorOf` factory method
