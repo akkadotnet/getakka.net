@@ -11,7 +11,7 @@ To log in an actor, create a logger and assign it to a private field:
 private readonly ILoggingAdapter _log = Logging.GetLogger(Context);
 ```
 
-Use the `Debug`, `Info`, `Warn` and `Error` methods to log.
+Use the `Debug`, `Info`, `Warning` and `Error` methods to log.
 ``` csharp
 _log.Debug("Some message");
 ```
