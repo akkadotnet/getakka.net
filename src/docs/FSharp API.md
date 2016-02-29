@@ -184,7 +184,7 @@ let aref =
         [ SpawnOption.SupervisorStrategy (Strategy.OneForOne (fun error ->
             match error with
             | :? ArithmeticException -> Directive.Escalate
-            | _ -> SupervisorStrategy.DefaultDecider error )) ]
+            | _ -> SupervisorStrategy.DefaultDecider.Decide error )) ]
 
 let remoteRef =
     spawne system "remote-actor" <@ actorOf myFunc @>
