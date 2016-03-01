@@ -284,7 +284,7 @@ Here's the set of arguments that the MultiNodeTestRunner takes:
 
     Akka.MultiNodeTestRunner.exe path-to-dll # path to DLL containing tests
 	[-Dmultinode.enable-filesink=(on|off)] # writes test output to disk 
-	[-Dmultinode.test-spec=("fully qualified spec method name)] # execute a specific test method
+	[-Dmultinode.spec=("fully qualified spec method name)] # execute a specific test method
 															    # instead of all of them
 
 Here's an example of what invoking the test runner might look like if all of our multinodetests were packaged into Akka.MultiNodeTests.dll.
