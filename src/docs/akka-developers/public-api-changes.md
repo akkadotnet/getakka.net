@@ -46,8 +46,7 @@ And then once you've merged in those changes, added them to a Git commit, and se
 ## Unacceptable API Changes
 The following types of API changes will generally not be approved:
 
-1. Adding an overload of a public extension method;
-2. Any modification to a commonly used public interface;
-3. Changing any public method signature or removing any public members;
-4. Renaming public classes or members; and
-5. Changing an access modifier from public to private / internal / protected on any member that is or is meant to be used.
+1. Any modification to a commonly used public interface;
+2. Changing any public method signature or removing any public members;
+3. Renaming public classes or members; and
+4. Changing an access modifier from public to private / internal / protected on any member that is or is meant to be used.
