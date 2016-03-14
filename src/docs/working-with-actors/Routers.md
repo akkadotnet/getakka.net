@@ -425,7 +425,7 @@ ScatterGatherFirstCompletedPool defined in configuration:
 ```hocon
 akka.actor.deployment {
   /some-pool {
-    router = tail-chopping-pool
+    router = scatter-gather-pool
     nr-of-instances = 5
     within = 10 seconds
   }
@@ -447,7 +447,7 @@ ScatterGatherFirstCompletedPool defined in configuration:
 ```hocon
 akka.actor.deployment {
   /some-group {
-    router = tail-chopping-group
+    router = scatter-gather-group
     routees.paths = ["/user/workers/w1", "/user/workers/w2", "/user/workers/w3"]
     within = 10 seconds
   }
