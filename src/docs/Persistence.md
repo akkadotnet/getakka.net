@@ -1171,7 +1171,10 @@ protected override IShoppingCart ApplyEvent(IDomainEvent e, IShoppingCart data)
     return data;
 }
 ```
-### Journals
+
+### Storage plugins
+
+#### Journals
 
 Journal is a specialized type of actor which exposes an API to handle incoming events and store them in backend storage. By default Akka.Persitence uses a `MemoryJournal` which stores all events in memory and therefore it's not persistent storage. A custom journal configuration path may be specified inside *akka.persistence.journal.plugin* path and by default it requires two keys set: *class* and *plugin-dispatcher*. Example configuration:
 
@@ -1197,7 +1200,7 @@ akka {
 }
 ```
 
-### Snapshot store
+#### Snapshot store
 
 Snapshot store is a specialized type of actor which exposes an API to handle incoming snapshot-related requests and is able to save snapshots in some backend storage. By default Akka.Persistence uses a `LocalSnapshotStore`, which uses a local file system as storage. A custom snapshot store configuration path may be specified inside *akka.persistence.snapshot-store.plugin* path and by default it requires two keys set: *class* and *plugin-dispatcher*. Example configuration:
 
@@ -1228,6 +1231,28 @@ akka {
 	}
 }
 ```
+
+### Custom serialization
+Serialization of snapshots and payloads of Persistent messages is configurable with Akka's Serialization infrastructure. For example, if an application wants to serialize
+
+- payloads of type MyPayload with a custom MyPayloadSerializer and
+- snapshots of type MySnapshot with a custom MySnapshotSerializer
+
+it must add
+
+```hocon
+akka.actor {
+  serializers {
+    my-payload = "docs.persistence.MyPayloadSerializer"
+    my-snapshot = "docs.persistence.MySnapshotSerializer"
+  }
+  serialization-bindings {
+    "docs.persistence.MyPayload" = my-payload
+    "docs.persistence.MySnapshot" = my-snapshot
+  }
+}
+```
+to the application configuration. If not specified, a default serializer is used.
 
 ### Contributing
 
