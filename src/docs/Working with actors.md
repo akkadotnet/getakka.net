@@ -169,7 +169,7 @@ catch (TimeoutException)
 ## UntypedActor API
 The `UntypedActor` class defines only one abstract method, the above mentioned `OnReceive(object message)`, which implements the behavior of the actor.
 
-If the current actor behavior does not match a received message, it's recommended that you call the unhandled method, which by default publishes a new `Akka.Actor.UnhandledMessage(message, sender, recipient)` on the actor system’s event stream (set configuration item `akka.actor.debug.unhandled` to on to have them converted into actual `Debug` messages).
+If the current actor behavior does not match a received message, it's recommended that you call the unhandled method, which by default publishes a new `Akka.Actor.UnhandledMessage(message, sender, recipient)` on the actor system’s event stream (set configuration item `Unhandled` to on to have them converted into actual `Debug` messages).
 
 In addition, it offers:
 
@@ -188,7 +188,7 @@ This strategy is typically declared inside the actor in order to have access to 
   * parent supervisor
   * supervised children
   * lifecycle monitoring
-  * hotswap behavior stack as described in [HotSwap](hotswap)
+  * hotswap behavior stack as described in [HotSwap](become/unbecome)
 
 The remaining visible methods are user-overridable life-cycle hooks which are described in the following:
 
@@ -199,7 +199,7 @@ public override void PreStart()
 
 protected override void PreRestart(Exception reason, object message)
 {
-    foreach (ActorRef each in Context.GetChildren())
+    foreach (IActorRef each in Context.GetChildren())
     {
       Context.Unwatch(each);
       Context.Stop(each);
@@ -220,13 +220,89 @@ The implementations shown above are the defaults provided by the `UntypedActor` 
 
 ### Actor Lifecycle
 
+![Actor lifecycle](../images/actor_lifecycle.png)
+
+A path in an actor system represents a "place" which might be occupied by a living actor. Initially (apart from system initialized actors) a path is empty. When `ActorOf()` is called it assigns an incarnation of the actor described by the passed `Props` to the given path. An actor incarnation is identified by the path and a UID. A restart only swaps the Actor instance defined by the `Props` but the incarnation and hence the UID remains the same.
+
+The lifecycle of an incarnation ends when the actor is stopped. At that point the appropriate lifecycle events are called and watching actors are notified of the termination. After the incarnation is stopped, the path can be reused again by creating an actor with `ActorOf()`. In this case the name of the new incarnation will be the same as the previous one but the UIDs will differ.
+
+An `IActorRef` always represents an incarnation (path and UID) not just a given path. Therefore if an actor is stopped and a new one with the same name is created an `IActorRef` of the old incarnation will not point to the new one.
+
+`ActorSelection` on the other hand points to the path (or multiple paths if wildcards are used) and is completely oblivious to which incarnation is currently occupying it. `ActorSelection` cannot be watched for this reason. It is possible to resolve the current incarnation's ActorRef living under the path by sending an `Identify` message to the `ActorSelection` which will be replied to with an `ActorIdentity` containing the correct reference (see [Identifying Actors via Actor Selection](identifying-actors-via-actor-selection)). This can also be done with the resolveOne method of the `ActorSelection`, which returns a `Task` of the matching `IActorRef`.
+
 ### Lifecycle Monitoring aka DeathWatch
+In order to be notified when another actor terminates (i.e. stops permanently, not temporary failure and restart), an actor may register itself for reception of the `Terminated` message dispatched by the other actor upon termination (see [Stopping Actors](stopping-actors)). This service is provided by the DeathWatch component of the actor system.
+
+Registering a monitor is easy (see fourth line, the rest is for demonstrating the whole functionality):
+
+```csharp
+public class WatchActor : UntypedActor
+{
+    public WatchActor()
+    {
+        Context.Watch(child);
+    }
+
+    private IActorRef child = Context.ActorOf(Props.Empty, "child");
+    private IActorRef lastSender = Context.System.DeadLetters;
+
+    protected override void OnReceive(object message)
+    {
+        if (message.Equals("kill"))
+        {
+            Context.Stop(child);
+            lastSender = Sender;
+        }
+        else if (message is Terminated)
+        {
+            var t = (Terminated)message;
+
+            if (t.ActorRef.Equals(child))
+            {
+                lastSender.Tell("finished");
+            }
+        }
+        else
+        {
+            Unhandled(message);
+        }
+    }
+}
+```
+
+It should be noted that the `Terminated` message is generated independent of the order in which registration and termination occur. In particular, the watching actor will receive a `Terminated` message even if the watched actor has already been terminated at the time of registration.
+
+Registering multiple times does not necessarily lead to multiple messages being generated, but there is no guarantee that only exactly one such message is received: if termination of the watched actor has generated and queued the message, and another registration is done before this message has been processed, then a second message will be queued, because registering for monitoring of an already terminated actor leads to the immediate generation of the `Terminated` message.
+
+It is also possible to deregister from watching another actor’s liveliness using `Context.Unwatch(target)`. This works even if the Terminated message has already been enqueued in the mailbox; after calling unwatch no `Terminated` message for that actor will be processed anymore.
 
 ### Start Hook
+Right after starting the actor, its `PreStart` method is invoked.
+
+```csharp
+protected override void PreStart()
+{
+    child = Context.ActorOf(Props.Empty);
+}
+```
+
+This method is called when the actor is first created. During restarts it is called by the default implementation of `PostRestart`, which means that by overriding that method you can choose whether the initialization code in this method is called only exactly once for this actor or for every restart. Initialization code which is part of the actor’s constructor will always be called when an instance of the actor class is created, which happens at every restart.
 
 ### Restart Hooks
+All actors are supervised, i.e. linked to another actor with a fault handling strategy. Actors may be restarted in case an exception is thrown while processing a message (see [Supervision and Monitoring](supervision-and-monitoring). This restart involves the hooks mentioned above:
+
+- The old actor is informed by calling `PreRestart` with the exception which caused the restart and the message which triggered that exception; the latter may be None if the restart was not caused by processing a message, e.g. when a supervisor does not trap the exception and is restarted in turn by its supervisor, or if an actor is restarted due to a sibling’s failure. If the message is available, then that message’s sender is also accessible in the usual way (i.e. by calling the `Sender` property).
+  This method is the best place for cleaning up, preparing hand-over to the fresh actor instance, etc. By default it stops all children and calls `PostStop`.
+- The initial factory from the `ActorOf` call is used to produce the fresh instance.
+- The new actor’s `PostRestart` method is invoked with the exception which caused the restart. By default the `PreStart` is called, just as in the normal start-up case.
+
+An actor restart replaces only the actual actor object; the contents of the mailbox is unaffected by the restart, so processing of messages will resume after the `PostRestart` hook returns. The message that triggered the exception will not be received again. Any message sent to an actor while it is being restarted will be queued to its mailbox as usual.
+
+> **Warning**<br/>
+Be aware that the ordering of failure notifications relative to user messages is not deterministic. In particular, a parent might restart its child before it has processed the last messages sent by the child before the failure. See Discussion: [Message Ordering for details](message-delivery-reliability#discussion-message-ordering).
 
 ### Stop Hook
+After stopping an actor, its `PostStop` hook is called, which may be used e.g. for deregistering this actor from other services. This hook is guaranteed to run after message queuing has been disabled for this actor, i.e. messages sent to a stopped actor will be redirected to the `DeadLetters` of the `ActorSystem`.
 
 ## Identifying Actors via Actor Selection
 As described in Actor References, Paths and Addresses, each actor has a unique logical path, which is obtained by following the chain of actors from child to parent until reaching the root of the actor system, and it has a physical path, which may differ if the supervision chain includes any remote supervisors. These paths are used by the system to look up actors, e.g. when a remote message is received and the recipient is searched, but they are also useful more directly: actors may look up other actors by specifying absolute or relative paths—logical or physical—and receive back an `ActorSelection` with the result:
@@ -259,7 +335,7 @@ To acquire an `IActorRef` for an `ActorSelection` you need to send a message to 
 ```csharp
 public class Follower : UntypedActor
 {
-    public Follower(ActorRef probe)
+    public Follower(IActorRef probe)
     {
         var selection = Context.ActorSelection("/user/another");
         selection.Tell(new Identify(identifyId), Self);
@@ -267,8 +343,8 @@ public class Follower : UntypedActor
     }
 
     string identifyId = "1";
-    ActorRef another;
-    ActorRef probe;
+    IActorRef another;
+    IActorRef probe;
 
     protected override void OnReceive(object message)
     {
@@ -281,7 +357,9 @@ public class Follower : UntypedActor
                 var subject = identity.Subject;
 
                 if (subject == null)
+                {
                     Context.Stop(Self);
+                }
                 else
                 {
                     another = subject;
@@ -356,7 +434,7 @@ target.Tell(message, Self);
 The sender reference is passed along with the message and available within the receiving actor via its `Sender` property while processing this message. Inside of an actor it is usually `Self` who shall be the sender, but there can be cases where replies shall be routed to some other actor—e.g. the parent—in which the second argument to `Tell` would be a different one. Outside of an actor and if no reply is needed the second argument can be `null`; if a reply is needed outside of an actor you can use the ask-pattern described next.
 
 ### Ask: Send-And-Receive-Future
-The ask pattern involves actors as well as Tasks, hence it is offered as a use pattern rather than a method on ActorRef:
+The ask pattern involves actors as well as Tasks, hence it is offered as a use pattern rather than a method on `IActorRef`:
 
 ```csharp
 var tasks = new List<Task>();
@@ -683,6 +761,110 @@ static void Main(string[] args)
 ```
 
 ## Stash
+The Stash is a feature you can enable in your actors so they can temporarily stash away messages they cannot or should not handle at the moment. Another way to see it is that stashing allows you to keep processing messages you can handle while saving for later messages you can't.
+
+Stashes are handled by Akka.NET out of the actor instance just like the mailbox, so if the actor dies while processing a message, the stash is preserved. This feature is usually used together with `Become/Unbecome`, as they fit together very well, but this is not a requirement.
+
+### Stash Types
+
+Akka.NET provides two interfaces for stashing:
+
+* `IWithBoundedStash` - a stash with limited storage
+* `IWithUnboundedStash` - a stash with unlimited storage
+
+> **Note:**<br/>
+> As of Akka.NET 1.0, the `Bounded Stash` is not fully implemented, and it will behave just like an `Unbounded Stash`.
+
+### Using the Stash
+
+In order to add a stash to an actor, implement one of the [stash interfaces](#stash-types) in your actor and add the required `Stash` property:
+
+```cs
+public class MyActor : UntypedActor, IWithUnboundedStash
+{
+    public IStash Stash { get; set; }
+}
+
+```
+
+Akka recognizes the interface during actor creation and sets the correct stash in the property.
+
+To use the stash, call the methods on the Stash property:
+
+* `Stash()` - adds the current message to the stash
+* `Unstash()` - unstashes the oldest message in the stash and prepends to the mailbox
+* `UnstashAll()` - unstashes all messages from the mail box and prepends in the mailbox (it keeps the messages in the same order as received, unstashing older messages before newer)
+
+It is illegal to stash the same message twice. Also, calling any of these methods do not interrupt the current message processing. Usually these methods are called as the last thing you do in your *receive logic*, so that the next step is usually processing the next message.
+
+The example below shows how to implement an actor with a protocol behavior. The protocol works as follows:
+
+1. The actor starts as **idle** and can receive only **open** messages
+2. If it receives an **open** message, the actor becomes **open**
+3. While the actor is **open**:
+  - it can only receive messages to **write** or **close**
+  - any other messages are stashed until the connection is closed
+4. If a **close** message is received, the actor unstashes any other requests received while **open** and becomes **idle**
+
+> **Note:** This example requires understanding of [BecomeStacked/UnbecomeStacked](become/unbecome).
+
+```cs
+public class ActorWithProtocol : UntypedActor, IWithUnboundedStash
+{
+    public IStash Stash { get; set; }
+
+    protected override void OnReceive(object message)
+    {
+        // idle
+        if (message.Equals("open"))
+        {
+            // open
+            BecomeStacked(m =>
+            {
+                if (m.Equals("write"))
+                {
+                    // do the writing
+                }
+                else if (m.Equals("close"))
+                {
+                    Stash.UnstashAll();
+                    UnbecomeStacked();
+                }
+                else
+                {
+                    Stash.Stash();
+                }
+            });
+        }
+    }
+}
+```
+
+#### Other use cases
+
+While the above example is very simple, one can imagine the stashing concept being applied to many scenarios:
+
+* An actor that connects to an external server could stash messages while that server is unavailable and unstash them once it comes back online;
+* An actor could stash query requests while it fetches a dataset to produce responses;
+* An actor could decide to reduce it's throughput during peak hours by stashing certain messages and unstashing them at specific intervals to process them in batches instead of real time;
+
+### Advanced
+
+There are some APIs on IStash that are considered **internal** but are exposed publicly for some advanced scenarios. These APIs use `Envelope` object which hold is the way Akka.NET holds messages internally.
+
+* `void Prepend(IEnumerable<Envelope> envelopes)`
+
+  Allows you to prepend messages to the stash (`Stash` method always appends them). This may be used if certain message types should be processed before others during unstash.
+
+* `void UnstashAll(Func<Envelope, bool> predicate)`
+
+  This version of UnstashAll allows you to unstash all messages that match a specific predicate. You may filter messages by sender or content.
+
+  Unstash all messages that match a specific predicate.
+
+* `IEnumerable<Envelope> ClearStash()`
+
+  Clears the stash returning all messages that will be discarded.
 
 ## Killing an Actor
 You can kill an actor by sending a `Kill` message. This will cause the actor to throw a `ActorKilledException`, triggering a failure. The actor will suspend operation and its supervisor will be asked how to handle the failure, which may mean resuming the actor, restarting it or terminating it completely. See [What Supervision Means](supervision#what-supervision-means) for more information.
@@ -690,7 +872,7 @@ You can kill an actor by sending a `Kill` message. This will cause the actor to 
 Use `Kill` like this:
 
 ```csharp
-victim.Tell(Kill.Instance, ActorRef.NoSender);
+victim.Tell(Kill.Instance, ActorRefs.NoSender);
 ```
 
 ## Actors and exceptions
