@@ -11,13 +11,15 @@ Akka.Persistence plugin enables stateful actors to persist their internal state 
 
 Akka.Persistence features are available through new set of actor base classes:
 
-- `ReceivePersistentActor` is a persistent, stateful actor. It is able to persist events to a journal and can react to them in a thread-safe manner. It can be used to implement both command as well as event sourced actors. When a persistent actor is started or restarted, journaled messages are replayed to that actor so that it can recover internal state from these messages.
-- `UntypedPersistentActor` - untyped version of ReceivePersistentActor.
+- `UntypedPersistentActor` - is a persistent, stateful actor. It is able to persist events to a journal and can react to them in a thread-safe manner. It can be used to implement both command as well as event sourced actors. When a persistent actor is started or restarted, journaled messages are replayed to that actor so that it can recover internal state from these messages.
 - `PersistentView` is a persistent, stateful actor that receives journaled messages that have been written by another persistent actor. A view itself does not journal new messages, instead, it updates internal state only from a persistent actor's replicated message stream. Note: PersistentView is deprecated.
-- `AtLeastOnceDeliveryReceiveActor` is an actor which sends messages with at-least-once delivery semantics to destinations, also in case of sender and receiver CLR crashes.
-- `AtLeastOnceDeliveryActor` - untyped version of AtLeastOnceDeliveryReceiveActor.
+- `AtLeastOnceDeliveryActor` - is an actor which sends messages with at-least-once delivery semantics to destinations, also in case of sender and receiver CLR crashes.
 - `AsyncWriteJournal` stores the sequence of messages sent to a persistent actor. An application can control which messages are journaled and which are received by the persistent actor without being journaled. Journal maintains highestSequenceNr that is increased on each message. The storage backend of a journal is pluggable. By default it uses an in-memory message stream and is NOT a persistent storage.
 - `SnapshotStore` is used to persist snapshots of either persistent actor's or view's internal state. They can be used to reduce recovery times in case when a lot of events needs to be replayed for specific persistent actor. Storage backend of the snapshot store is pluggable. By default it uses local file system.
+
+Receive Actors
+- `ReceivePersistentActor` - receive actor version of `UntypedPersistentActor`.
+- `AtLeastOnceDeliveryReceiveActor` - receive actor version of `AtLeastOnceDeliveryActor`.
 
 ### Persistent actors
 
@@ -154,7 +156,7 @@ When persisting events with persist it is guaranteed that the persistent actor w
 
 If persistence of an event fails, `OnPersistFailure` will be invoked (logging the error by default), and the actor will unconditionally be stopped. If persistence of an event is rejected before it is stored, e.g. due to serialization error, `OnPersistRejected` will be invoked (logging a warning by default), and the actor continues with the next message.
 
-> **NOTE:** It's also possible to switch between different command handlers during normal processing and recovery with `Context.Become` and `Context.Unbecome`. To get the actor into the same state after recovery you need to take special care to perform the same state transitions with become and unbecome in the `ReceiveRecover` method as you would have done in the command handler. Note that when using become from `ReceiveRecover` it will still only use the `ReceiveRecover` behavior when replaying the events. When replay is completed it will use the new behavior.
+> NOTE: It's also possible to switch between different command handlers during normal processing and recovery with `Context.Become` and `Context.Unbecome`. To get the actor into the same state after recovery you need to take special care to perform the same state transitions with become and unbecome in the `ReceiveRecover` method as you would have done in the command handler. Note that when using become from `ReceiveRecover` it will still only use the `ReceiveRecover` behavior when replaying the events. When replay is completed it will use the new behavior.
 
 #### Identifiers
 A persistent actor must have an identifier that doesn't change across different actor incarnations. The identifier must be defined with the `PersistenceId` method.
@@ -166,7 +168,7 @@ public override string PersistenceId { get; } = "my-stable-persistence-id";
 #### Recovery
 By default, a persistent actor is automatically recovered on start and on restart by replaying journaled messages. New messages sent to a persistent actor during recovery do not interfere with replayed messages. They are cached and received by a persistent actor after recovery phase completes.
 
-> **NOTE:** Accessing the `Sender` for replayed messages will always result in a deadLetters reference, as the original sender is presumed to be long gone. If you indeed have to notify an actor during recovery in the future, store its `ActorPath` explicitly in your persisted events.
+> NOTE: Accessing the `Sender` for replayed messages will always result in a deadLetters reference, as the original sender is presumed to be long gone. If you indeed have to notify an actor during recovery in the future, store its `ActorPath` explicitly in your persisted events.
 
 ##### Recovery customization
 Applications may also customise how recovery is performed by returning a customised `Recovery` object in the recovery method of a `ReceivePersistentActor`, for example setting an upper bound to the replay which allows the actor to be replayed to a certain point "in the past" instead to its most up to date state:
@@ -233,8 +235,7 @@ You can also query default strategy via the Akka persistence extension singleton
 Context.System.DefaultInternalStashOverflowStrategy
 ```
 
-> **NOTE:** Note
-The bounded mailbox should be avoid in the persistent actor, because it may be discarding the messages come from Storage backends. You can use bounded stash instead of bounded mailbox.
+> NOTE: The bounded mailbox should be avoid in the persistent actor, because it may be discarding the messages come from Storage backends. You can use bounded stash instead of bounded mailbox.
 
 #### Relaxed local consistency requirements and high throughput use-cases
 
@@ -244,12 +245,14 @@ The `PersistAsync` method provides a tool for implementing high-throughput persi
 
 In the below example, the event callbacks may be called "at any time", even after the next Command has been processed. The ordering between events is still guaranteed ("evt-b-1" will be sent after "evt-a-2", which will be sent after "evt-a-1" etc.).
 
+> NOTE: In order to implement the pattern known as "command sourcing" simply `PersistAsync` all incoming messages right away and handle them in the callback.
+
 ```C#
-public class DocumentNestedPersistentActor : ReceivePersistentActor
+public class MyPersistentActor : ReceivePersistentActor
 {
     public override string PersistenceId => "HardCoded";
 
-    public DocumentNestedPersistentActor()
+    public MyPersistentActor()
     {
         Action<string> replyToSender = message =>
         {
@@ -271,9 +274,6 @@ public class DocumentNestedPersistentActor : ReceivePersistentActor
     }
 }
 ```
-
-> **NOTE:** In order to implement the pattern known as "command sourcing" simply `PersistAsync` all incoming messages right away and handle them in the callback.
-
 > **WARNING:** The callback will not be invoked if the actor is restarted (or stopped) in between the call to `PersistAsync` and the journal has confirmed the write.
 
 #### Deferring actions until preceding persist handlers have executed
@@ -282,11 +282,11 @@ Sometimes when working with `PersistAsync` you may find that it would be nice to
 Using this method is very similar to the persist family of methods, yet it does not persist the passed in event. It will be kept in memory and used when invoking the handler.
 
 ```C#
-public class DocumentNestedPersistentActor : ReceivePersistentActor
+public class MyPersistentActor : ReceivePersistentActor
 {
     public override string PersistenceId => "HardCoded";
 
-    public DocumentNestedPersistentActor()
+    public MyPersistentActor()
     {
         Action<string> replyToSender = message =>
         {
@@ -333,11 +333,11 @@ It is possible to call `Persist` and `PersistAsync` inside their respective call
 
 In general it is encouraged to create command handlers which do not need to resort to nested event persisting, however there are situations where it may be useful. It is important to understand the ordering of callback execution in those situations, as well as their implication on the stashing behaviour (that persist enforces). In the following example two persist calls are issued, and each of them issues another persist inside its callback:
 ```C#
-public class DocumentNestedPersistentActor : ReceivePersistentActor
+public class MyPersistentActor : ReceivePersistentActor
 {
     public override string PersistenceId => "HardCoded";
 
-    public DocumentNestedPersistentActor()
+    public MyPersistentActor()
     {
         Action<string> replyToSender = (message) =>
         {
@@ -383,11 +383,11 @@ First the "outer layer" of persist calls is issued and their callbacks are appli
 
 It is also possible to nest `PersistAsync` calls, using the same pattern:
 ```C#
-public class DocumentNestedPersistentActor : ReceivePersistentActor
+public class MyPersistentActor : ReceivePersistentActor
 {
     public override string PersistenceId => "HardCoded";
 
-    public DocumentNestedPersistentActor()
+    public MyPersistentActor()
     {
         Action<string> replyToSender = (message) =>
         {
@@ -490,7 +490,7 @@ The most important operations (Persist and Recovery) have failure handlers model
 
 For critical failures such as recovery or persisting events failing the persistent actor will be stopped after the failure handler is invoked. This is because if the underlying journal implementation is signalling persistence failures it is most likely either failing completely or overloaded and restarting right-away and trying to persist the event again will most likely not help the journal recover – as it would likely cause a Thundering herd problem, as many persistent actors would restart and try to persist their events again. Instead, using a `BackoffSupervisor` (as described in Failures) which implements an exponential-backoff strategy which allows for more breathing room for the journal to recover between restarts of the persistent actor.
 
-> **NOTE:** Journal implementations may choose to implement a retry mechanism, e.g. such that only after a write fails N number of times a persistence failure is signalled back to the user. In other words, once a journal returns a failure, it is considered fatal by Akka Persistence, and the persistent actor which caused the failure will be stopped. Check the documentation of the journal implementation you are using for details if/how it is using this technique.
+> NOTE: Journal implementations may choose to implement a retry mechanism, e.g. such that only after a write fails N number of times a persistence failure is signalled back to the user. In other words, once a journal returns a failure, it is considered fatal by Akka Persistence, and the persistent actor which caused the failure will be stopped. Check the documentation of the journal implementation you are using for details if/how it is using this technique.
 
 #### Safely shutting down persistent actors
 
@@ -694,9 +694,28 @@ public override Recovery Recovery
 
 If not specified, they default to `SnapshotSelectionCriteria.Latest` which selects the latest (= youngest) snapshot. To disable snapshot-based recovery, applications should use `SnapshotSelectionCriteria.None`. A recovery where no saved snapshot matches the specified `SnapshotSelectionCriteria` will replay all journaled messages.
 
+#### Snapshot deletion
+
+A persistent actor can delete individual snapshots by calling the `DeleteSnapshot` method with the sequence number of when the snapshot was taken.
+
+To bulk-delete a range of snapshots matching `SnapshotSelectionCriteria`, persistent actors should use the `DeleteSnapshots` method.
+
+#### Snapshot status handling
+Saving or deleting snapshots can either succeed or fail – this information is reported back to the persistent actor via status messages as illustrated in the following table.
+
+|Method	         | Success                |	Failure message
+|------          |------                  |------
+|SaveSnapshot    | SaveSnapshotSuccess    |	SaveSnapshotFailure
+|DeleteSnapshot  | DeleteSnapshotSuccess  |	DeleteSnapshotFailure
+|DeleteSnapshots | DeleteSnapshotsSuccess | DeleteSnapshotsFailure
+
+If failure messages are left unhandled by the actor, a default warning log message will be logged for each incoming failure message. No default action is performed on the success messages, however you're free to handle them e.g. in order to delete an in memory representation of the snapshot, or in the case of failure to attempt save the snapshot again.
+
 ### At-Least-Once Delivery
 
-At-Least-Once Delivery actors are specializations of persistent actors and may be used to provide [at-least-once](concepts/message-delivery-reliability#discussion-what-does-at-most-once-mean-) delivery semantics, even in cases where one of the communication endpoints crashes. Because it's possible that the same message will be send twice, actor's receive behavior must work in the idempotent manner.
+To send messages with at-least-once delivery semantics to destinations you can mix-in `AtLeastOnceDelivery` class to your `PersistentActor` on the sending side. It takes care of re-sending messages when they have not been confirmed within a configurable timeout.
+
+The state of the sending actor, including which messages have been sent that have not been confirmed by the recepient must be persistent so that it can survive a crash of the sending actor or CLR. The `AtLeastOnceDelivery` class does not persist anything by itself. It is your responsibility to persist the intent that a message is sent and that a confirmation has been received.
 
 Members:
 
@@ -819,7 +838,343 @@ After a number of delivery attempts a `UnconfirmedWarning` message will be sent 
 
 The `AtLeastOnceDeliveryReceiveActor` class holds messages in memory until their successful delivery has been confirmed. The maximum number of unconfirmed messages that the actor is allowed to hold in memory is defined by the `MaxUnconfirmedMessages` method. If this limit is exceed the deliver method will not accept more messages and it will throw `MaxUnconfirmedMessagesExceededException`. The default value can be configured with the *akka.persistence.at-least-once-delivery.max-unconfirmed-messages* configuration key. The method can be overridden by implementation classes to return non-default values.
 
-### Journals
+### Event adapters
+In long running projects using event sourcing sometimes the need arises to detach the data model from the domain model completely.
+
+Event Adapters help in situations where:
+
+- **Version Migrations** – existing events stored in Version 1 should be "upcasted" to a new Version 2 representation, and the process of doing so involves actual code, not just changes on the serialization layer. For these scenarios the toJournal function is usually an identity function, however the fromJournal is implemented as `v1.Event=>v2.Event`, performing the neccessary mapping inside the `FromJournal` method. This technique is sometimes refered to as "upcasting" in other CQRS libraries.
+- **Separating Domain and Data models** – thanks to EventAdapters it is possible to completely separate the domain model from the model used to persist data in the Journals. For example one may want to use case classes in the domain model, however persist their protocol-buffer (or any other binary serialization format) counter-parts to the Journal. A simple `ToJournal:MyModel=>MyDataModel` and `FromJournal:MyDataModel=>MyModel` adapter can be used to implement this feature.
+- **Journal Specialized Data Types** – exposing data types understood by the underlying Journal, for example for data stores which understand JSON it is possible to write an EventAdapter `ToJournal:object=>JSON` such that the Journal can directly store the json instead of serializing the object to its binary representation.
+
+```C#
+public class MyEventAdapter : IEventAdapter
+{
+    public string Manifest(object evt)
+    {
+        return string.Empty; // when no manifest needed, return ""
+    }
+
+    public object ToJournal(object evt)
+    {
+        return evt; // identity
+    }
+
+    public IEventSequence FromJournal(object evt, string manifest)
+    {
+        return EventSequence.Single(evt); // identity
+    }
+}
+```
+Then in order for it to be used on events coming to and from the journal you must bind it using the below configuration syntax:
+```hocon
+akka.persistence.journal {
+	<journal_identifier> {
+		event-adapters {
+			tagging = "<fully qualified event adapter type name with assembly>"
+			v1 = "<fully qualified event adapter type name with assembly>"
+			v2 = "<fully qualified event adapter type name with assembly>"
+		}
+
+		event-adapter-bindings {
+			"<fully qualified event type name with assembly>" = v1
+			"<fully qualified event type name with assembly>" = [v2, tagging]
+		}
+	}
+}
+```
+It is possible to bind multiple adapters to one class for recovery, in which case the `FromJournal` methods of all bound adapters will be applied to a given matching event (in order of definition in the configuration). Since each adapter may return from 0 to n adapted events (called as `EventSequence`), each adapter can investigate the event and if it should indeed adapt it return the adapted event(s) for it. Other adapters which do not have anything to contribute during this adaptation simply return `EventSequence.Empty`. The adapted events are then delivered in-order to the `PersistentActor` during replay.
+
+### Persistent FSM
+
+`PersistentFSM` handles the incoming messages in an FSM like fashion. Its internal state is persisted as a sequence of changes, later referred to as domain events. Relationship between incoming messages, FSM's states and transitions, persistence of domain events is defined by a DSL.
+
+> **Warning** PersistentFSM is marked as “experimental”.
+
+#### A Simple Example
+
+To demonstrate the features of the `PersistentFSM` class, consider an actor which represents a Web store customer. The contract of our "`WebStoreCustomerFSMActor`" is that it accepts the following commands:
+
+```C#
+public interface ICommand
+{
+}
+
+public class AddItem : ICommand
+{
+    public AddItem(Item item)
+    {
+        Item = item;
+    }
+
+    public Item Item { get; set; }
+}
+
+public class Buy : ICommand
+{
+}
+
+public class Leave : ICommand
+{
+}
+
+public class GetCurrentCart : ICommand
+{
+}
+```
+
+`AddItem` sent when the customer adds an item to a shopping cart `Buy` - when the customer finishes the purchase `Leave` - when the customer leaves the store without purchasing anything `GetCurrentCart` allows to query the current state of customer's shopping cart
+
+The customer can be in one of the following states:
+```C#
+public enum UserState
+{
+    Shopping,
+    Inactive,
+    Paid,
+    LookingAround
+}
+```
+`LookingAround` customer is browsing the site, but hasn't added anything to the shopping cart `Shopping` customer has recently added items to the shopping cart `Inactive` customer has items in the shopping cart, but hasn't added anything recently `Paid` customer has purchased the items
+
+Customer's actions are "recorded" as a sequence of "domain events" which are persisted. Those events are replayed on an actor's start in order to restore the latest customer's state:
+
+```C#
+public interface IDomainEvent
+{
+}
+
+public class ItemAdded : IDomainEvent
+{
+    public ItemAdded(Item item)
+    {
+        Item = item;
+    }
+
+    public Item Item { get; set; }
+}
+
+public class OrderExecuted : IDomainEvent
+{
+}
+
+public class OrderDiscarded : IDomainEvent
+{
+}
+```
+
+Customer state data represents the items in a customer's shopping cart:
+
+```C#
+public class Item
+{
+    public Item(string id, string name, double price)
+    {
+        Id = id;
+        Name = name;
+        Price = price;
+    }
+
+    public string Id { get; set; }
+
+    public string Name { get; set; }
+
+    public double Price { get; set; }
+}
+ 
+public interface IShoppingCart
+{
+    ICollection<Item> Items { get; set; }
+
+    IShoppingCart AddItem(Item item);
+
+    IShoppingCart Empty();
+}
+
+public class EmptyShoppingCart : IShoppingCart
+{
+    public IShoppingCart AddItem(Item item)
+    {
+        return new NonEmptyShoppingCart(item);
+    }
+
+    public IShoppingCart Empty()
+    {
+        return this;
+    }
+
+    public ICollection<Item> Items { get; set; }
+}
+
+public class NonEmptyShoppingCart : IShoppingCart
+{
+    public NonEmptyShoppingCart(Item item)
+    {
+        Items = new List<Item>();
+        Items.Add(item);
+    }
+
+    public IShoppingCart AddItem(Item item)
+    {
+        Items.Add(item);
+        return this;
+    }
+
+    public IShoppingCart Empty()
+    {
+        return new EmptyShoppingCart();
+    }
+
+    public ICollection<Item> Items { get; set; }
+}
+```
+
+Side-effects:
+```C#
+internal interface IReportEvent
+{
+}
+
+internal class PurchaseWasMade : IReportEvent
+{
+}
+
+internal class ShoppingCardDiscarded : IReportEvent
+{
+}
+```
+
+Here is how everything is wired together:
+```C#
+StartWith(UserState.LookingAround, new EmptyShoppingCart());
+
+When(UserState.LookingAround, (e, state) =>
+{
+    if (e.FsmEvent is AddItem)
+    {
+        var addItem = (AddItem)e.FsmEvent;
+        return
+            GoTo(UserState.Shopping)
+                .Applying(new ItemAdded(addItem.Item))
+                .ForMax(TimeSpan.FromSeconds(1));
+    }
+
+    if (e.FsmEvent is GetCurrentCart)
+    {
+        return Stay().Replying(e.StateData);
+    }
+
+    return state;
+});
+
+When(UserState.Shopping, (e, state) =>
+{
+    if (e.FsmEvent is AddItem)
+    {
+        var addItem = (AddItem)e.FsmEvent;
+        return Stay().Applying(new ItemAdded(addItem.Item)).ForMax(TimeSpan.FromSeconds(1));
+    }
+
+    if (e.FsmEvent is Buy)
+    {
+        return
+            GoTo(UserState.Paid)
+                .Applying(new OrderExecuted())
+                .AndThen(cart =>
+                {
+                    if (cart is NonEmptyShoppingCart)
+                    {
+                        _reportActor.Tell(new PurchaseWasMade());
+                    }
+                });
+    }
+
+    if (e.FsmEvent is Leave)
+    {
+        return
+            Stop()
+                .Applying(new OrderDiscarded())
+                .AndThen(cart => _reportActor.Tell(new ShoppingCardDiscarded()));
+    }
+
+    if (e.FsmEvent is GetCurrentCart)
+    {
+        return Stay().Replying(e.StateData);
+    }
+
+    if (e.FsmEvent is StateTimeout)
+    {
+        return GoTo(UserState.Inactive).ForMax(TimeSpan.FromSeconds(2));
+    }
+
+    return state;
+});
+
+When(UserState.Inactive, (e, state) =>
+{
+    if (e.FsmEvent is AddItem)
+    {
+        var addItem = (AddItem)e.FsmEvent;
+        return
+            GoTo(UserState.Shopping)
+                .Applying(new ItemAdded(addItem.Item))
+                .ForMax(TimeSpan.FromSeconds(1));
+    }
+
+    if (e.FsmEvent is GetCurrentCart)
+    {
+        return
+            Stop()
+                .Applying(new OrderDiscarded())
+                .AndThen(cart => _reportActor.Tell(new ShoppingCardDiscarded()));
+    }
+
+    return state;
+});
+
+When(UserState.Paid, (e, state) =>
+{
+    if (e.FsmEvent is Leave)
+    {
+        return Stop();
+    }
+
+    if (e.FsmEvent is GetCurrentCart)
+    {
+        return Stay().Replying(e.StateData);
+    }
+
+    return state;
+});
+```
+> Note: State data can only be modified directly on initialization. Later it's modified only as a result of applying domain events. Override the `ApplyEvent` method to define how state data is affected by domain events, see the example below
+
+```C#
+protected override IShoppingCart ApplyEvent(IDomainEvent e, IShoppingCart data)
+{
+    if (e is ItemAdded)
+    {
+        var itemAdded = (ItemAdded)e;
+        return data.AddItem(itemAdded.Item);
+    }
+
+    if (e is OrderExecuted)
+    {
+        return data;
+    }
+
+    if (e is OrderDiscarded)
+    {
+        return data.Empty();
+    }
+
+    return data;
+}
+```
+
+### Storage plugins
+
+#### Journals
 
 Journal is a specialized type of actor which exposes an API to handle incoming events and store them in backend storage. By default Akka.Persitence uses a `MemoryJournal` which stores all events in memory and therefore it's not persistent storage. A custom journal configuration path may be specified inside *akka.persistence.journal.plugin* path and by default it requires two keys set: *class* and *plugin-dispatcher*. Example configuration:
 
@@ -845,7 +1200,7 @@ akka {
 }
 ```
 
-### Snapshot store
+#### Snapshot store
 
 Snapshot store is a specialized type of actor which exposes an API to handle incoming snapshot-related requests and is able to save snapshots in some backend storage. By default Akka.Persistence uses a `LocalSnapshotStore`, which uses a local file system as storage. A custom snapshot store configuration path may be specified inside *akka.persistence.snapshot-store.plugin* path and by default it requires two keys set: *class* and *plugin-dispatcher*. Example configuration:
 
@@ -877,34 +1232,27 @@ akka {
 }
 ```
 
-### Event adapters
+### Custom serialization
+Serialization of snapshots and payloads of Persistent messages is configurable with Akka's Serialization infrastructure. For example, if an application wants to serialize
 
-Event adapters are an intermediate layer on top of your journal, that allows to produce different data model depending on stored/recovered event type. It's especially useful in situations like:
+- payloads of type MyPayload with a custom MyPayloadSerializer and
+- snapshots of type MySnapshot with a custom MySnapshotSerializer
 
-- **Event versioning** - since events may change their structure over the course of time, you may specify custom event adapter that will deal with mapping obsolete data types accordingly to current business logic.
-- **Separation of domain model from stored data** in cases when such separation is necessary.
-- **Utilization of persistent backend specific data types** as they allow transition between data understood by actors and specialized format allowed by datastores. Examples of such may be: BSON in MongoDb or JSON data type in PostgreSQL.
+it must add
 
-For custom event adapter simply create class implementing `IEventAdapter` interface. It's required, that it should either expose parameterless constructor or the one that has `ExtendedActorSystem` as its only argument. Then in order to use it, you'll need to register it and bind to a particular type of events using HOCON configuration - type assignability rules applies here and the most specific types have precedence over the more general ones:
-
-```
-akka.persistence.journal {
-	<journal_identifier> {
-		event-adapters {
-			tagging = "<fully qualified event adapter type name with assembly>"
-			v1 = "<fully qualified event adapter type name with assembly>"
-			v2 = "<fully qualified event adapter type name with assembly>"
-		}
-
-		event-adapter-bindings {
-			"<fully qualified event type name with assembly>" = v1
-			"<fully qualified event type name with assembly>" = [v2, tagging]
-		}
-	}
+```hocon
+akka.actor {
+  serializers {
+    my-payload = "docs.persistence.MyPayloadSerializer"
+    my-snapshot = "docs.persistence.MySnapshotSerializer"
+  }
+  serialization-bindings {
+    "docs.persistence.MyPayload" = my-payload
+    "docs.persistence.MySnapshot" = my-snapshot
+  }
 }
 ```
-
-Multiple event adapters may be applied to a single type (for recovery). If that is the case, their order will match order of the definition in *event-adapter-bindings* config section. For write side, each adapter may decide to return none, one or many adapted event for each single event provided as an input. In case of multiple adapters attached, each one of them may decide to return its own set of adapted events. They all will be stored in the same order corresponding to adapters order.
+to the application configuration. If not specified, a default serializer is used.
 
 ### Contributing
 
