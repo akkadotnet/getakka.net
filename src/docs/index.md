@@ -58,6 +58,18 @@ title: Akka.NET Documentation
 - [Dependency injection](Dependency injection)
 - [Routers](working-with-actors/Routers)
 
+### Akka.Persistence
+- [Architecture] (persistence/architecture)
+- [Persistence Actors] (persistence/persistent-actors)
+- [Persistence Views] (persistence/persistent-views)
+- [Snapshots] (persistence/snapshots)
+- [At-Least-Once Delivery] (persistence/at-least-once-delivery)
+- [Event Adapters] (persistence/event-adapters)
+- [Persistent FSM] (persistence/persistent-fsm)
+- [Storage plugins] (persistence/storage-plugins)
+- [Custom serialization] (persistence/custom-serialization)
+- [Contributing] (persistence/contributing)
+
 ### Akka.Remote
 - [Akka.Remote Overview](remoting/)
     - [Use Cases](remoting/#use-cases)
