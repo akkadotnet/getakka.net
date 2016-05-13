@@ -145,7 +145,6 @@ title: Akka.NET Documentation
 	- [Materialized values](streams/reactivetweets#materialized-values)
 - [Design Principles behind Akka Streams](streams/designprinciples)
 	- [What shall users of Akka Streams expect?](streams/designprinciples#what-shall-users-of-akka-streams-expect)
-	- [Interoperation with other Reactive Streams implementations](streams/designprinciples#interoperation-with-other-reactive-streams-implemenations)
 	- [What shall users of streaming libraries expect?](streams/designprinciples#what-shall-users-of-streaming-libraries-expect)
 	- [The difference between Error and Failure](streams/designprinciples#the-difference-between-Error-and-Failure)
 - [Basics and working with Flows](streams/basics)
@@ -185,7 +184,6 @@ title: Akka.NET Documentation
 	- [Supervision Strategies](streams/error-handling#supervision-strategies)
 	- [Errors from SelectAsync](streams/error-handling#errors-from-selectasync)
 - [Working with streaming IO](streams/workingwithstreamingio)
-	- [Streaming TCP](streams/workingwithstreamingio#streaming-tcp)
 	- [Streaming File IO](streams/workingwithstreamingio#streaming-file-io) 
 - [Pipelining and Parallelism](streams/pipeliningandparallelism)
 	- [Pipelining](streams/pipeliningandparallelism#pipelining)
@@ -215,7 +213,6 @@ title: Akka.NET Documentation
 	- [Working with Flows](streams/cookbook#working-with-flows)
 	- [Working with Graphs](streams/cookbook#working-with-graphs)
 	- [Working with Rate](streams/cookbook#working-with-rate)
-	- [Working with IO](streams/cookbook#working-with-io)
 - [Configuration](streams/configuration)
 
 ### Testing
