@@ -35,3 +35,17 @@ Azure Table and Blob Storage backend for Akka.NET persistent actors.
 ##### [Akka.Persistence.OracleManaged](https://github.com/DamianReeves/Akka.Persistence.OracleManaged)
 
 Oracle database backend for Akka.NET persistent actors.
+
+##### [Wire](https://github.com/akkadotnet/Wire)
+
+A high performance polymorphic serializer for the .NET framework.
+
+##### [Akka.Cluster.Monitor](https://github.com/cgstevens/Akka.Cluster.Monitor)
+
+Example Windows Form and Website that displays the current and unreachable members as well as who the member is seenby within an Akka Cluster. Also demonstrates how the following frameworks give you a real-time monitoring application; Akka .Net, TopShelf, MVC, WebApi, SignalR and AngularJS.
+
+##### [Akka.Cluster.Utility](https://github.com/SaladLab/Akka.Cluster.Utility)
+
+This library provides small utilities that might be useful to write a program with Akka.Cluster.
+
+
