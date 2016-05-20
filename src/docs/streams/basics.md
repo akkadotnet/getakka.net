@@ -304,9 +304,9 @@ boundaries manually into your flows and graphs by way of adding ``Attributes.Asy
 asynchronous fashion.  
 
 ```csharp
-var asyncGraph = Source.From(new[] {1, 2, 3})
-    .Select(x => x + 1).Async();
-Source.FromGraph(asyncGraph)
+Source.From(new[] {1, 2, 3})
+    .Select(x => x + 1)
+    .Async()
     .Select(x => x*2)
     .To(Sink.Ignore<int>());
 ```

@@ -46,7 +46,7 @@ and each circle corresponds to either a `Junction` or a `Source` or `Sink` if it
 or ending a `Flow`. Junctions must always be created with defined type parameters.  
 
 ```csharp
-var g = RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(builder =>
+var g = RunnableGraph.FromGraph(GraphDsl.Create(builder =>
 {
 	var source = Source.From(Enumerable.Range(1, 10));
 	var sink = Sink.Ignore<int>().MapMaterializedValue(_ => NotUsed.Instance);
@@ -125,7 +125,7 @@ Let's imagine we want to provide users with a specialized element that given 3 i
 the greatest int value of each zipped triple. We'll want to expose 3 input ports (unconnected sources) and one output port (unconnected sink).
 
 ```csharp
-var pickMaxOfThree = GraphDsl.Create<UniformFanInShape<int, int>, int>(b =>
+var pickMaxOfThree = GraphDsl.Create(b =>
 {
 	var zip1 = b.Add(ZipWith.Apply<int, int, int>(Math.Max));
 	var zip2 = b.Add(ZipWith.Apply<int, int, int>(Math.Max));
@@ -188,7 +188,7 @@ Refer to the example below, in which we create a Source that zips together two n
 construction in action:
 
 ```csharp
-var pairs = Source.FromGraph(GraphDsl.Create<SourceShape<Tuple<int, int>>, Task<Tuple<int, int>>>(b =>
+var pairs = Source.FromGraph(GraphDsl.Create(b =>
 {
 	// prepare graph elements
 	var zip = b.Add(new Zip<int, int>());
@@ -212,7 +212,7 @@ must be an ``Inlet<T>``. For defining a ``Flow<T>`` we need to expose both an in
 
 ```csharp
 var pairUpWithToString = Flow.FromGraph(
-	GraphDsl.Create<FlowShape<int, Tuple<int, string>>, Task<Tuple<int, string>>>(b =>
+	GraphDsl.Create(b =>
 	{
 		// prepare graph elements
 		var broadcast = b.Add(new Broadcast<int>(2));
@@ -345,7 +345,7 @@ public static class PriorityWorkerPool
 	public static IGraph<PriorityWorkerPoolShape<TIn, TOut>, NotUsed> Create<TIn, TOut>(
 		Flow<TIn, TOut, NotUsed> worker, int workerCount)
 	{
-		return GraphDsl.Create<PriorityWorkerPoolShape<TIn, TOut>, NotUsed>(b =>
+		return GraphDsl.Create(b =>
 		{
 			var priorityMerge = b.Add(new MergePreferred<TIn>(1));
 			var balance = b.Add(new Balance<TIn>(workerCount));
@@ -377,7 +377,7 @@ using ``Add()`` twice.
 var worker1 = Flow.Create<string>().Select(s => "step 1 " + s);
 var worker2 = Flow.Create<string>().Select(s => "step 2 " + s);
 
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(b =>
+RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
 	Func<string, Source<string, NotUsed>> createSource = desc =>
 		Source.From(Enumerable.Range(1, 100))
@@ -460,7 +460,7 @@ public static IMessage FromBytes(ByteString bytes)
 }
 
 var codecVerbose =
-  BidiFlow.FromGraph(GraphDsl.Create<BidiShape<IMessage, ByteString, ByteString, IMessage>, NotUsed>(b =>
+  BidiFlow.FromGraph(GraphDsl.Create(b =>
   {
       // construct and add the top flow, going outbound
       var outbound = b.Add(Flow.Create<IMessage>().Select(ToBytes));
@@ -610,7 +610,7 @@ public class FrameParser : GraphStage<FlowShape<ByteString, ByteString>>
 
 var framing =
     BidiFlow.FromGraph(
-        GraphDsl.Create<BidiShape<ByteString, ByteString, ByteString, ByteString>, NotUsed>(b =>
+        GraphDsl.Create(b =>
         {
             var order = ByteOrder.LittleEndian;
 
@@ -705,7 +705,7 @@ The graph DSL allows the connection methods to be reversed, which is particularl
 
 ```csharp
 // WARNING! The graph below deadlocks!
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(b =>
+RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
     var merge = b.Add(new Merge<int>(2));
     var broadcast = b.Add(new Broadcast<int>(2));
@@ -741,7 +741,7 @@ that the elements in the cycles can flow.
 
 ```csharp
 // WARNING! The graph below stops consuming from "source" after a few steps
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(b =>
+RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
     var merge = b.Add(new MergePreferred<int>(1));
     var broadcast = b.Add(new Broadcast<int>(2));
@@ -768,7 +768,7 @@ To make our cycle both live (not deadlocking) and fair we can introduce a droppi
 case we chose the ``Buffer()`` operation giving it a dropping strategy ``OverflowStrategy.DropHead``.
 
 ```csharp
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(b =>
+RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
     var merge = b.Add(new Merge<int>(2));
     var broadcast = b.Add(new Broadcast<int>(2));
@@ -806,7 +806,7 @@ we maintain the balance of elements.
 
 ```csharp
 // WARNING! The graph below never processes any elements
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(b =>
+RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
     var zip = b.Add(ZipWith.Apply<int, int, int>(Keep.Right));
     var broadcast = b.Add(new Broadcast<int>(2));
@@ -837,7 +837,7 @@ element into the cycle that is independent from ``source``. We do this by using 
 arc that injects a single element using ``Source.Single``.
 
 ```csharp
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(b =>
+RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
     var zip = b.Add(ZipWith.Apply<int, int, int>(Keep.Right));
     var broadcast = b.Add(new Broadcast<int>(2));
