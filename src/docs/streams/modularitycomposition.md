@@ -80,12 +80,12 @@ var nestedFlow =
         .Select(x => x - 2) // another atomic processing stage
         .Named("nestedFlow"); // wraps up the Flow, and gives it a name
 
-var nestedSink = Flow.FromGraph(nestedFlow)
+var nestedSink = nestedFlow
     .To(Sink.Aggregate<int, int>(0, (sum, x) => sum + x)) // wire an atomic sink to the nestedFlow
     .Named("nestedSink"); // wrap it up
 
 // Create a RunnableGraph
-var runnableGraph = Source.FromGraph(nestedSource).To(nestedSink);
+var runnableGraph = nestedSource.To(nestedSink);
 ```
 
 Once we have hidden the internals of our components, they act like any other built-in component of similar shape. If
@@ -99,7 +99,7 @@ snippet below demonstrates.
 
 ```csharp
 // Create a RunnableGraph
-var runnableGraph = Source.FromGraph(nestedSource).To(nestedSink);
+var runnableGraph = nestedSource.To(nestedSink);
 
 // Usage is uniform, no matter if modules are composite or atomic
 var runnableGraph2 = Source.Single(0).To(Sink.Aggregate<int, int>(0, (sum, x) => sum + x));
@@ -123,7 +123,7 @@ directed and non-directed cycles. The ``Runnable()`` method of the `GraphDSL` ob
 general, closed, and runnable graph. For example the network on the diagram can be realized like this:
 
 ```csharp
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(builder =>
+RunnableGraph.FromGraph(GraphDsl.Create(builder =>
 {
     var a = builder.Add(Source.Single(0)).Outlet;
     var b = builder.Add(new Broadcast<int>(2));
@@ -147,7 +147,7 @@ and we imported `Source` s, `Sink` s and `Flow` s explicitly. It is possible to 
 explicitly, and it is not necessary to import our linear stages via ``Add()``, so another version might look like this:
 
 ```csharp
-RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(builder =>
+RunnableGraph.FromGraph(GraphDsl.Create(builder =>
 {
     var b = builder.Add(new Broadcast<int>(2));
     var c = builder.Add(new Merge<int>(2));
@@ -181,7 +181,7 @@ from the previous example, what remains is a partial graph:
 We can recreate a similar graph in code, using the DSL in a similar way than before:
 
 ```csharp
-var partial = GraphDsl.Create<FlowShape<int, int>, NotUsed>(builder =>
+var partial = GraphDsl.Create(builder =>
 {
     var b = builder.Add(new Broadcast<int>(2));
     var c = builder.Add(new Merge<int>(2));
@@ -229,7 +229,7 @@ The code version of the above closed graph might look like this:
 var flow = Flow.FromGraph(partial);
 
 // Simple way to create a graph backed Source
-var source = Source.FromGraph(GraphDsl.Create<SourceShape<int>, NotUsed>(b =>
+var source = Source.FromGraph(GraphDsl.Create(b =>
 {
     var merge = b.Add(new Merge<int>(2));
 
@@ -241,7 +241,7 @@ var source = Source.FromGraph(GraphDsl.Create<SourceShape<int>, NotUsed>(b =>
 }));
 
 // Building a Sink with a nested Flow, using the fluid DSL
-var nestedFlow = Flow.FromGraph(Flow.Create<int>().Select(x => x*2).Skip(10).Named("nestedFlow"));
+var nestedFlow = Flow.Create<int>().Select(x => x*2).Skip(10).Named("nestedFlow");
 var sink = nestedFlow.To(Sink.First<int>());
 
 // Putting all together
@@ -256,7 +256,7 @@ be embedded in graphs. In the following snippet we embed one closed graph in ano
 
 ```csharp
 var closed1 = Source.Single(0).To(Sink.ForEach<int>(Console.WriteLine));
-var closed2 = RunnableGraph.FromGraph(GraphDsl.Create<ClosedShape, NotUsed>(b =>
+var closed2 = RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
     var embeddedClosed = b.Add(closed1);
     // …
@@ -342,7 +342,7 @@ we use ``Keep.Both`` to get a `Tuple` of them as the materialized type of ``nest
 var sink = Sink.Aggregate<ByteString, string>("", (agg, s) => agg + s.DecodeString());
 
 // Materializes to (Task<OutgoingConnection>, Task<String>)     (blue)
-var nestedSink = Flow.FromGraph(nestedFlow).ToMaterialized(sink, Keep.Both);
+var nestedSink = nestedFlow.ToMaterialized(sink, Keep.Both);
 ```
 
 As the last example, we wire together ``nestedSource`` and ``nestedSink`` and we use a custom combiner function to
@@ -365,7 +365,7 @@ public sealed class MyClass
 }
 
 // Materializes to Task<MyClass>        (purple)
-var runnableGraph = Source.FromGraph(nestedSource).ToMaterialized(nestedSink, (completion, rest) =>
+var runnableGraph = nestedSource.ToMaterialized(nestedSink, (completion, rest) =>
 {
     var connectionTask = rest.Item1;
     return connectionTask.ContinueWith(task => new MyClass(completion, task.Result));
@@ -397,7 +397,7 @@ var nestedFlow =
         // override
         .Named("nestedFlow"); // Wrap, no inputBuffer set
 
-var nestedSink = Flow.FromGraph(nestedFlow)
+var nestedSink = nestedFlow
     .To(Sink.Aggregate<int, int>(0, (sum, i) => sum + i)) // wire an atomic sink to the nestedFlow
     .WithAttributes(Attributes.CreateName("nestedSink").And(Attributes.CreateInputBuffer(3, 3))); // override
 ```
