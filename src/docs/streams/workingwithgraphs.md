@@ -406,13 +406,13 @@ A graph topology that is often useful is that of two flows going in opposite dir
  * A bidirectional flow of elements that consequently has two inputs and two
  * outputs, arranged like this:
  *
- * {{{
+ * 
  *        +------+
  *  In1 ~>|      |~> Out1
  *        | bidi |
  * Out2 <~|      |<~ In2
  *        +------+
- * }}}
+ * 
  */
 public sealed class BidiShape<TIn1, TOut1, TIn2, TOut2> : Shape
 {
