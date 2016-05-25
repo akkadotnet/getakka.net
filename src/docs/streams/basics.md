@@ -1,4 +1,4 @@
-﻿---
+---
 layout: docs.hbs
 title: Basics and working with Flows
 ---
