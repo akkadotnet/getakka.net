@@ -40,7 +40,8 @@ akka.stream.materializer.max-input-buffer-size = 16
 ```
 Alternatively they can be set by passing a `ActorMaterializerSettings` to the materializer:
 ```csharp
-var materializer = ActorMaterializer.Create(system, ActorMaterializerSettings.Create(system).WithInputBuffer(64, 64));
+var materializer = ActorMaterializer.Create(system, 
+ActorMaterializerSettings.Create(system).WithInputBuffer(64, 64));
 ```
 If the buffer size needs to be set for segments of a Flow only, it is possible by defining a separate Flow with these attributes:
 
@@ -57,20 +58,21 @@ var flow = Flow.FromGraph(section)
 Here is an example of a code that demonstrate some of the issues caused by internal buffers:
 ```csharp
 RunnableGraph.FromGraph(GraphDsl.Create(b => {
-                    // this is the asynchronous stage in this graph
-                    var zipper = b.Add(ZipWith.Apply<Tick,int,int>((tick, count) => count).Async());
+	// this is the asynchronous stage in this graph
+	var zipper = b.Add(ZipWith.Apply<Tick,int,int>((tick, count) => count).Async());
 
-                    var s = b.Add(Source.Tick(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), new Tick()));
-                    b.From(s).To(zipper.In0);
+	var s = b.Add(Source.Tick(TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(3), new Tick()));
+	b.From(s).To(zipper.In0);
 
-                    var s2 = b.Add(Source.Tick(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), "message!")
-                        .ConflateWithSeed(seed => 1, (count, _) => count + 1));
-                    
-                    b.From(s2).To(zipper.In1);
+	var s2 = b.Add(Source.Tick(TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1), "message!")
+		.ConflateWithSeed(seed => 1, (count, _) => count + 1));
+	
+	b.From(s2).To(zipper.In1);
 
-                    b.From(zipper.Out).To(Sink.ForEach<int>(i => Console.WriteLine($"test: {i}")).MapMaterializedValue(_ => NotUsed.Instance));
-                   
-                    return ClosedShape.Instance;
+	b.From(zipper.Out).To(Sink.ForEach<int>(i => Console.WriteLine($"test: {i}"))
+		.MapMaterializedValue(_ => NotUsed.Instance));
+   
+	return ClosedShape.Instance;
                 }));
 ```
 Running the above example one would expect the number 3 to be printed in every 3 seconds (the `conflateWithSeed` step here is configured so that it counts the number of elements received before the downstream `ZipWith` consumes them). What is being printed is different though, we will see the number 1. The reason for this is the internal buffer which is by default 16 elements large, and prefetches elements before the `ZipWith` starts consuming them. It is possible to fix this issue by changing the buffer size of `ZipWith` (or the whole graph) to 1. We will still see a leading 1 though which is caused by an initial prefetch of the `ZipWith` element.
@@ -116,11 +118,11 @@ Below is an example snippet that summarizes fast stream of elements to a standar
   var statsFlow = Flow.Create<double>()
                     .ConflateWithSeed(_ => ImmutableList.Create(_), (agg, acc) => agg.Add(acc))
                     .Select(s => {
-                        var µ = s.Sum()/s.Count();
+                        var u = s.Sum()/s.Count();
 
-                        var se = s.Select(x => Math.Pow(x - µ, 2));
+                        var se = s.Select(x => Math.Pow(x - u, 2));
                         var s = Math.Sqrt(se.Sum()/ se.Count());
-                        return new { s , µ , size=s.Count()};
+                        return new { s , u , size=s.Count()};
                     });
 ```
 

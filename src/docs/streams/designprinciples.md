@@ -40,10 +40,10 @@ We expect libraries to be built on top of Akka Streams, in fact on the JVM" Akka
 - libraries shall provide their users with reusable pieces, i.e expose factories that return graphs, allowing full compositionality
 - libraries may optionally and additionally provide facilities that consume and materialize graphs
 
-The reasoning behind the first rule is that compositionality would be destroyed if different libraries only accepted graphs and expected to materialize them: using two of these together would be impossible because materialization can only happen once. As a consequence, the functionality of a library must be expressed such that materialization can be done by the user, outside of the library’s control.
+The reasoning behind the first rule is that compositionality would be destroyed if different libraries only accepted graphs and expected to materialize them: using two of these together would be impossible because materialization can only happen once. As a consequence, the functionality of a library must be expressed such that materialization can be done by the user, outside of the library's control.
 The second rule allows a library to additionally provide nice sugar for the common case.
 
-> **Note** <br>One important consequence of this is that a reusable flow description cannot be bound to “live” resources, any connection to or allocation of such resources must be deferred until materialization time. Examples of "live" resources are already existing TCP connections, a multicast Publisher, etc.; a TickSource does not fall into this category if its timer is created only upon materialization (as is the case for our implementation). <br>Exceptions from this need to be well-justified and carefully documented.
+> **Note** <br>One important consequence of this is that a reusable flow description cannot be bound to "live" resources, any connection to or allocation of such resources must be deferred until materialization time. Examples of "live" resources are already existing TCP connections, a multicast Publisher, etc.; a TickSource does not fall into this category if its timer is created only upon materialization (as is the case for our implementation). <br>Exceptions from this need to be well-justified and carefully documented.
 
 ###Resulting Implementation Constraints
 Akka Streams must enable a library to express any stream processing utility in terms of immutable blueprints. The most common building blocks are
@@ -68,4 +68,4 @@ The ability for failures to propagate faster than data elements is essential for
 ##The semantics of stream recovery
 A recovery element (i.e. any transformation that absorbs an `onError` signal and turns that into possibly more data elements followed normal stream completion) acts as a bulkhead that confines a stream collapse to a given region of the stream topology. Within the collapsed region buffered elements may be lost, but the outside is not affected by the failure.
 
-This works in the same fashion as a `try–catch` expression: it marks a region in which exceptions are caught, but the exact amount of code that was skipped within this region in case of a failure might not be known precisely—the placement of statements matters.
+This works in the same fashion as a `try-catch` expression: it marks a region in which exceptions are caught, but the exact amount of code that was skipped within this region in case of a failure might not be known precisely-the placement of statements matters.
