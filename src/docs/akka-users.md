@@ -13,7 +13,10 @@ There is a great discussion on use-cases for Akka.NET with some good write-ups b
 * [CellularSales](https://youtu.be/G3ZafPNI-hk?t=31m6s)
 
 #### Service backend (any industry, any app)
-Service REST, SOAP, Cometd, WebSockets etc Act as message hub / integration layer Scale up, scale out, fault-tolerance / HA
+
+[IVC Business Systems](http://ivcbusinesssystems.com/):
+
+> Sam Covington, IVC Business Systems: We had an in-house "Actor" system that we replaced with Akka.Net, which allowed us to innovate and be productive elsewhere, and not reinvent the wheel(not to mention test it to death). This back end of Microservices forms the basis of all of our products and services. We're using it in our Enterprise Social Product, and our new Livescan Office product for Livescan fingerprinting customers.
 
 #### Concurrency/parallelism (any app)
 * [SNL Financial (a subsidiary of McGraw Hill): Akka.NET Goes to Wall Street](https://petabridge.com/blog/akkadotnet-goes-to-wall-street/)
@@ -31,7 +34,8 @@ Camel integration to hook up with batch data sources Actors divide and conquer t
 Scale up, scale out, fault-tolerance / HA
 
 #### Business Intelligence/Data Mining/general purpose crunching
-Scale up, scale out, fault-tolerance / HA
+* [Real-time Clickstream Processing at Domain.au with Octopus Deploy and Akka.NET](https://twitter.com/philiplaureano/status/735976018993778688)
+
 
 #### Internet of Things
 * [Synchromatics: Real-time public transit tracking and analytics using Akka.NET](https://youtu.be/YuY1ziEqifU?t=3m38s)
