@@ -50,10 +50,10 @@ public class MyActorService
         mySystem = ActorSystem.Create("MySystem");
     }
 
-    public void Stop()
+    public async void Stop()
     {
         //this is where you stop your actor system
-        mySystem.Shutdown();
+        await mySystem.Terminate();
     }
 }
 ```
