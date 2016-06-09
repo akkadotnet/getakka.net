@@ -4,7 +4,7 @@ title: Making Public API Changes
 ---
 
 # Making Public API Changes
-Akka.NET follows the [semantic versionining methodology](http://semver.org/), and as such the most important convention we have to be mindful of is accurately communicating to our users whether or not Akka.NET is compatible with previous versions of the API.
+Akka.NET follows the [semantic versioning methodology](http://semver.org/), and as such the most important convention we have to be mindful of is accurately communicating to our users whether or not Akka.NET is compatible with previous versions of the API.
 
 As such, we have automated procedures designed to ensure that accidental breaking / incompatible changes to the Akka.NET public API can't sail through the pull request process without some human acknowledgement first.
 

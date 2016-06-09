@@ -288,7 +288,7 @@ In this collection we show recipes that use stream graph elements to achieve var
 In other words, even if the stream would be able to flow (not being backpressured) we want to hold back elements until a
 trigger signal arrives.
 
-This recipe solves the problem by simply zipping the stream of ``Message`` elments with the stream of ``Trigger``
+This recipe solves the problem by simply zipping the stream of ``Message`` elements with the stream of ``Trigger``
 signals. Since ``Zip`` produces pairs, we simply map the output stream selecting the first element of the pair.
 
 ```csharp
@@ -695,7 +695,7 @@ This can be achieved with a single `GraphStage`. The main logic of our stage is 
 
 * if the buffer is empty, and upstream is not closed we pull for more bytes, if it is closed we complete
 * if the buffer is nonEmpty, we split it according to the ``chunkSize``. This will give a next chunk that we will emit,
-  and an empty or nonempty remaining buffer.
+  and an empty or non-empty remaining buffer.
 
 Both ``onPush()`` and ``onPull()`` calls ``emitChunk()`` the only difference is that the push handler also stores
 the incoming chunk by appending to the end of the buffer.
