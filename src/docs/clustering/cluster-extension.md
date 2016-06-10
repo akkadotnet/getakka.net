@@ -142,7 +142,7 @@ public class SimpleClusterListener : UntypedActor
 
 Inside the `SimpleClusterListener` we subscribe to messages of type of `ClusterEvent.IMemberEvent` and `ClusterEvent.UnreachableMember`, a class that implements `ClusterEvent.IReachabilityEvent`.
 
-The `Cluster` will periodically broadcast these messages as a result in changes in the membership of the cluister and their reachability, and they'll be delivered to the `SimpleClusterListener` as messages that can be handled inside the `OnReceive` method.
+The `Cluster` will periodically broadcast these messages as a result in changes in the membership of the cluster and their reachability, and they'll be delivered to the `SimpleClusterListener` as messages that can be handled inside the `OnReceive` method.
 
 ### When to Work with Gossip Directly
 So when would you need to work with cluster gossip messages directly rather than use a clustered router?

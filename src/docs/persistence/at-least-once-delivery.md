@@ -6,7 +6,7 @@ title: At-Least-Once Delivery
 
 To send messages with at-least-once delivery semantics to destinations you can mix-in `AtLeastOnceDelivery` class to your `PersistentActor` on the sending side. It takes care of re-sending messages when they have not been confirmed within a configurable timeout.
 
-The state of the sending actor, including which messages have been sent that have not been confirmed by the recepient must be persistent so that it can survive a crash of the sending actor or CLR. The `AtLeastOnceDelivery` class does not persist anything by itself. It is your responsibility to persist the intent that a message is sent and that a confirmation has been received.
+The state of the sending actor, including which messages have been sent that have not been confirmed by the recipient must be persistent so that it can survive a crash of the sending actor or CLR. The `AtLeastOnceDelivery` class does not persist anything by itself. It is your responsibility to persist the intent that a message is sent and that a confirmation has been received.
 
 Members:
 

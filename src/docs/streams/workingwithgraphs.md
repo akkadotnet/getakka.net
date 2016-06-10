@@ -687,7 +687,7 @@ var cyclicAggregate = Source.FromGraph(GraphDsl.Create(Sink.Aggregate<int, int>(
         // - Aggregate cannot complete until its upstream SelectAsync completes
         // - SelectAsync cannot complete until the materialized Task produced by
         //   Aggregate completes
-        // As a result this Source will never emit anything, and its materialited
+        // As a result this Source will never emit anything, and its materialized
         // Task will never complete
         var flow = Flow.Create<Task<int>>().SelectAsync(4, x => x);
         b.From(b.MaterializedValue).Via(flow).To(aggregate);

@@ -620,7 +620,7 @@ operation at the same time (usually handling the completion of a Task).
 
 Pass incoming elements to a function that return a ``Task`` result. When the task arrives the result is passed
 downstream. Up to ``n`` elements can be processed concurrently, but regardless of their completion time the incoming
-order will be kept when results complete. For use cases where order does not mather ``SelectAsyncUnordered`` can be used.
+order will be kept when results complete. For use cases where order does not matter ``SelectAsyncUnordered`` can be used.
 
 If a Task fails, the stream also fails (unless a different supervision strategy is applied)
 
@@ -972,7 +972,7 @@ multiple outputs at the same time.
 
 ####Unzip
 
-Takes a stream of two element tuples and unzips the two elements ino two different downstreams.
+Takes a stream of two element tuples and unzips the two elements into two different downstreams.
 
 **emits** when all of the outputs stops backpressuring and there is an input element available
 

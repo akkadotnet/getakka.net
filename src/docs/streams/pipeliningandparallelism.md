@@ -83,12 +83,12 @@ var pancakeChef = Flow.FromGraph(GraphDsl.Create(b =>
 }));
 ```
 The benefit of parallelizing is that it is easy to scale. In the pancake example
-it is easy to add a third frying pan with Chris's method, but Bartosz cannot add a third frying pan,
+it is easy to add a third frying pan with Chris' method, but Bartosz cannot add a third frying pan,
 since that would require a third processing step, which is not practically possible in the case of frying pancakes.
 
 One drawback of the example code above that it does not preserve the ordering of pancakes. This might be a problem
 if children like to track their "own" pancakes. In those cases the ``Balance`` and ``Merge`` stages should be replaced
-by strict-round robing balancing and merging stages that put in and take out pancakes in a strict order.
+by strict round-robin balancing and merging stages that put in and take out pancakes in a strict order.
 
 A more detailed example of creating a worker pool can be found in the cookbook: 
 [Balancing jobs to a fixed pool of workers](cookbook#balancing-jobs-to-a-fixed-pool-of-workers)

@@ -113,7 +113,7 @@ zeroes.RunWith(Sink.Aggregate<int,int>(0, (agg, i) => agg + i), materializer); /
 
 >**Note**<br/>
 By default Akka Streams elements support **exactly one** downstream processing stage.
-Making fan-out (supporting multiple downstream processing stages) an explicit opt-in feature allows default stream elementsto be less complex and more efficient.
+Making fan-out (supporting multiple downstream processing stages) an explicit opt-in feature allows default stream elements to be less complex and more efficient.
 Also it allows for greater flexibility on *how exactly* to handle the multicast scenarios, 
 by providing named fan-out elements such as broadcast (signals all down-stream elements) or balance (signals one of available down-stream elements).  
 
