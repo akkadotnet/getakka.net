@@ -128,9 +128,7 @@ title: Akka.NET Documentation
 - [Scheduler](Scheduler)
 - [Circuit Breaker](CircuitBreaker)
 
-### Akka Streams (work in progress)
-*we are currently in the progress of porting the streams documentation for Akka.Net. As such not all sections will be available*
-
+### Akka Streams 
 - [Introduction](streams/introduction)
 	- [Motivation](streams/introduction#motivation)
 	- [How to read these docs](streams/introduction#how-to-read-these-docs)
