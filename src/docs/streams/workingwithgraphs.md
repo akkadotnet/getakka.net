@@ -836,13 +836,16 @@ These two conditions are a typical "chicken-and-egg" problem. The solution is to
 element into the cycle that is independent from ``source``. We do this by using a ``Concat`` junction on the backwards
 arc that injects a single element using ``Source.Single``.
 
+>**Warning**<br/>
+This approach isn't working in the current beta, the graph is still not printing any elements.
+
 ```csharp
 RunnableGraph.FromGraph(GraphDsl.Create(b =>
 {
     var zip = b.Add(ZipWith.Apply<int, int, int>(Keep.Right));
     var broadcast = b.Add(new Broadcast<int>(2));
     var concat = b.Add(new Concat<int, int>());
-    var start = Source.Single(0);;
+    var start = Source.Single(0);
     var print = Flow.Create<int>().Select(s =>
     {
         Console.WriteLine(s);
