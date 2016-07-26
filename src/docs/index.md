@@ -68,6 +68,7 @@ title: Akka.NET Documentation
 - [Persistent FSM](persistence/persistent-fsm)
 - [Storage plugins](persistence/storage-plugins)
 - [Custom serialization](persistence/custom-serialization)
+- [Persistence Query](persistence/persistence-query)
 - [Contributing](persistence/contributing)
 
 ### Akka.Remote
