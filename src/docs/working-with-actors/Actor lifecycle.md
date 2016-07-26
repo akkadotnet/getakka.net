@@ -2,7 +2,7 @@
 layout: docs.hbs
 title: Actor API
 ---
-# Actor API
+# UntypedActor API
 The `UntypedActor` class defines only one abstract method, the above mentioned `OnReceive(object message)`, which implements the behavior of the actor.
 
 If the current actor behavior does not match a received message, it's recommended that you call the unhandled method, which by default publishes a new `Akka.Actor.UnhandledMessage(message, sender, recipient)` on the actor system’s event stream (set configuration item `Unhandled` to on to have them converted into actual `Debug` messages).
