@@ -12,30 +12,79 @@ active_selector: resources
 * [Reactive Applications with Akka.NET](https://www.manning.com/books/reactive-applications-with-akka-net) - By Anthony Brown,  Manning Publications Co. **Discount code "getakka37" for 37% discount**
 
 ## Blog posts
-* [Starting Akka.NET](http://blog.jaywayco.co.uk/starting-akka-net/) - James Conway shares his experience starting Akka.NET and why his company looked to it.
-* [What is an Actor?](https://petabridge.com/blog/akkadotnet-what-is-an-actor/) - Conceptual overview of the basics of actor & actor systems.
-* [An Actor Model Example with Akka.NET](http://blog.geist.no/an-actor-model-example-with-akka-net/) - intro to the actor model and Netflix-esque example
-* [Akka.NET Concurrency Control](http://rogeralsing.com/2014/11/10/akka-net-concurrency-control/) - an example of making lock-free bank account transactions with Akka.NET
-* [How actors recover from failure](https://petabridge.com/blog/how-actors-recover-from-failure-hierarchy-and-supervision/) - Discussion of [supervision](http://getakka.net/docs/concepts/supervision), actor hierarchies, and building resilient systems with the error kernel pattern.
-* [When should I use `ActorSelection`?](https://petabridge.com/blog/when-should-I-use-actor-selection/) - a discussion of when to use `ActorSelection`s vs. `IActorRef`s and intro to a few best practices.
+**Petabridge**
+- [Akka.NET: What is an Actor?](https://petabridge.com/blog/akkadotnet-what-is-an-actor/) (Aaron Stannard on January 25, 2015)
+- [How to Do Asynchronous I/O with Akka.NET Actors Using PipeTo](https://petabridge.com/blog/akkadotnet-async-actors-using-pipeto/) (Aaron Stannard on January 27, 2015)
+- [How actors recover from failure](https://petabridge.com/blog/how-actors-recover-from-failure-hierarchy-and-supervision/) (Andrew Skotzko on February 6, 2015)
+- [Akka.NET Internals: How Akka.Remote Connections Work](https://petabridge.com/blog/akka-internals-how-akka-remote-connections-work/) (Andrew Skotzko on May 6, 2015)
+- [When Should I Use Actor Selection?](https://petabridge.com/blog/when-should-I-use-actor-selection/) (Andrew Skotzko on May 20, 2015)
+- [Akka.NET: How to Remotely Deploy Actors Using Akka.Remote](https://petabridge.com/blog/akkadotnet-remote-deploy-actors/) (Aaron Stannard on June 1, 2015)
+- [How to Create Scalable Clustered Applications Using Akka.Cluster](https://petabridge.com/blog/intro-to-akka-cluster/) (June 13, 2015)
+- [Meet the Top Akka.NET Design Patterns](https://petabridge.com/blog/top-akkadotnet-design-patterns/) (Andrew Skotzko on June 30, 2015)
+- [Large Messages and Sockets in Akka.NET](https://petabridge.com/blog/large-messages-and-sockets-in-akkadotnet/) (Andrew Skotzko on July 15, 2015)
+- [Akka.NET Goes to Wall Street](https://petabridge.com/blog/akkadotnet-goes-to-wall-street/) (Andrew Skotzko on August 11, 2015)
+- [How to Integrate Akka.NET and ASP.NET (and Nancy!)](https://petabridge.com/blog/akkadotnet-aspnet/) (Aaron Stannard on August 20, 2015)
+- [The Top 7 Mistakes Newbies Make with Akka.NET](https://petabridge.com/blog/top-7-akkadotnet-stumbling-blocks/) (Aaron Stannard on September 7, 2015)
+- [How to Stop an Actor... the Right Way](https://petabridge.com/blog/how-to-stop-an-actor-akkadotnet/) (Andrew Skotzko on September 9, 2015)
+- [The New .NET Stack](https://petabridge.com/blog/the-new-dot-net-stack/) (Aaron Stannard on September 23, 2015)
+- [How to Unit Test Akka.NET Actors with Akka.TestKit](https://petabridge.com/blog/how-to-unit-test-akkadotnet-actors-akka-testkit/) (November 13, 2015)
+- [Creating Persistent Actors in Akka.NET with Akka.Persistence](https://petabridge.com/blog/intro-to-persistent-actors/) (Aaron Stannard on January 7, 2016)
+- [How to Guarantee Delivery of Messages in Akka.NET](https://petabridge.com/blog/akkadotnet-at-least-once-message-delivery/) (Aaron Stannard on March 11, 2016)
+- [The Business Case for Actors and Akka.NET](https://petabridge.com/blog/akkadotnet-business-case/) (Aaron Stannard on May 10, 2016)
+- [Distributing State in Akka.Cluster Applications](https://petabridge.com/blog/akkacluster-state-distribution/) (Aaron Stannard on July 26, 2016)
+
+**Others**
+- [Deploying actors with Akka.NET](https://rogeralsing.com/2014/03/09/deploying-actors-with-akka-net/) (Roger Johansson on March 9, 2014)
+- [FSharp and Akka.net - the functional way](http://bartoszsypytkowski.com/fsharp-and-akka-net-the-functional-way/) (Bartosz Sypytkowski on July 5th, 2014)
+- [Map reduce with FSharp and Akka.net](http://bartoszsypytkowski.com/map-reduce-with-fsharp-and-akka-net/) (Bartosz Sypytkowski on July 8th, 2014)
+- [Actor supervisors in Akka.NET FSharp API](http://bartoszsypytkowski.com/actor-supervisors-in-akka-net-fsharp-api/) (Bartosz Sypytkowski on August 6th, 2014)
+- [Hipsterize your backend for The Greater Good with Akka.NET, F# and some DDD flavor](http://bartoszsypytkowski.com/hipsterize-your-backend-for-the-greater-good-with-akka-net-f-and-some-ddd-flavor/) (Bartosz Sypytkowski on October 26th, 2014)
+- [Akka.NET – Concurrency control](https://rogeralsing.com/2014/11/10/akka-net-concurrency-control/) (Roger Johansson on November 10, 2014)
+- [Akka.NET remote deployment with F#](http://bartoszsypytkowski.com/akka-net-remote-deployment-with-f/) (Bartosz Sypytkowski on December 14th, 2014)
+- [An Actor Model Example with Akka.NET](http://blog.geist.no/an-actor-model-example-with-akka-net/) (Claus Sørensen on February 24th, 2015)
+- [Create your own Akka.NET persistence plugin](http://bartoszsypytkowski.com/create-your-own-akka-net-persistence-plugin/) (Bartosz Sypytkowski on March 28th, 2015)
+- [Starting Akka.NET](http://blog.jaywayco.co.uk/starting-akka-net/) (James Conway on April 7, 2015)
+- [Akka.NET + Azure: Azure ServiceBus integration](https://rogeralsing.com/2015/04/13/akka-net-azure-azure-servicebus-integration/) (Roger Johansson on April 13, 2015)
+- [Akka.NET application logging in your browser](http://bartoszsypytkowski.com/log-your-akka-net-application-in-your-browser/) (Bartosz Sypytkowski on July 22nd, 2015)
+- [Building a framework – The early Akka.NET history](https://rogeralsing.com/2015/07/26/building-a-framework-the-early-akka-net-history/) (Roger Johansson on July 26, 2015)
+- [How to create an Akka.NET cluster in F#](http://bartoszsypytkowski.com/how-create-an-akka-net-cluster-in-f/) (Bartosz Sypytkowski on August 8th, 2015)
+- [How Akka.NET persistence works?](http://bartoszsypytkowski.com/how-akka-net-persistence-works/) (Bartosz Sypytkowski on September 12th, 2015)
+- [Akka.NET underestimated features - Akka.IO](http://bartoszsypytkowski.com/akka-net-underestimated-feature-akka-io/) (Bartosz Sypytkowski on November 14th, 2015)
+- [Random things learned building Akka.NET – Part 1](https://rogeralsing.com/2016/03/13/random-things-learned-building-akka-net-part-1/) (Roger Johansson on March 13, 2016)
+- [Don't Ask, Tell](http://bartoszsypytkowski.com/dont-ask-tell-2/) (Bartosz Sypytkowski on May 3rd, 2016)
 
 ## Videos
-#### Introductory topic videos
-* [Above the Clouds: Introducing Akka](https://www.youtube.com/watch?v=UY3fuHebRMI) - Geared towards Akka in Java.  Gives an overview of the Actor model
-* [Up, Up, and Out: Scaling Software with Akka](https://www.youtube.com/watch?v=GBvtE61Wrto) - Introduction to Akka
-* [The Actor Model in F# and Akka.Net](https://www.youtube.com/watch?v=RiWXo_5CAvg) - Intro to Akka and the F# API.
-* [Building Reactive Applications with Akka](https://www.youtube.com/watch?v=6Cb1wSVRI-Q) - Jonas Bonér (creator of original Akka project) explains the Reactive Model and Akka.
-* [Distributed Programming Using Akka.NET Framework (in Polish)](https://www.youtube.com/watch?v=_6vDp2-VCjc)
-* [Intro to Akka.NET (in Swedish)](https://www.youtube.com/watch?v=Ta6qLA9OsjE)
-* [Streaming ETL w/ Akka.NET](https://vimeo.com/123452527) - [Andrew Skotzko](https://twitter.com/askotzko) introduces Akka.NET & how to approach streaming ETL.
+- [The Actor Model in F# and Akka.Net](https://www.youtube.com/watch?v=RiWXo_5CAvg) (March 17, 2015)
+- [Streaming ETL w/ Akka.NET](https://vimeo.com/123452527) (Andrew Skotzko on March 18, 2015)
+- [Akka.NET Internals: How Akka.Remote Connections Work](https://www.youtube.com/watch?v=6c1gVLyYcMM) (Aaron Stannard on May 5, 2015)
+- [Full-Stack, Message-Oriented Programming with Akka.NET Actors](https://www.youtube.com/watch?v=nPGMVhI7zyk) (Andrew Skotzko on 8 December, 2015)
 
-#### Advanced topic videos
-* [Akka.NET Internals: How Akka.Remote Connections Work](https://www.youtube.com/watch?v=6c1gVLyYcMM)
+## Courses
+- [Building Concurrent Applications with the Actor Model in Akka.NET (Pluralsight)](https://www.pluralsight.com/courses/akka-dotnet-actor-model-building-concurrent-applications) (Jason Roberts on 5 August 2015)
+- [Implementing Logging and Dependency Injection in Akka.NET](https://www.pluralsight.com/courses/akka-dotnet-implementing-logging-dependency-injection) (Jason Roberts on 22 August 2015)
+- [Building Reactive Concurrent WPF Applications with Akka.NET](https://www.pluralsight.com/courses/akka-dotnet-building-reactive-concurrent-wpf-applications) (Jason Roberts on 10 September 2015)
+- [Improving Message Throughput in Akka.NET](https://www.pluralsight.com/courses/akka-dotnet-improving-messaging-throughput) (Jason Roberts on 1 October 2015)
+- [Stateful Reactive Concurrent SPAs with SignalR and Akka.NET](https://www.pluralsight.com/courses/akkadotnet-signalr-stateful-reactive-concurrent-spas) (Jason Roberts on 4 November 2015)
+- [Akka.NET Testing Fundamentals](https://www.pluralsight.com/courses/akka-dotnet-testing-fundamentals) (Jason Roberts on 8 December 2015)
+- [Building Distributed Systems with Akka.NET Clustering](https://www.pluralsight.com/courses/akka-dotnet-building-distributed-systems-clustering) (Simon Anderson on 23 March 2016)
+- [Akka.NET Persistence Fundamentals](https://www.pluralsight.com/courses/akka-dotnet-persistence-fundamentals) (Jason Roberts on 23 Jul 2016)
 
 ## Podcasts
-* [.NET Rocks! (May 2015)](http://dotnetrocks.com/default.aspx?showNum=1134) — [Aaron Stannard](https://twitter.com/aaronontheweb) introduces Akka.NET v1.0
-* [Hanselminutes (April 2015)](http://hanselminutes.com/472/inside-the-akkanet-open-source-project-and-the-actor-model-with-aaron-stannard) — Good overview of concepts in Akka.NET and high-level discussion with [Aaron Stannard](https://twitter.com/aaronontheweb).
-* [.NET Rocks! (November 2014)](http://www.dotnetrocks.com/default.aspx?showNum=1058) — Overview of the project discussed w/ [Roger Alsing](https://twitter.com/rogeralsing).
+- [.NET Rocks! (May 2015)](http://dotnetrocks.com/default.aspx?showNum=1134) — [Aaron Stannard](https://twitter.com/aaronontheweb) introduces Akka.NET v1.0
+- [Hanselminutes (April 2015)](http://hanselminutes.com/472/inside-the-akkanet-open-source-project-and-the-actor-model-with-aaron-stannard) — Good overview of concepts in Akka.NET and high-level discussion with [Aaron Stannard](https://twitter.com/aaronontheweb).
+- [.NET Rocks! (November 2014)](http://www.dotnetrocks.com/default.aspx?showNum=1058) — Overview of the project discussed w/ [Roger Alsing](https://twitter.com/rogeralsing).
 
 ## Code samples / Demos
-* [Using Akka.Cluster to build a webcrawler](https://github.com/petabridge/akkadotnet-code-samples/tree/master/Cluster.WebCrawler)
+- [Using Akka.Cluster to build a webcrawler](https://github.com/petabridge/akkadotnet-code-samples/tree/master/Cluster.WebCrawler)
+
+## Non-English resources
+- [Distributed Programming Using Akka.NET Framework (in Polish)](https://www.youtube.com/watch?v=_6vDp2-VCjc) (Bartosz Sypytkowski on March 6, 2015)
+- [Intro to Akka.NET (in Swedish)](https://www.youtube.com/watch?v=Ta6qLA9OsjE) (Håkan Canberger on March 23, 2015)
+- [Writing scalable and distributed systems with Akka.NET](https://www.youtube.com/watch?v=fwWA6Bugg_c) (Nikita Tsukanov on June 5, 2015)
+- [Actor Model on .NET (in Russian)](https://www.youtube.com/watch?v=jek8Qmc3ZjQ) (Anton Moldovan on October 30, 2015)
+- [Actor-based Concurrency with F# and Akka.NET (in Russian)](https://www.youtube.com/watch?v=LLG8_0XtD4o) (Akim Boyko on 19 December, 2015)
+
+## Notable materials from Akka JVM world
+- [Above the Clouds: Introducing Akka](https://www.youtube.com/watch?v=UY3fuHebRMI) - Geared towards Akka in Java.  Gives an overview of the Actor model
+- [Up, Up, and Out: Scaling Software with Akka](https://www.youtube.com/watch?v=GBvtE61Wrto) - Introduction to Akka
+- [Building Reactive Applications with Akka](https://www.youtube.com/watch?v=6Cb1wSVRI-Q) - Jonas Bonér (creator of original Akka project) explains the Reactive Model and Akka.
