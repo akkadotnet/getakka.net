@@ -57,7 +57,7 @@ In this example, we first specify way to resolve our messages recipients in cont
 
 Second part of an example is registering custom actor type as sharded entity using `ClusterSharding.Start` or `ClusterSharding.StartAsync` methods. Result is the `IActorRef` to shard region used to communicate between current actor system and target entities. Shard region must be specified once per each type on each node, that is expected to participate in sharding entities of that type.
 
-In case when you want to send message to entities from specific node, but you don't what that node to participate in sharding itself, you can use `ShardRegionProxy` for that.
+In case when you want to send message to entities from specific node, but you don't want that node to participate in sharding itself, you can use `ShardRegionProxy` for that.
 
 Example:
 
