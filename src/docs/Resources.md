@@ -71,7 +71,7 @@ active_selector: resources
 
 ## Podcasts
 
-- [.NET Rocks! (May 2016)](http://dotnetrocks.com/default.aspx?showNum=1338) — [Aaron Stannard](https://twitter.com/aaronontheweb) introduces Akka.NET v1.1
+- [.NET Rocks! (August 2016)](http://dotnetrocks.com/default.aspx?showNum=1338) — [Aaron Stannard](https://twitter.com/aaronontheweb) introduces Akka.NET v1.1
 - [.NET Rocks! (May 2015)](http://dotnetrocks.com/default.aspx?showNum=1134) — [Aaron Stannard](https://twitter.com/aaronontheweb) introduces Akka.NET v1.0
 - [Hanselminutes (April 2015)](http://hanselminutes.com/472/inside-the-akkanet-open-source-project-and-the-actor-model-with-aaron-stannard) — Good overview of concepts in Akka.NET and high-level discussion with [Aaron Stannard](https://twitter.com/aaronontheweb).
 - [.NET Rocks! (November 2014)](http://www.dotnetrocks.com/default.aspx?showNum=1058) — Overview of the project discussed w/ [Roger Alsing](https://twitter.com/rogeralsing).
