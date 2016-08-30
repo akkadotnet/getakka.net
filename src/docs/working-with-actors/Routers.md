@@ -13,7 +13,7 @@ Akka.NET comes with several useful routers you can choose right out of the box, 
 
 > **Note:**<br/>
 > In general, any message sent to a router will be forwarded to one of its routees, but there is one exception.
-> The special [Broadcast Message](#Broadcast Messages) will be sent to all routees.
+> The special [Broadcast Message](#broadcast-messages) will be sent to all routees. See [Specially Handled Messages](#specially-handled-messages) section for details.
 
 ## Deployment
 
@@ -542,6 +542,34 @@ The default resizer works by checking the pool size every X messages, and decidi
     * `N` - the routee is busy and have N messages waiting in the mailbox (where N > 1)
 * `backoff-threshold` - A threshold used to decide if the pool should be decreased. The default is `0.3`, meaning it will decide to decrease the pool if less than 30% of the routers are busy.
 
+## Specially Handled Messages
+
+Most messages sent to router will be forwarded according to router's routing logic. However there are a few types of messages that have special behaviour.
+
+### Broadcast Messages
+
+A `Broadcast` message can be used to send message to __all__ routees of a router. When a router receives `Broadcast` message, it will broadcast that message's __payload__ to all routees, no matter how that router normally handles its messages.
+
+Here is an example of how to send a message to every routee of a router.
+
+```cs
+actorSystem.ActorOf(Props.Create<Worker>(), "worker1");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker2");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker3");
+
+var workers = new[] { "/user/worker1", "/user/worker2", "/user/worker3" };
+var router = actorSystem.ActorOf(Props.Empty.WithRouter(new RoundRobinGroup(workers)), "workers");
+
+// this sends to individual worker
+router.Tell("Hello, worker1");
+router.Tell("Hello, worker2");
+router.Tell("Hello, worker3");
+
+// this sends to all workers
+router.Tell(new Broadcast("Hello, workers"));
+```
+
+In this example, the router received the `Broadcast` message, extracted its payload (`Hello, workers`), and then dispatched it to all its routees. It is up to each routee actor to handle the payload.
 
 ## Advanced
 
