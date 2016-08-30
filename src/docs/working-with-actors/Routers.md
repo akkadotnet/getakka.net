@@ -13,7 +13,7 @@ Akka.NET comes with several useful routers you can choose right out of the box, 
 
 > **Note:**<br/>
 > In general, any message sent to a router will be forwarded to one of its routees, but there is one exception.
-> The special [Broadcast Message](#Broadcast Messages) will be sent to all routees.
+> The special [Broadcast Message](#broadcast-messages) will be sent to all routees. See [Specially Handled Messages](#specially-handled-messages) section for details.
 
 ## Deployment
 
@@ -542,6 +542,69 @@ The default resizer works by checking the pool size every X messages, and decidi
     * `N` - the routee is busy and have N messages waiting in the mailbox (where N > 1)
 * `backoff-threshold` - A threshold used to decide if the pool should be decreased. The default is `0.3`, meaning it will decide to decrease the pool if less than 30% of the routers are busy.
 
+## Specially Handled Messages
+
+Most messages sent to router will be forwarded according to router's routing logic. However there are a few types of messages that have special behaviour.
+
+### Broadcast Messages
+
+A `Broadcast` message can be used to send message to __all__ routees of a router. When a router receives `Broadcast` message, it will broadcast that message's __payload__ to all routees, no matter how that router normally handles its messages.
+
+Here is an example of how to send a message to every routee of a router.
+
+```cs
+actorSystem.ActorOf(Props.Create<Worker>(), "worker1");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker2");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker3");
+
+var workers = new[] { "/user/worker1", "/user/worker2", "/user/worker3" };
+var router = actorSystem.ActorOf(Props.Empty.WithRouter(new RoundRobinGroup(workers)), "workers");
+
+// this sends to individual worker
+router.Tell("Hello, worker1");
+router.Tell("Hello, worker2");
+router.Tell("Hello, worker3");
+
+// this sends to all workers
+router.Tell(new Broadcast("Hello, workers"));
+```
+
+In this example, the router received the `Broadcast` message, extracted its payload (`Hello, workers`), and then dispatched it to all its routees. It is up to each routee actor to handle the payload.
+
+### PoisonPill Messages
+When an actor received `PoisonPill` message, that actor will be stopped. (see [PoisonPill](stopping-actors#graceful-shutdown-sending-an-actor-a-poisonpill) for details).
+
+For a router, which normally passes on messages to routees, the `PoisonPill` messages are processed __by the router only__. `PoisonPill` messages sent to a router will __not__ be sent on to its routees.
+
+However, a `PisonPill` message sent to a router may still affect its routees, as it will stop the router whhich in turns stop children the router has created. Each child will process its current message and then stop. This could lead to some messages being unprocessed.
+
+If you wish to stop a router and its routees, but you would like the routees to first process all the messages in their mailbxes, then you should send a `PoisonPill` message wrapped inside a `Broadcast` message so that each routee will receive the `PoisonPill` message. 
+
+> **Note:**<br/>
+> The above method will stop all routees, even if they are not created by the router. E.g. routees programatically provided to the router.
+
+```cs
+actorSystem.ActorOf(Props.Create<Worker>(), "worker1");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker2");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker3");
+
+var workers = new[] { "/user/worker1", "/user/worker2", "/user/worker3" };
+var router = actorSystem.ActorOf(Props.Empty.WithRouter(new RoundRobinGroup(workers)), "workers");
+
+router.Tell("Hello, worker1");
+router.Tell("Hello, worker2");
+router.Tell("Hello, worker3");
+
+// this sends PoisonPill message to all routees
+router.Tell(new Broadcast(PoisonPill.Instance));
+```
+
+With the code shown above, each routee will receive a `PoisonPill` message. Each routee will continue to process its messages as normal, eventually processing the `PoisonPill`. This will cause the routee to stop. After all routees have stopped the router will itself be stopped automatically unless it is a dynamic router, e.g. using a resizer.
+
+### Kill Message
+As with the `PoisonPill` messasge, there is a distinction between killing a router, which indirectly kills its children (who happen to be routees), and killing routees directly (some of whom may not be children.) To kill routees directly the router should be sent a Kill message wrapped in a `Broadcast` message.
+
+See [Noisy on Purpose: Kill the Actor](stopping-actors#noisy-on-purpose-kill-the-actor) for more details on how `Kill` message works.
 
 ## Advanced
 
