@@ -364,8 +364,8 @@ akka.actor.deployment {
   /some-pool {
     router = tail-chopping-pool
     nr-of-instances = 5
-    within = 10 seconds
-    tail-chopping-router.interval = 20 milliseconds
+    within = 10s
+    tail-chopping-router.interval = 20ms
   }
 }
 ```
@@ -388,8 +388,8 @@ akka.actor.deployment {
   /some-group {
     router = tail-chopping-group
     routees.paths = ["/user/workers/w1", "/user/workers/w2", "/user/workers/w3"]
-    within = 10 seconds
-    tail-chopping-router.interval = 20 milliseconds
+    within = 10s
+    tail-chopping-router.interval = 20ms
   }
 }
 ```
@@ -427,7 +427,7 @@ akka.actor.deployment {
   /some-pool {
     router = scatter-gather-pool
     nr-of-instances = 5
-    within = 10 seconds
+    within = 10s
   }
 }
 ```
@@ -449,7 +449,7 @@ akka.actor.deployment {
   /some-group {
     router = scatter-gather-group
     routees.paths = ["/user/workers/w1", "/user/workers/w2", "/user/workers/w3"]
-    within = 10 seconds
+    within = 10s
   }
 }
 ```
