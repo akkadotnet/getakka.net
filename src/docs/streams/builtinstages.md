@@ -175,6 +175,22 @@ Integration with Reactive Streams, materializes into a ``Reactive.Streams.ISubsc
 Integration with Reactive Streams, subscribes to a ``Reactive.Streams.IPublisher``.
 
 
+####ZipN
+
+Combine the elements of multiple streams into a stream of sequences.
+
+**emits** when all of the inputs has an element available
+
+**completes** when any upstream completes
+
+
+####ZipWithN
+
+Combine the elements of multiple streams into a stream of sequences using a combiner function.
+
+**emits** when all of the inputs has an element available
+
+**completes** when any upstream completes
 
 
 #Sink stages
