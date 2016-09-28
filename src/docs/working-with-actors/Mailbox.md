@@ -39,11 +39,12 @@ The `my-custom-mailbox` is a key that was setup using the [mailbox configuration
 
 In order to use a custom mailbox, it must be first configured with a key that the actor system can lookup. You can do this using a custom HOCON setting.
 
-The example below will setup a mailbox key called `my-custom-mailbox` pointing to a custom mailbox implementation.
+The example below will setup a mailbox key called `my-custom-mailbox` pointing to a custom mailbox implementation. Note that the configuration of the mailbox is outside the akka section.
 
 ```hocon
+akka { ... }
 my-custom-mailbox {
-    mailbox-type = "MyProject.CustomMailbox, MyProjectAssembly"
+    mailbox-type : "MyProject.CustomMailbox, MyProjectAssembly"
 }
 ```
 
