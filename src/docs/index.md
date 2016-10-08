@@ -169,6 +169,8 @@ title: Akka.NET Documentation
 	- [Buffers for asynchronous stages](streams/buffersandworkingwithrate#buffers-for-asynchronous-stages)
 	- [Buffers in Akka Streams](streams/buffersandworkingwithrate#buffers-in-akka-streams)
 	- [Rate transformation](streams/buffersandworkingwithrate#rate-transformation)
+- [Dynamic stream handling](streams/stream-dynamic)
+	- [Controlling graph completion with KillSwitch](streams/stream-dynamic#controlling-graph-completion-with-killswitch)
 - [Custom stream processing](streams/customstreamprocessing)
 	- [Custom processing with GraphStage](streams/customstreamprocessing#custom-processing-with-graphstage)
 	- [Thread safety of custom processing stages](streams/customstreamprocessing#thread-safety-of-custom-processing-stages)
