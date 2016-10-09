@@ -1,44 +1,246 @@
 ---
 layout: docs.hbs
-title: Akka cluster distributed Pub/Sub
+title: Distributed Publish Subscribe in Cluster
 ---
-# Distributed publish/subscribe
+# Distributed Publish Subscribe in Cluster
 
-While default event bus have some great use cases, it's limiting when it comes to communication outside of actor system's scope. One of the features [Akka.Cluster.Tools](clustering/cluster-tools) offers, is the ability to send message to all of the subscribers without knowing their nodes location.
+How do I send a message to an actor without knowing which node it is running on?
 
-> At the present moment (<= v1.0.6) this feature doesn't play well with default Akka.NET serializer. Please use alternative serializers like Akka.Serialization.Wire for the time being.
+How do I send messages to all actors in the cluster that have registered interest in a named topic?
 
-Cluster wide pub/sub can be accessed by it's local representations, so called mediator actors. Whole pattern is based on concept of named topics. In order to subscribe/unsubscribe the topic, send `Subscribe`/`Unsubscribe` messages to a mediator. Those requests are confirmed by sending back `SubscribeAck`/`UnsubscribeAck` replies to subscribed actors. You can publish messages by sending `Publish(topicName, message)` to local mediator.
+This pattern provides a mediator actor, akka.cluster.pubsub.DistributedPubSubMediator, that manages a registry of actor references and replicates the entries to peer actors among all cluster nodes or a group of nodes tagged with a specific role.
+
+The `DistributedPubSubMediator` actor is supposed to be started on all nodes, or all nodes with specified role, in the cluster. The mediator can be started with the `DistributedPubSub` extension or as an ordinary actor.
+
+The registry is eventually consistent, i.e. changes are not immediately visible at other nodes, but typically they will be fully replicated to all other nodes after a few seconds. Changes are only performed in the own part of the registry and those changes are versioned. Deltas are disseminated in a scalable way to other nodes with a gossip protocol.
+
+You can send messages via the mediator on any node to registered actors on any other node.
+
+There a two different modes of message delivery, explained in the sections `Publish` and `Send` below.
+
+## Publish
+This is the true pub/sub mode. A typical usage of this mode is a chat room in an instant messaging application.
+
+Actors are registered to a named topic. This enables many subscribers on each node. The message will be delivered to all subscribers of the topic.
+
+For efficiency the message is sent over the wire only once per node (that has a matching topic), and then delivered to all subscribers of the local topic representation.
+
+You register actors to the local mediator with `DistributedPubSubMediator.Subscribe`. Successful Subscribe and Unsubscribe is acknowledged with `DistributedPubSubMediator.SubscribeAck` and `DistributedPubSubMediator.UnsubscribeAck` replies. The acknowledgment means that the subscription is registered, but it can still take some time until it is replicated to other nodes.
+
+You publish messages by sending `DistributedPubSubMediator.Publish` message to the local mediator.
+
+Actors are automatically removed from the registry when they are terminated, or you can explicitly remove entries with `DistributedPubSubMediator.Unsubscribe`.
+
+An example of a subscriber actor:
 
 ```csharp
-// define subscribing actor
-class Subscriber : ReceiveActor
+public class Subscriber : ReceiveActor
 {
+    private readonly ILoggingAdapter log = Context.GetLogger();
+
     public Subscriber()
     {
         var mediator = DistributedPubSub.Get(Context.System).Mediator;
-        mediator.Tell(new Subscribe("topic-name", Self));
 
-        Receive<SubscribeAck>(_ => Become(Subscribed));
+        // subscribe to the topic named "content"
+        mediator.Tell(new Subscribe("content", Self));
+
+        Receive<string>(s =>
+        {
+            log.Info($"Got {s}");
+        });
+
+        Receive<SubscribeAck>(subscribeAck =>
+        {
+            if (subscribeAck.Subscribe.Topic.Equals("content")
+                && subscribeAck.Subscribe.Ref.Equals(Self)
+                && subscribeAck.Subscribe.Group == null)
+            {
+                log.Info("subscribing");
+            }
+        });
     }
-
-    ...
 }
-
-// publish message to all actors subscribed to a topic
-var mediator = DistributedPubSub.Get(Context.System).Mediator;
-mediator.Tell(new Publish("topic-name", new MyMessage()));
 ```
 
-Except usual `Subscribe`/`Unsubscribe`, you may decide to register/unregister your actors by sending `Put`/`Remove` messages to local pub/sub mediator. Remember that only local actors can be registered this way. How does `Put` differ from `Subscribe`? Instead of registering actor under named topic, it uses current actor's path - it's particularly useful in case, where you have same actors on different nodes performing the same action.
+Subscriber actors can be started on several nodes in the cluster, and all will receive messages published to the "content" topic.
 
-In addition to `Publish` there are few other message types, each one having different characteristic:
+```csharp
+RunOn(() =>
+{
+    Sys.ActorOf(Props.Create<Subscriber>(), "subscriber1");
+}, _first);
 
-- `Send` specifies a message that should be delivered only to one subscriber in target topic. Actor choice is based on specified [RoutingLogic](working-with-actors/Routers#routing-strategies), which is random by default. Additionally with `localAffinity` flag set we may define to prefer sending the messages to subscribers on the same node if possible i.e. for performance reasons.
-- `SendToAll` works well, when combined with `Put`-registered actors. It sends the message to all registered actors on all nodes having provided local path. Optional `excludeSelf` flag may be set to exclude actor recipient from actor system used to send this message.
+RunOn(() =>
+{
+    Sys.ActorOf(Props.Create<Subscriber>(), "subscriber2");
+    Sys.ActorOf(Props.Create<Subscriber>(), "subscriber3");
+}, _second);
+```
 
-You can get list of all topics registered in local mediator by sending a `GetTopics` request to it. The `CurrentTopics` reply will contain a list of all topics names registered in current actor system.
+A simple actor that publishes to this "content" topic:
 
-## Groups
+```csharp
+public class Publisher : ReceiveActor
+{
+    public Publisher()
+    {
+        // activate the extension
+        var mediator = DistributedPubSub.Get(Context.System).Mediator;
 
-Additionally to topics, pub/sub model can be enhanced by specifying optional group. Group names can be shared by multiple actors on different nodes. Communication using topics with groups is quite similar to routing. Once `Publish` message is send with `sendOneMessageToEachGroup` set, the message will be send to a single actor in each group inside specified topic, using similar routing rules, which applies to `Send` message.
+        // subscribe to the topic named "content"
+        mediator.Tell(new Subscribe("content", Self));
+
+        Receive<string>(str =>
+        {
+            var upperCase = str.ToUpper();
+            mediator.Tell(new Publish("content", upperCase));
+        });
+    }
+}
+```
+
+It can publish messages to the topic from anywhere in the cluster:
+
+```csharp
+RunOn(() =>
+{
+    var publisher = Sys.ActorOf(Props.Create<Publisher>(), "publisher");
+
+    // after a while the subscriptions are replicated
+    publisher.Tell("hello");
+}, _third);
+```
+
+### Topic Groups
+Actors may also be subscribed to a named topic with a group id. If subscribing with a group id, each message published to a topic with the `SendOneMessageToEachGroup` flag set to true is delivered via the supplied `RoutingLogic` (default random) to one actor within each subscribing group.
+
+If all the subscribed actors have the same group id, then this works just like `Send` and each message is only delivered to one subscriber.
+
+If all the subscribed actors have different group names, then this works like normal `Publish` and each message is broadcasted to all subscribers.
+
+> **Note**<br>
+Note that if the group id is used it is part of the topic identifier. Messages published with `SendOneMessageToEachGroup=false` will not be delivered to subscribers that subscribed with a group id. Messages published with `SendOneMessageToEachGroup=true` will not be delivered to subscribers that subscribed without a group id.
+
+## Send
+This is a point-to-point mode where each message is delivered to one destination, but you still does not have to know where the destination is located. A typical usage of this mode is private chat to one other user in an instant messaging application. It can also be used for distributing tasks to registered workers, like a cluster aware router where the routees dynamically can register themselves.
+
+The message will be delivered to one recipient with a matching path, if any such exists in the registry. If several entries match the path because it has been registered on several nodes the message will be sent via the supplied `RoutingLogic` (default random) to one destination. The sender() of the message can specify that local affinity is preferred, i.e. the message is sent to an actor in the same local actor system as the used mediator actor, if any such exists, otherwise route to any other matching entry.
+
+You register actors to the local mediator with `DistributedPubSubMediator.Put`. The `IActorRef` in Put must belong to the same local actor system as the mediator. The path without address information is the key to which you send messages. On each node there can only be one actor for a given path, since the path is unique within one local actor system.
+
+You send messages by sending `DistributedPubSubMediator.Send` message to the local mediator with the path (without address information) of the destination actors.
+
+Actors are automatically removed from the registry when they are terminated, or you can explicitly remove entries with `DistributedPubSubMediator.Remove`.
+
+An example of a destination actor:
+
+```csharp
+public class Destination : ReceiveActor
+{
+    private readonly ILoggingAdapter log = Context.GetLogger();
+
+    public Destination()
+    {
+        // activate the extension
+        var mediator = DistributedPubSub.Get(Context.System).Mediator;
+
+        // register to the path
+        mediator.Tell(new Put(Self));
+
+        Receive<string>(s =>
+        {
+            log.Info($"Got {s}");
+        });
+    }
+}
+```
+
+Destination actors can be started on several nodes in the cluster, and all will receive messages sent to the path (without address information).
+
+```csharp
+RunOn(() =>
+{
+    Sys.ActorOf(Props.Create<Destination>(), "destination");
+}, _first);
+
+RunOn(() =>
+{
+    Sys.ActorOf(Props.Create<Destination>(), "destination");
+}, _second);
+```
+
+A simple actor that sends to the path:
+
+```csharp
+public class Sender : ReceiveActor
+{
+    public Sender()
+    {
+        // activate the extension
+        var mediator = DistributedPubSub.Get(Context.System).Mediator;
+
+        Receive<string>(str =>
+        {
+            var upperCase = str.ToUpper();
+            mediator.Tell(new Send(path: "/user/destination", message: upperCase, localAffinity: true));
+        });
+    }
+}
+```
+It can send messages to the path from anywhere in the cluster:
+```csharp
+RunOn(() =>
+{
+    var sender = Sys.ActorOf(Props.Create<Sender>(), "sender");
+
+    // after a while the destinations are replicated
+    sender.Tell("hello");
+}, _third);
+```
+
+It is also possible to broadcast messages to the actors that have been registered with `Put`. Send `DistributedPubSubMediator.SendToAll` message to the local mediator and the wrapped message will then be delivered to all recipients with a matching path. Actors with the same path, without address information, can be registered on different nodes. On each node there can only be one such actor, since the path is unique within one local actor system.
+
+Typical usage of this mode is to broadcast messages to all replicas with the same path, e.g. 3 actors on different nodes that all perform the same actions, for redundancy. You can also optionally specify a property (`AllButSelf`) deciding if the message should be sent to a matching path on the self node or not.
+
+## DistributedPubSub Extension
+In the example above the mediator is started and accessed with the `Akka.Cluster.Tools.PublishSubscribe.DistributedPubSub` extension. That is convenient and perfectly fine in most cases, but it can be good to know that it is possible to start the mediator actor as an ordinary actor and you can have several different mediators at the same time to be able to divide a large number of actors/topics to different mediators. For example you might want to use different cluster roles for different mediators.
+
+The `DistributedPubSub` extension can be configured with the following properties:
+
+```hocon
+# Settings for the DistributedPubSub extension
+akka.cluster.pub-sub {
+  # Actor name of the mediator actor, /system/distributedPubSubMediator
+  name = distributedPubSubMediator
+ 
+  # Start the mediator on members tagged with this role.
+  # All members are used if undefined or empty.
+  role = ""
+ 
+  # The routing logic to use for 'Send'
+  # Possible values: random, round-robin, broadcast
+  routing-logic = random
+ 
+  # How often the DistributedPubSubMediator should send out gossip information
+  gossip-interval = 1s
+ 
+  # Removed entries are pruned after this duration
+  removed-time-to-live = 120s
+ 
+  # Maximum number of elements to transfer in one message when synchronizing the registries.
+  # Next chunk will be transferred in next round of gossip.
+  max-delta-elements = 3000
+  
+  # The id of the dispatcher to use for DistributedPubSubMediator actors. 
+  # If not specified default dispatcher is used.
+  # If specified you need to define the settings of the actual dispatcher.
+  use-dispatcher = ""
+}
+```
+
+It is recommended to load the extension when the actor system is started by defining it in akka.extensions configuration property. Otherwise it will be activated when first used and then it takes a while for it to be populated.
+
+```hocon
+akka.extensions = ["akka.cluster.pubsub.DistributedPubSub"]
+```
