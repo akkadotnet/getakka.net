@@ -26,7 +26,7 @@ akka {
         }
     }
     cluster {
-       seed-nodes = ["akka.tcp://ClusterSystem@127.0.0.1:8081"] # address of seed node
+       seed-nodes = ["akka.tcp://ClusterSystem@localhost:8081"] # address of seed node
        roles = ["crawler", "logger"] # roles this member is in
        role.["crawler"].min-nr-of-members = 3 # crawler role minimum node count
     }
@@ -51,7 +51,7 @@ akka {
         }
     }
     cluster {
-       seed-nodes = ["akka.tcp://ClusterSystem@127.0.0.1:8081"]
+       seed-nodes = ["akka.tcp://ClusterSystem@localhost:8081"]
        min-nr-of-members = 3
     }
 }
@@ -72,7 +72,7 @@ akka {
         }
     }
     cluster {
-       seed-nodes = ["akka.tcp://ClusterSystem@127.0.0.1:8081"]
+       seed-nodes = ["akka.tcp://ClusterSystem@localhost:8081"]
        roles = ["crawlerV1", "crawlerV2"]
        role.["crawlerV1"].min-nr-of-members = 3
     }

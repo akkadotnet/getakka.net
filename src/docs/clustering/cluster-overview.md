@@ -93,7 +93,7 @@ akka {
         }
     }
     cluster {
-        seed-nodes = ["akka.tcp://ClusterSystem@127.0.0.1:8081"]
+        seed-nodes = ["akka.tcp://ClusterSystem@localhost:8081"]
     }
 }
 ```
@@ -115,7 +115,7 @@ akka {
         }
     }
     cluster {
-        seed-nodes = ["akka.tcp://ClusterSystem@127.0.0.1:8081"]
+        seed-nodes = ["akka.tcp://ClusterSystem@localhost:8081"]
     }
 }
 ```
