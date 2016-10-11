@@ -4,7 +4,7 @@ title: Akka cluster client
 ---
 # Akka cluster client
 
-Cluster client is a feature, which allows actors from actor system not being part of the target cluster to communicate with actors inside that cluster. To do so, it needs to know an initial contact point, known as `ClusterReceptionist`. Client will monitor the connection and reestablish it if necessary - it will work event when original contact went down, as at this point it doesn't need to to use it.
+Cluster client is a feature, which allows actors from actor system not being part of the target cluster to communicate with actors inside that cluster. To do so, it needs to know an initial contact point, known as `ClusterReceptionist`. Client will monitor the connection and reestablish it if necessary - it will work even when original contact went down, as at this point it doesn't need to use it.
 
 > Remember that Cluster client relies on Akka.Remote and Distributed Publish/Subscribe and all of their limitations also applies here. Also don't use cluster client to communicate between actors inside the same cluster, as it's not a suitable tool for this job, see. [Distributed Publish/Subscribe](clustering/distributed-publish-subscribe).
 
