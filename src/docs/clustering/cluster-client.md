@@ -10,7 +10,7 @@ Cluster client is a feature, which allows actors from actor system not being par
 
 Receptionist is supposed to be started on all cluster nodes (or those with specific role) using `ClusterClientReceptionist` before cluster client connection attempt. In order to make an actor visible outside the cluster it should be registered inside receptionist first. From the client perspective it can be accessed using `ClusterClient.Send`, `ClusterClient.SendToAll` and `ClusterClient.Publish` messages, which work accordingly to their Distributed Publish/Subscribe counterparts.
 
-Example:
+Example (you will need install `Akka.Cluster.Tools`):
 
 ```csharp
 // inside the Cluster
