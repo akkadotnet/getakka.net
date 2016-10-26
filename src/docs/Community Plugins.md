@@ -36,6 +36,10 @@ Azure Table and Blob Storage backend for Akka.NET persistent actors.
 
 Oracle database backend for Akka.NET persistent actors.
 
+##### [Akka.Persistence.RavenDB](https://github.com/raskolnikoov/Akka.Persistence.RavenDB)
+
+Akka Persistence journal and snapshot store backed by RavenDB database.
+
 ##### [Wire](https://github.com/akkadotnet/Wire)
 
 A high performance polymorphic serializer for the .NET framework.
