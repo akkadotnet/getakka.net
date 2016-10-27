@@ -40,6 +40,10 @@ Oracle database backend for Akka.NET persistent actors.
 
 Akka Persistence journal and snapshot store backed by RavenDB database.
 
+##### [Akka.Persistence.Marten](https://github.com/raskolnikoov/Akka.Persistence.Marten)
+
+Akka Persistence journal and snapshot store runned by Marten and stored in a Postgresql 9.5+ database.
+
 ##### [Wire](https://github.com/akkadotnet/Wire)
 
 A high performance polymorphic serializer for the .NET framework.
