@@ -11,7 +11,7 @@ This is accomplished by replacing the method that handles messages inside the ac
 
 This is a powerful concept that is behind other features like [Finite State Machines](../FSM).
 
-> **Note:**<br /> When you change the actor behavior, only the next message will use the new behavior. You can use [Stashing](Stashing Messages) to reprocess the same message with the new behavior.
+> **Note:**<br /> When you change the actor behavior, the new behaviour will take effect for all subsequent messages until the behaviour is changed again. The current message will continue processing with the existing behaviour. You can use [Stashing](Stashing Messages) to reprocess the current message with the new behavior.
 
 <iframe width="100%" height="475" src="https://dotnetfiddle.net/Widget/F96W0B" frameborder="0"></iframe>
 

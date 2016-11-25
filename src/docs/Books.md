@@ -7,6 +7,7 @@ title: Books
 
 ##  Manning Publications Co.
 ### Akka
+* [Reactive Applications with Akka.NET](https://www.manning.com/books/reactive-applications-with-akka-net)
 * [Akka in action](http://www.manning.com/roestenburg/)
 
 ---

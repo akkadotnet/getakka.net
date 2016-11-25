@@ -2,10 +2,10 @@
 layout: docs.hbs
 title: Synchronizing workflows
 ---
+
 # Synchronizing workflows
 
 ```csharp
-
 //add whatever contextual information necessary for
 //jobs in these classes
 public class SubTaskStarted {}
@@ -15,16 +15,16 @@ public class TasksFailed {}
 
 public class JobSynchronizer : ReceiveActor
 {
-     private readonly ActorRef _notifyStatus ;
+     private readonly IActorRef _notifyStatus;
 
      //TODO: don't use a counter incase of lost messages.
      //use a dict of actorref , bool for completion status per actor instead
      private int _jobCount;
 
-     public JobSynchronizer(ActorRef notifyStatus)
+     public JobSynchronizer(IActorRef notifyStatus)
      {
           SetReceiveTimeout(TimeSpan.FromSeconds(5));
-          _notifyStatus = notifyStatus ;
+          _notifyStatus = notifyStatus;
           Receive<SubTaskStarted>(_ =>
           {
              _jobCount ++;
@@ -39,7 +39,7 @@ public class JobSynchronizer : ReceiveActor
           {
               //kill timeout
               SetReceiveTimeout(null);
-              //
+
               _notifyStatus.Tell(new TasksFailed());
           });
      }
@@ -55,8 +55,8 @@ public class JobSynchronizer : ReceiveActor
 
 public class Worker : ReceiveActor
 {
-     private ActorRef _synchronizer;
-     public Worker(ActorRef synchronizer)
+     private IActorRef _synchronizer;
+     public Worker(IActorRef synchronizer)
      {
            _synchronizer = synchronizer;
            Receive<DoSomeWork>(work =>

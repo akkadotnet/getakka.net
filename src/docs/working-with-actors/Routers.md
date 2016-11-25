@@ -7,13 +7,13 @@ title: Routers
 
 A *router* is a special type of actor whose job is to route messages to other actors called *routees*. Different routers use different *strategies* to route messages efficiently.
 
-Routers can be used inside or outside of an actor, and you can manage the routees yourself or use a self contained router actor with configuration capabilities.
+Routers can be used inside or outside of an actor, and you can manage the routees yourself or use a self contained router actor with configuration capabilities, and can also [resize dynamically](#dynamically-resizable-pools) under load.
 
 Akka.NET comes with several useful routers you can choose right out of the box, according to your application's needs. But it is also possible to create your own.
 
 > **Note:**<br/>
 > In general, any message sent to a router will be forwarded to one of its routees, but there is one exception.
-> The special [Broadcast Message](#Broadcast Messages) will be sent to all routees.
+> The special [Broadcast Message](#broadcast-messages) will be sent to all routees. See [Specially Handled Messages](#specially-handled-messages) section for details.
 
 ## Deployment
 
@@ -94,7 +94,7 @@ Routers are implemented as actors, so a router is supervised by it's parent, and
 
 *Pool routers* on the other hand create their own children. The router is therefore also the routee's supervisor.
 
-By default, routers use the `OneForOneStrategy`, so if a child dies, only that actor is restarted. If you want to change this behavior, the supervision strategy of the router actor can be configured with the `SupervisorStrategy` property of the Pool.
+By default, pool routers use a custom strategy that only returns `Escalate` for all exceptions, the router supervising the failing worker will then escalate to it's own parent, if the parent of the router decides to restart the router, all the pool workers will also be recreated as a result of this.
 
 ## Routing Strategies
 
@@ -364,8 +364,8 @@ akka.actor.deployment {
   /some-pool {
     router = tail-chopping-pool
     nr-of-instances = 5
-    within = 10 seconds
-    tail-chopping-router.interval = 20 milliseconds
+    within = 10s
+    tail-chopping-router.interval = 20ms
   }
 }
 ```
@@ -388,8 +388,8 @@ akka.actor.deployment {
   /some-group {
     router = tail-chopping-group
     routees.paths = ["/user/workers/w1", "/user/workers/w2", "/user/workers/w3"]
-    within = 10 seconds
-    tail-chopping-router.interval = 20 milliseconds
+    within = 10s
+    tail-chopping-router.interval = 20ms
   }
 }
 ```
@@ -425,9 +425,9 @@ ScatterGatherFirstCompletedPool defined in configuration:
 ```hocon
 akka.actor.deployment {
   /some-pool {
-    router = tail-chopping-pool
+    router = scatter-gather-pool
     nr-of-instances = 5
-    within = 10 seconds
+    within = 10s
   }
 }
 ```
@@ -447,9 +447,9 @@ ScatterGatherFirstCompletedPool defined in configuration:
 ```hocon
 akka.actor.deployment {
   /some-group {
-    router = tail-chopping-group
+    router = scatter-gather-group
     routees.paths = ["/user/workers/w1", "/user/workers/w2", "/user/workers/w3"]
-    within = 10 seconds
+    within = 10s
   }
 }
 ```
@@ -500,6 +500,111 @@ SmallestMailboxPool defined in code:
 ```cs
 var router = system.ActorOf(Props.Create<Worker>().WithRouter(new SmallestMailboxPool(5)), "some-pool");
 ```
+
+## Dynamically Resizable Pools
+
+Routers pools can be dynamically resized to adjust the responsiveness of the system under load.
+
+This is done by adding a `resizer` section to your router configuration:
+
+```hocon
+akka.actor.deployment {
+    /my-router {
+        router = round-robin-pool
+        resizer {
+            enabled = on
+            lower-bound = 1
+            upper-bound = 10
+        }
+    }
+}
+```
+
+You can also set a resizer in code when creating a router.
+
+```cs
+new RoundRobinPool(5, new DefaultResizer(1, 10))
+```
+These are settings you usually change in the resizer:
+
+* `enabled` - Turns on or off the resizer. The default is `off`.
+* `lower-bound` - The minimum number of routees that should remain active. The default is `1`.
+* `upper-bound` - The maximum number of routees that should be created. The default is `10`.
+
+The default resizer works by checking the pool size every X messages, and deciding to increase or decrease the pool accordingly. The following settings are used to fine-tune the resizer and are considered *good enough* for most cases, but can be changed if needed:
+
+* `messages-per-resize` - The # of messages to route before checking if resize is needed. The default is `10`.
+* `rampup-rate` - Percentage to increase the pool size. The default is `0.2`, meaning it will increase the pool size in 20% when resizing.
+* `backoff-rate` - Percentage to decrease the pool size. The default is `0.1`, meaning it will decrease the pool size in 10% when resizing.
+* `pressure-threshold` - A threshold used to decide if the pool should be increased. The default is `1`, meaning it will decide to increase the pool if all routees are busy and have at least 1 message in the mailbox.
+    * `0` - the routee is busy and have no messages in the mailbox
+    * `1` - the routee is busy and have at least 1 message waiting in the mailbox
+    * `N` - the routee is busy and have N messages waiting in the mailbox (where N > 1)
+* `backoff-threshold` - A threshold used to decide if the pool should be decreased. The default is `0.3`, meaning it will decide to decrease the pool if less than 30% of the routers are busy.
+
+## Specially Handled Messages
+
+Most messages sent to router will be forwarded according to router's routing logic. However there are a few types of messages that have special behaviour.
+
+### Broadcast Messages
+
+A `Broadcast` message can be used to send message to __all__ routees of a router. When a router receives `Broadcast` message, it will broadcast that message's __payload__ to all routees, no matter how that router normally handles its messages.
+
+Here is an example of how to send a message to every routee of a router.
+
+```cs
+actorSystem.ActorOf(Props.Create<Worker>(), "worker1");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker2");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker3");
+
+var workers = new[] { "/user/worker1", "/user/worker2", "/user/worker3" };
+var router = actorSystem.ActorOf(Props.Empty.WithRouter(new RoundRobinGroup(workers)), "workers");
+
+// this sends to individual worker
+router.Tell("Hello, worker1");
+router.Tell("Hello, worker2");
+router.Tell("Hello, worker3");
+
+// this sends to all workers
+router.Tell(new Broadcast("Hello, workers"));
+```
+
+In this example, the router received the `Broadcast` message, extracted its payload (`Hello, workers`), and then dispatched it to all its routees. It is up to each routee actor to handle the payload.
+
+### PoisonPill Messages
+When an actor received `PoisonPill` message, that actor will be stopped. (see [PoisonPill](stopping-actors#graceful-shutdown-sending-an-actor-a-poisonpill) for details).
+
+For a router, which normally passes on messages to routees, the `PoisonPill` messages are processed __by the router only__. `PoisonPill` messages sent to a router will __not__ be sent on to its routees.
+
+However, a `PisonPill` message sent to a router may still affect its routees, as it will stop the router whhich in turns stop children the router has created. Each child will process its current message and then stop. This could lead to some messages being unprocessed.
+
+If you wish to stop a router and its routees, but you would like the routees to first process all the messages in their mailbxes, then you should send a `PoisonPill` message wrapped inside a `Broadcast` message so that each routee will receive the `PoisonPill` message. 
+
+> **Note:**<br/>
+> The above method will stop all routees, even if they are not created by the router. E.g. routees programatically provided to the router.
+
+```cs
+actorSystem.ActorOf(Props.Create<Worker>(), "worker1");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker2");
+actorSystem.ActorOf(Props.Create<Worker>(), "worker3");
+
+var workers = new[] { "/user/worker1", "/user/worker2", "/user/worker3" };
+var router = actorSystem.ActorOf(Props.Empty.WithRouter(new RoundRobinGroup(workers)), "workers");
+
+router.Tell("Hello, worker1");
+router.Tell("Hello, worker2");
+router.Tell("Hello, worker3");
+
+// this sends PoisonPill message to all routees
+router.Tell(new Broadcast(PoisonPill.Instance));
+```
+
+With the code shown above, each routee will receive a `PoisonPill` message. Each routee will continue to process its messages as normal, eventually processing the `PoisonPill`. This will cause the routee to stop. After all routees have stopped the router will itself be stopped automatically unless it is a dynamic router, e.g. using a resizer.
+
+### Kill Message
+As with the `PoisonPill` messasge, there is a distinction between killing a router, which indirectly kills its children (who happen to be routees), and killing routees directly (some of whom may not be children.) To kill routees directly the router should be sent a Kill message wrapped in a `Broadcast` message.
+
+See [Noisy on Purpose: Kill the Actor](stopping-actors#noisy-on-purpose-kill-the-actor) for more details on how `Kill` message works.
 
 ## Advanced
 

@@ -30,7 +30,7 @@ public class MyActor: ReceiveActor
       log.Info("Received String message: {0}", message);
       Sender.Tell(message);
     });
-    Receive<SomeMessage(message => {...});
+    Receive<SomeMessage>(message => {...});
   }
 }
 ```
@@ -61,7 +61,7 @@ using System.Diagnostics;
 ...
 var inbox = Inbox.Create(system);
 inbox.Watch(target);
-target.Tell(PoisonPill.Instance, ActorRef.NoSender);
+target.Tell(PoisonPill.Instance, ActorRefs.NoSender);
 
 try
 {
@@ -100,25 +100,30 @@ This strategy is typically declared inside the actor in order to have access to 
 The remaining visible methods are user-overridable life-cycle hooks which are described in the following:
 
 ```csharp
-public override void PreStart() {
+public override void PreStart()
+{
 }
 
-protected override void PreRestart(Exception reason, object message) {
-  foreach (ActorRef each in Context.GetChildren()) {
-    Context.Unwatch(each);
-    Context.Stop(each);
-  }
-  PostStop();
+protected override void PreRestart(Exception reason, object message)
+{
+    foreach (ActorRef each in Context.GetChildren())
+    {
+      Context.Unwatch(each);
+      Context.Stop(each);
+    }
+    PostStop();
 }
 
-protected override void PostRestart(Exception reason) {
+protected override void PostRestart(Exception reason)
+{
   PreStart();
 }
 
-protected override void PostStop() {
+protected override void PostStop()
+{
 }
 ```
-The implementations shown above are the defaults provided by the UntypedActor class.
+The implementations shown above are the defaults provided by the `UntypedActor` class.
 
 
 ## Identifying Actors via Actor Selection
@@ -144,7 +149,7 @@ Context.ActorSelection("../*");
 ```
 Messages can be sent via the `ActorSelection` and the path of the `ActorSelection`is looked up when delivering each message. If the selection does not match any actors the message will be dropped.
 
-To acquire an `AtorRef` for an `ActorSelection` you need to send a message to the selection and use the `Sender` reference of the reply from the actor. There is a built-in Identify message that all Actors will understand and automatically reply to with a `ActorIdentity` message containing the ActorRef. This message is handled specially by the actors which are traversed in the sense that if a concrete name lookup fails (i.e. a non-wildcard path element does not correspond to a live actor) then a negative result is generated. Please note that this does not mean that delivery of that reply is guaranteed, it still is a normal message.
+To acquire an `ActorRef` for an `ActorSelection` you need to send a message to the selection and use the `Sender` reference of the reply from the actor. There is a built-in Identify message that all Actors will understand and automatically reply to with a `ActorIdentity` message containing the ActorRef. This message is handled specially by the actors which are traversed in the sense that if a concrete name lookup fails (i.e. a non-wildcard path element does not correspond to a live actor) then a negative result is generated. Please note that this does not mean that delivery of that reply is guaranteed, it still is a normal message.
 
 ```csharp
 public class Follower : UntypedActor
@@ -269,20 +274,23 @@ This example demonstrates Ask together with the Pipe Pattern on Tasks, because t
 
 Using Ask will send a message to the receiving Actor as with Tell, and the receiving actor must reply with  `Sender.Tell(reply, Self)` in order to complete the returned Task with a value. The Ask operation involves creating an internal actor for handling this reply, which needs to have a timeout after which it is destroyed in order not to leak resources; see more below.
 
->**Warning**<br/>
->To complete the Task with an exception you need send a Failure message to the sender. This is not done automatically when an actor throws an exception while processing a message.
+>**Warning**<br/> To complete the Task with an exception you need send a Failure
+message to the sender. This is not done automatically when an actor throws an
+exception while processing a message.
 
 ```csharp
-try {
+try
+{
     var result = operation();
     Sender.Tell(result, Self);
 }
-catch (Exception e) {
+catch (Exception e)
+{
     Sender.Tell(new Failure { Exception = e }, Self);
 }
 ```
 
-If the actor does not complete the task, it will expire after the timeout period, specified as parameter to the Ask method, and the task will be cancelled and throw a TaskCancelledException.
+If the actor does not complete the task, it will expire after the timeout period, specified as parameter to the Ask method, and the task will be cancelled and throw a `TaskCancelledException`.
 
 For more information on Tasks, check out the [MSDN documentation](https://msdn.microsoft.com/en-us/library/dd537609(v=vs.110).aspx).
 
@@ -297,7 +305,7 @@ target.Forward(result, Context);
 ```
 
 ## Receive messages
-When an actor receives a message it is passed into the OnReceive method, this is an abstract method on the UntypedActor base class that needs to be defined.
+When an actor receives a message it is passed into the ```OnReceive``` method, this is an abstract method on the `UntypedActor` base class that needs to be defined.
 
 Here is an example:
 ```csharp
@@ -332,24 +340,27 @@ protected override void OnReceive(object message)
 ```
 
 ## Stopping actors
-Actors are stopped by invoking the stop method of a ActorRefFactory, i.e. ActorContext or ActorSystem. Typically the context is used for stopping child actors and the system for stopping top level actors. The actual termination of the actor is performed asynchronously, i.e. stop may return before the actor is stopped.
+[See "Stopping Actors."](./working-with-actors/stopping-actors)
+
+Actors are stopped by invoking the `Stop` method of a `ActorRefFactory`, i.e. `ActorContext` or `ActorSystem`. Typically the context is used for stopping child actors and the system for stopping top level actors. The actual termination of the actor is performed asynchronously, i.e. stop may return before the actor is stopped.
 
 Processing of the current message, if any, will continue before the actor is stopped, but additional messages in the mailbox will not be processed. By default these messages are sent to the deadLetters of the ActorSystem, but that depends on the mailbox implementation.
 
-Termination of an actor proceeds in two steps: first the actor suspends its mailbox processing and sends a stop command to all its children, then it keeps processing the internal termination notifications from its children until the last one is gone, finally terminating itself (invoking postStop, dumping mailbox, publishing Terminated on the DeathWatch, telling its supervisor). This procedure ensures that actor system sub-trees terminate in an orderly fashion, propagating the stop command to the leaves and collecting their confirmation back to the stopped supervisor. If one of the actors does not respond (i.e. processing a message for extended periods of time and therefore not receiving the stop command), this whole process will be stuck.
+Termination of an actor proceeds in two steps: first the actor suspends its mailbox processing and sends a stop command to all its children, then it keeps processing the internal termination notifications from its children until the last one is gone, finally terminating itself (invoking postStop, dumping mailbox, publishing `Terminated` on the DeathWatch, telling its supervisor). This procedure ensures that actor system sub-trees terminate in an orderly fashion, propagating the stop command to the leaves and collecting their confirmation back to the stopped supervisor. If one of the actors does not respond (i.e. processing a message for extended periods of time and therefore not receiving the stop command), this whole process will be stuck.
 
-Upon ActorSystem.Shutdown, the system guardian actors will be stopped, and the aforementioned process will ensure proper termination of the whole system.
+Upon `ActorSystem.Shutdown`, the system guardian actors will be stopped, and the aforementioned process will ensure proper termination of the whole system.
 
-The PostStop hook is invoked after an actor is fully stopped. This enables cleaning up of resources:
+The `PostStop` hook is invoked after an actor is fully stopped. This enables cleaning up of resources:
 
 ```csharp
-protected override void PostStop() {
+protected override void PostStop()
+{
     // clean up resources here ...
 }
 ```
 
 >**Note**<br/>
-Since stopping an actor is asynchronous, you cannot immediately reuse the name of the child you just stopped; this will result in an InvalidActorNameException. Instead, watch the terminating actor and create its replacement in response to the Terminated message which will eventually arrive.
+Since stopping an actor is asynchronous, you cannot immediately reuse the name of the child you just stopped; this will result in an `InvalidActorNameException`. Instead, watch the terminating actor and create its replacement in response to the `Terminated` message which will eventually arrive.
 
 ### PoisonPill
 You can also send an actor the Akka.Actor.PoisonPill message, which will stop the actor when the message is processed. PoisonPill is enqueued as ordinary messages and will be handled after messages that were already queued in the mailbox.
@@ -400,14 +411,15 @@ public class Manager : UntypedActor
         {
             Sender.Tell("service unavailable, shutting down", Self);
         }
-        else if (message is Terminated) {
+        else if (message is Terminated)
+        {
             Context.Stop(Self);
         }
     }
 }
 ```
 
-When `GracefulStop()` returns successfully, the actor’s `PostStop()` hook will have been executed: there exists a happens-before edge between the end of PostStop() and the return of GracefulStop().
+When ```GracefulStop()``` returns successfully, the actor’s ```PostStop()``` hook will have been executed: there exists a happens-before edge between the end of ```PostStop()``` and the return of ```GracefulStop()```.
 
 In the above example a "shutdown" message is sent to the target actor to initiate the process of stopping the actor. You can use PoisonPill for this, but then you have limited possibilities to perform interactions with other actors before stopping the target actor. Simple cleanup tasks can be handled in PostStop.
 
@@ -529,7 +541,7 @@ The rich lifecycle hooks of Actors provide a useful toolkit to implement various
 One may think about the new instances as "incarnations". Initialization might be necessary for every incarnation of an actor, but sometimes one needs initialization to happen only at the birth of the first instance when the ActorRef is created. The following sections provide patterns for different initialization needs.
 
 ### Initialization via constructor
-Using the constructor for initialization has various benefits. First of all, it makes it possible to use val fields to store any state that does not change during the life of the actor instance, making the implementation of the actor more robust. The constructor is invoked for every incarnation of the actor, therefore the internals of the actor can always assume that proper initialization happened. This is also the drawback of this approach, as there are cases when one would like to avoid reinitializing internals on restart. For example, it is often useful to preserve child actors across restarts. The following section provides a pattern for this case.
+Using the constructor for initialization has various benefits. First of all, it makes it possible to use readonly fields to store any state that does not change during the life of the actor instance, making the implementation of the actor more robust. The constructor is invoked for every incarnation of the actor, therefore the internals of the actor can always assume that proper initialization happened. This is also the drawback of this approach, as there are cases when one would like to avoid reinitializing internals on restart. For example, it is often useful to preserve child actors across restarts. The following section provides a pattern for this case.
 
 ### Initialization via preStart
 The method PreStart() of an actor is only called once directly during the initialization of the first instance, that is, at creation of its ActorRef. In the case of restarts, PreStart() is called from PostRestart(), therefore if not overridden, PreStart() is called on every incarnation. However, overriding PostRestart() one can disable this behavior, and ensure that there is only one call to PreStart().
