@@ -136,7 +136,7 @@ Context.ActorSelection("/user/serviceA/actor");
 // will look up sibling beneath same supervisor
 Context.ActorSelection("../joe");
 ```
-The supplied path is parsed as a `System.URI`, which basically means that it is split on / into path elements. If the path starts with /, it is absolute and the look-up starts at the root guardian (which is the parent of "/user"); otherwise it starts at the current actor. If a path element equals .., the look-up will take a step “up” towards the supervisor of the currently traversed actor, otherwise it will step “down” to the named child. It should be noted that the .. in actor paths here always means the logical structure, i.e. the supervisor.
+The supplied path is parsed as a `System.URI`, which basically means that it is split on / into path elements. If the path starts with /, it is absolute and the look-up starts at the root guardian (which is the parent of "/user"); otherwise it starts at the current actor. If a path element equals .., the look-up will take a step “up" towards the supervisor of the currently traversed actor, otherwise it will step “down" to the named child. It should be noted that the .. in actor paths here always means the logical structure, i.e. the supervisor.
 
 The path elements of an actor selection may contain wildcard patterns allowing for broadcasting of messages to that section:
 
@@ -235,7 +235,7 @@ public class ImmutableMessage
 ## Send messages
 Messages are sent to an Actor through one of the following methods.
 
-tell means “fire-and-forget”, e.g. send a message asynchronously and return immediately.
+tell means “fire-and-forget", e.g. send a message asynchronously and return immediately.
 ask sends a message asynchronously and returns a Future representing a possible reply.
 Message ordering is guaranteed on a per-sender basis.
 
@@ -468,7 +468,7 @@ public class HotSwapActor : UntypedActor
 
 This variant of the Become method is useful for many different things, such as to implement a Finite State Machine (FSM). It will replace the current behavior (i.e. the top of the behavior stack), which means that you do not use Unbecome, instead always the next behavior is explicitly installed.
 
-The other way of using Become does not replace but add to the top of the behavior stack. In this case care must be taken to ensure that the number of “pop” operations (i.e. Unbecome) matches the number of “push” ones in the long run, otherwise this amounts to a memory leak (which is why this behavior is not the default).
+The other way of using Become does not replace but add to the top of the behavior stack. In this case care must be taken to ensure that the number of “pop" operations (i.e. Unbecome) matches the number of “push" ones in the long run, otherwise this amounts to a memory leak (which is why this behavior is not the default).
 
 ```csharp
 

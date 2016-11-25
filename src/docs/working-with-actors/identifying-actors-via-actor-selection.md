@@ -15,7 +15,7 @@ Context.ActorSelection("../joe");
 > **Note**<br>
 It is always preferable to communicate with other Actors using their `IActorRef` instead of relying upon `ActorSelection`. Exceptions are: sending messages using the At-Least-Once Delivery facility, initiating first contact with a remote system. In all other cases `ActorRefs` can be provided during Actor creation or initialization, passing them from parent to child or introducing Actors by sending their `ActorRefs` to other Actors within messages.
 
-The supplied path is parsed as a `System.URI`, which basically means that it is split on `/` into path elements. If the path starts with /, it is absolute and the look-up starts at the root guardian (which is the parent of `"/user"`); otherwise it starts at the current actor. If a path element equals `..`, the look-up will take a step “up” towards the supervisor of the currently traversed actor, otherwise it will step “down” to the named child. It should be noted that the `..` in actor paths here always means the logical structure, i.e. the supervisor.
+The supplied path is parsed as a `System.URI`, which basically means that it is split on `/` into path elements. If the path starts with /, it is absolute and the look-up starts at the root guardian (which is the parent of `"/user"`); otherwise it starts at the current actor. If a path element equals `..`, the look-up will take a step “up" towards the supervisor of the currently traversed actor, otherwise it will step “down" to the named child. It should be noted that the `..` in actor paths here always means the logical structure, i.e. the supervisor.
 
 The path elements of an actor selection may contain wildcard patterns allowing for broadcasting of messages to that section:
 

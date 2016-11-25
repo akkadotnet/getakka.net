@@ -27,7 +27,7 @@ public class ImmutableMessage
 
 Messages are sent to an Actor through one of the following methods.
 
-tell means “fire-and-forget”, e.g. send a message asynchronously and return immediately.
+tell means “fire-and-forget", e.g. send a message asynchronously and return immediately.
 ask sends a message asynchronously and returns a Future representing a possible reply.
 Message ordering is guaranteed on a per-sender basis.
 
