@@ -225,10 +225,10 @@ This assumes that serialization happens in the context of sending a message
 through the remote transport. There are other uses of serialization, though,
 e.g. storing actor references outside of an actor application (database, etc.).
 In this case, it is important to keep in mind that the address part of an
-actor’s path determines how that actor is communicated with. Storing a local
+actor's path determines how that actor is communicated with. Storing a local
 actor path might be the right choice if the retrieval happens in the same
 logical context, but it is not enough when deserializing it on a different
-network host: for that it would need to include the system’s remote transport
+network host: for that it would need to include the system's remote transport
 address. An actor system is not limited to having just one remote transport
 per se, which makes this question a bit more interesting. To find out the
 appropriate address to use when sending to remoteAddr you can use  
@@ -295,7 +295,7 @@ This requires that you know at least which type of address will be supported by
 the system which will deserialize the resulting actor reference; if you have no
 concrete address handy you can create a dummy one for the right protocol using
 new Address(protocol, "", "", 0) (assuming that the actual transport used is as
-lenient as Akka’s RemoteActorRefProvider).
+lenient as Akka's RemoteActorRefProvider).
 
 There is also a default remote address which is the one used by cluster support
 (and typical systems have just this one); you can get it like this:
