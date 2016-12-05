@@ -7,7 +7,7 @@ title: Fault tolerance
 As explained in [Actor Systems](ActorSystem) each actor is the supervisor of its
 children, and as such each actor defines fault handling supervisor strategy.
 This strategy cannot be changed afterwards as it is an integral part of the
-actor system’s structure.
+actor system's structure.
 
 ## Fault Handling in Practice
 
@@ -135,7 +135,7 @@ terminated by the supervisor:
 
 !!!TODO: Port sample code
 
-Up to now the supervisor was completely unaffected by the child’s failure,
+Up to now the supervisor was completely unaffected by the child's failure,
 because the directives set did handle it. In case of an ``Exception``, this is not
 true anymore and the supervisor escalates the failure.
 

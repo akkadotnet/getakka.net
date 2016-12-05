@@ -5,7 +5,7 @@ title: Sending messages
 # Sending messages
 
 ## Messages and immutability
-**IMPORTANT:** Messages can be any kind of object but have to be immutable. Akka can’t enforce immutability (yet) so this has to be by convention.
+**IMPORTANT:** Messages can be any kind of object but have to be immutable. Akka can't enforce immutability (yet) so this has to be by convention.
 
 Here is an example of an immutable message:
 
@@ -40,7 +40,7 @@ In all these methods you have the option of passing along your own ActorRef. Mak
 This is the preferred way of sending messages. No blocking waiting for a message. This gives the best concurrency and scalability characteristics.
 
 ```csharp
-// don’t forget to think about who is the sender (2nd argument)
+// don't forget to think about who is the sender (2nd argument)
 target.Tell(message, Self);
 ```
 The sender reference is passed along with the message and available within the receiving actor via its Sender property while processing this message. Inside of an actor it is usually Self who shall be the sender, but there can be cases where replies shall be routed to some other actor—e.g. the parent—in which the second argument to tell would be a different one. Outside of an actor and if no reply is needed the second argument can be null; if a reply is needed outside of an actor you can use the ask-pattern described next.
@@ -87,7 +87,7 @@ If the actor does not complete the task, it will expire after the timeout period
 For more information on Tasks, check out the [MSDN documentation](https://msdn.microsoft.com/en-us/library/dd537609(v=vs.110).aspx).
 
 >**Warning**<br/>
-When using task callbacks inside actors, you need to carefully avoid closing over the containing actor’s reference, i.e. do not call methods or access mutable state on the enclosing actor from within the callback. This would break the actor encapsulation and may introduce synchronization bugs and race conditions because the callback will be scheduled concurrently to the enclosing actor. Unfortunately there is not yet a way to detect these illegal accesses at compile time. See also: [[Actors and shared mutable state]]
+When using task callbacks inside actors, you need to carefully avoid closing over the containing actor's reference, i.e. do not call methods or access mutable state on the enclosing actor from within the callback. This would break the actor encapsulation and may introduce synchronization bugs and race conditions because the callback will be scheduled concurrently to the enclosing actor. Unfortunately there is not yet a way to detect these illegal accesses at compile time. See also: [[Actors and shared mutable state]]
 
 ### Forward message
 You can forward a message from one actor to another. This means that the original sender address/reference is maintained even though the message is going through a 'mediator'. This can be useful when writing actors that work as routers, load-balancers, replicators etc. You need to pass along your context variable as well.
