@@ -520,7 +520,7 @@ You can kill an actor by sending a Kill message. This will cause the actor to th
 Use `Kill` like this:
 
 ```csharp
-victim.Tell(Akka.Actor.Kill.Instance, ActorRef.NoSender);
+victim.Tell(Akka.Actor.Kill.Instance, ActorRefs.NoSender);
 ```
 
 ## Actors and exceptions
