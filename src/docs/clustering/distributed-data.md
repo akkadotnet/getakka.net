@@ -4,7 +4,7 @@ title: Akka distributed data
 ---
 # Distributed data
 
-Akka.DistributedData plugin can be used as in-memory, highly-available, distributed key-value store, where values conform to so called **Conflict-Free Replicated Data Types** (CRDT). Those data types can have replicas across multiple nodes in the cluster, where DistributedData plugin has been initialized. We are free to perform concurrent updates on replicas with the same corresponding key without need of coordination (distributed locks or transactions) - all state changes will eventually converge with conflicts being automatically resolved, thanks to the nature of CRDTs. To use distributed data plugin, simply install it via NuGet:
+Akka.DistributedData plugin can be used as in-memory, highly-available, distributed key-value store, where values conform to so called [Conflict-Free Replicated Data Types](http://hal.upmc.fr/inria-00555588/document) (CRDT). Those data types can have replicas across multiple nodes in the cluster, where DistributedData plugin has been initialized. We are free to perform concurrent updates on replicas with the same corresponding key without need of coordination (distributed locks or transactions) - all state changes will eventually converge with conflicts being automatically resolved, thanks to the nature of CRDTs. To use distributed data plugin, simply install it via NuGet:
 
 ```
 install-package Akka.DistributedData -pre
@@ -164,4 +164,18 @@ Keep in mind, that most of the replicated collections add/remove methods require
 
 ## Tombstones
 
-One of the issue of CRDTs, is that they accumulate history of changes (including removed elements), producing a garbadge, that effectivelly pile up in memory. While this is still a problem, it can be limited by replicator, which is able to remove data associated with nodes, that no longer exist in the cluster. This process is known as a prunning.
+One of the issue of CRDTs, is that they accumulate history of changes (including removed elements), producing a garbadge, that effectivelly pile up in memory. While this is still a problem, it can be limited by replicator, which is able to remove data associated with nodes, that no longer exist in the cluster. This process is known as a pruning.
+
+## Settings 
+
+There are several different HOCON settings, that can be used to configure distributed data plugin. By default, they all live under `akka.cluster.distributed-data` node:
+
+- `name` of replicator actor. Default: *ddataReplicator*.
+- `role` used to limit expected DistributedData capability to nodes having that role. None by default.
+- `gossip-interval` tells replicator, how often replicas should be gossiped over the cluster. Default: *2 seconds*
+- `notify-subscribers-interval` tells, how often replicator subscribers should be notified with replica state changes. Default: *0.5 second*
+- `max-delta-elements` limits a maximum number of entries (key-value pairs) to be send in a single gossip information. If there are more modified entries waiting to be gossiped, they will be send in the next round. Default: *1000*
+- `use-dispatcher` can be used to specify custom replicator actor message dispatcher. By default it uses an actor system default dispatcher.
+- `pruning-interval` tells, how often replicator will check if pruning should be performed. Default: *30 seconds*
+- `max-pruning-dissemination` informs, what is the worst expected time for the pruning process to inform whole cluster about pruned node data. Default: *60 seconds*
+- `serializer-cache-time-to-live` is used by custom distributed data serializer to determine, for how long serialized replicas should be cached. When sending replica over multiple nodes, it will reuse data already serialized, if it was found in a cache. Default: *10 seconds*.
