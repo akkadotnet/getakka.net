@@ -115,6 +115,7 @@ title: Akka.NET Documentation
     - [Cluster distributed publish/subscribe](clustering/distributed-publish-subscribe)
     - [Communication with cluster without joining to it](clustering/cluster-client)
 - [Akka.Cluster.Sharding module](clustering/cluster-sharding)
+- [Akka.DistributedData module](clustering/distributed-data)
 
 ### Networking
 - [Serialization](Serialization)
