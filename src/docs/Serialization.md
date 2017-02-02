@@ -333,7 +333,7 @@ public class DefaultAddress extends
 
 ### How to setup Hyperion as default serializer
 
-Starting from Akka.NET v1.5, default Newtonsoft.Json serializer will be replaced in the favor of [Hyperion](https://github.com/akkadotnet/Hyperion). At the present moment, wire is required by some of the newer plugins (like `Akka.Cluster.Tools`). This change may break compatibility with older actors still using json serializer for remoting or persistence. If it's possible, it's advised to migrate to it already. To do so, first you need to reference wire serializer as NuGet package inside your project:
+Starting from Akka.NET v1.5, default Newtonsoft.Json serializer will be replaced in the favor of [Hyperion](https://github.com/akkadotnet/Hyperion). At the present moment, wire is required by some of the newer plugins (like `Akka.Cluster.Tools`). This change may break compatibility with older actors still using json serializer for remoting or persistence. If it's possible, it's advised to migrate to it already. To do so, first you need to reference hyperion serializer as NuGet package inside your project:
 
     Install-Package Akka.Serialization.Hyperion -pre
 
