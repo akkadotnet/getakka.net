@@ -75,10 +75,10 @@ guideline.
 
 Currently the following Akka.NET Dependency Injection plugins are available:
 
-## AutoFac
+## Autofac
 
 In order to use this plugin, install the Nuget package with
-`Install-Package Akka.DI.AutoFac`, then follow the instructions:
+`Install-Package Akka.DI.Autofac`, then follow the instructions:
 
 ```csharp
 // Create and build your container
@@ -92,7 +92,7 @@ var system = ActorSystem.Create("MySystem");
 var propsResolver = new AutoFacDependencyResolver(container, system);
 ```
 
-## CastleWindsor
+## Castle Windsor
 
 In order to use this plugin, install the Nuget package with
 `Install-Package Akka.DI.CastleWindsor`, then follow the instructions:
