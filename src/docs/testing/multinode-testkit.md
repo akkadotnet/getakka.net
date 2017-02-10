@@ -39,6 +39,15 @@ public class JoinInProgressMultiNodeConfig : MultiNodeConfig
                         acceptable-heartbeat-pause = 1 second
                     }
                 }").WithFallback(MultiNodeClusterSpec.ClusterConfig()));
+
+        NodeConfig(new List<RoleName> { First }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[frontend]")
+        });
+        NodeConfig(new List<RoleName> { Second }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[backend]")
+        });
     }
 }
 
@@ -117,13 +126,23 @@ public class JoinInProgressMultiNodeConfig : MultiNodeConfig
                         acceptable-heartbeat-pause = 1 second
                     }
                 }").WithFallback(MultiNodeClusterSpec.ClusterConfig()));
+
+
+        NodeConfig(new List<RoleName> { First }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[frontend]")
+        });
+        NodeConfig(new List<RoleName> { Second }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[backend]")
+        });
     }
 }
 ```
 
 In the `JoinInProgressMultiNodeConfig`, we define two `RoleName`s for the two nodes who will be participating in this multi node spec, and then we define a `Config` object and have it set to the `CommonConfig` property, which is shared across all nodes.
 
-We'll show you how to configure individual nodes in a second.
+Also we configured each node to represent specific role `[frontend,backend]` in the cluster. You can attach arbitrary config instance(s) to individual node or group of nodes by calling `NodeConfig(IEnumerable<RoleName> roles, IEnumerable<Config> configs)`.
 
 #### Step 2 - Define a Class for Your Spec, Inherit from `MultiNodeSpec`
 The next step is to subclass `MultiNodeSpec` and create a class that each of your individual nodes will run.
