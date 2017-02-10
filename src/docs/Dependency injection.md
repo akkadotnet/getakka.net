@@ -78,7 +78,7 @@ Currently the following Akka.NET Dependency Injection plugins are available:
 ## Autofac
 
 In order to use this plugin, install the Nuget package with
-`Install-Package Akka.DI.Autofac`, then follow the instructions:
+`Install-Package Akka.DI.AutoFac`, then follow the instructions:
 
 ```csharp
 // Create and build your container
