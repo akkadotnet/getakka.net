@@ -20,15 +20,13 @@ Here's an example of a multi node spec from the Akka.Cluster.Tests project:
 ```csharp
 public class JoinInProgressMultiNodeConfig : MultiNodeConfig
 {
-    readonly RoleName _first;
-    public RoleName First { get {return _first;} }
-    readonly RoleName _second;
-    public RoleName Second { get { return _second; } }
+    public RoleName First { get; }
+    public RoleName Second { get; }
 
     public JoinInProgressMultiNodeConfig()
     {
-        _first = Role("first");
-        _second = Role("second");
+        First = Role("first");
+        Second = Role("second");
 
         CommonConfig = MultiNodeLoggingConfig.LoggingConfig.WithFallback(DebugConfig(true))
 			.WithFallback(ConfigurationFactory.ParseString(@"
@@ -41,22 +39,23 @@ public class JoinInProgressMultiNodeConfig : MultiNodeConfig
                         acceptable-heartbeat-pause = 1 second
                     }
                 }").WithFallback(MultiNodeClusterSpec.ClusterConfig()));
+
+        NodeConfig(new List<RoleName> { First }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[frontend]")
+        });
+        NodeConfig(new List<RoleName> { Second }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[backend]")
+        });
     }
 }
 
-public class JoinInProgressMultiNode1 : JoinInProgressSpec
-{
-}
-
-public class JoinInProgressMultiNode2 : JoinInProgressSpec
-{
-}
-
-public abstract class JoinInProgressSpec : MultiNodeClusterSpec
+public class JoinInProgressSpec : MultiNodeClusterSpec
 {
     readonly JoinInProgressMultiNodeConfig _config;
 
-    protected JoinInProgressSpec() : this(new JoinInProgressMultiNodeConfig())
+    public JoinInProgressSpec() : this(new JoinInProgressMultiNodeConfig())
     {
     }
 
@@ -108,15 +107,13 @@ The first thing to do is define a configuration for each node you want to includ
 ```csharp
 public class JoinInProgressMultiNodeConfig : MultiNodeConfig
 {
-    readonly RoleName _first;
-    public RoleName First { get {return _first;} }
-    readonly RoleName _second;
-    public RoleName Second { get { return _second; } }
+    public RoleName First { get; }
+    public RoleName Second { get; }
 
     public JoinInProgressMultiNodeConfig()
     {
-        _first = Role("first");
-        _second = Role("second");
+        First = Role("first");
+        Second = Role("second");
 
         CommonConfig = MultiNodeLoggingConfig.LoggingConfig.WithFallback(DebugConfig(true))
             .WithFallback(ConfigurationFactory.ParseString(@"
@@ -129,23 +126,33 @@ public class JoinInProgressMultiNodeConfig : MultiNodeConfig
                         acceptable-heartbeat-pause = 1 second
                     }
                 }").WithFallback(MultiNodeClusterSpec.ClusterConfig()));
+
+
+        NodeConfig(new List<RoleName> { First }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[frontend]")
+        });
+        NodeConfig(new List<RoleName> { Second }, new List<Config>
+        {
+            ConfigurationFactory.ParseString("akka.cluster.roles =[backend]")
+        });
     }
 }
 ```
 
 In the `JoinInProgressMultiNodeConfig`, we define two `RoleName`s for the two nodes who will be participating in this multi node spec, and then we define a `Config` object and have it set to the `CommonConfig` property, which is shared across all nodes.
 
-We'll show you how to configure individual nodes in a second.
+Also we configured each node to represent specific role `[frontend,backend]` in the cluster. You can attach arbitrary config instance(s) to individual node or group of nodes by calling `NodeConfig(IEnumerable<RoleName> roles, IEnumerable<Config> configs)`.
 
-#### Step 2 - Define an Abstract Base Class for Your Spec, Inherit from `MultiNodeSpec`
-The next step is to subclass `MultiNodeSpec` and create an `abstract` base class that each of your individual nodes will run.
+#### Step 2 - Define a Class for Your Spec, Inherit from `MultiNodeSpec`
+The next step is to subclass `MultiNodeSpec` and create a class that each of your individual nodes will run.
 
 ```csharp
-public abstract class JoinInProgressSpec : MultiNodeClusterSpec
+public class JoinInProgressSpec : MultiNodeClusterSpec
 {
     readonly JoinInProgressMultiNodeConfig _config;
 
-    protected JoinInProgressSpec() : this(new JoinInProgressMultiNodeConfig())
+    public JoinInProgressSpec() : this(new JoinInProgressMultiNodeConfig())
     {
     }
 
@@ -177,11 +184,11 @@ The second constructor overload can be used for allowing individual nodes to run
 Decorate each of the independent tests with the `MultiNodeFact` attribute - the `MultiNodeTestRunner` will pick these up once it runs.
 
 ```csharp
-public abstract class JoinInProgressSpec : MultiNodeClusterSpec
+public class JoinInProgressSpec : MultiNodeClusterSpec
 {
     readonly JoinInProgressMultiNodeConfig _config;
 
-    protected JoinInProgressSpec() : this(new JoinInProgressMultiNodeConfig())
+    public JoinInProgressSpec() : this(new JoinInProgressMultiNodeConfig())
     {
     }
 
@@ -263,19 +270,6 @@ public void ConvergenceSpecTests()
 
 This unfortunate design is a byproduct of Xunit and how it recreates the entire test class on each method.
 
-#### Step 4 - Implement Your `MultiNodeSpec` Subclass for Each Node
-All that's left is to do this for each node participating in the spec:
-
-```csharp
-public class JoinInProgressMultiNode1 : JoinInProgressSpec
-{
-}
-
-public class JoinInProgressMultiNode2 : JoinInProgressSpec
-{
-}
-```
-
 
 ### Running MultiNode Specs
 To actually run this specification, we have to execute the `Akka.MultiNodeTestRunner.exe` against the .DLL that contains our specs.
@@ -283,7 +277,7 @@ To actually run this specification, we have to execute the `Akka.MultiNodeTestRu
 Here's the set of arguments that the MultiNodeTestRunner takes:
 
     Akka.MultiNodeTestRunner.exe path-to-dll # path to DLL containing tests
-	[-Dmultinode.enable-filesink=(on|off)] # writes test output to disk 
+	[-Dmultinode.enable-filesink=(on|off)] # writes test output to disk
 	[-Dmultinode.spec=("fully qualified spec method name)] # execute a specific test method
 															    # instead of all of them
 
