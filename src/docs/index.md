@@ -43,6 +43,7 @@ title: Akka.NET Documentation
 - [Switchable Behaviors](working-with-actors/Switchable Behaviors)
 - [Stashing Messages](working-with-actors/Stashing Messages)
 - [Initialization patterns](working-with-actors/initialization-patterns)
+- [Coordinated shutdown and ActorSystem termination](working-with-actors/coordinated-shutdown)
 
 ### Actors
 - [Working with actors](Working with actors)

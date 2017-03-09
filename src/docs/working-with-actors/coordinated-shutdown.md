@@ -140,4 +140,28 @@ If you'd like to automatically terminate the process running your `ActorSystem`,
 akka.coordinated-shutdown.exit-clr = on
 ```
 
-If this setting is enabled (it's disabled by default), you'll be able to 
+If this setting is enabled (it's disabled by default), you'll be able to shutdown the current running process automatically via an `Environment.Exit(0)` call made during the final phase of the `CoordinatedShutdown`.
+
+### `CoordinatedShutdown` and Akka.Cluster
+If you're using Akka.Cluster, the `CoordinatedShutdown` will automatically register tasks for completing the following:
+
+1. Gracefully leaving the cluster;
+2. Gracefully handing over / terminating ClusterSingleton and Cluster.Sharding instances; and
+3. Terminating the `Cluster` system itself.
+
+By default, this graceful leave action will by triggered whenever the `CoordinatedShutdown.Run()` method is called. Conversely, calling `Cluster.Leave` on a cluster member will also cause the `CoordinatedShutdown` to run and will terminate the `ActorSystem` once the node has left the cluster.
+
+By default, `CoordinatedShutdown.Run()` will also be executed if a node is removed via `Cluster.Down` (non-graceful exit), but this can be disabled by changing the following Akka.Cluster HOCON setting:
+
+```
+akka.run-coordinated-shutdown-when-down = off 
+```
+
+### Invoking `CoordinatedShutdown.Run()` on Process Exit
+By default `CoordinatedShutdown.Run()` will be called whenever the current process attempts to exit (using the `AppDomain.ProcessExit` event hook) and this will give the `ActorSystem` and the underlying clustering tools an opportunity to cleanup gracefully before the process finishes exiting.
+
+If you wish to disable this behavior, you can pass in the following HOCON configuration value:
+
+```
+akka.coordinated-shutdown.run-by-clr-shutdown-hook = off
+```
