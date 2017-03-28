@@ -26,7 +26,7 @@ remote transport will place a limit on the message size.
 Writing your actors such that every interaction could possibly be remote is the
 safe, pessimistic bet. It means to only rely on those properties which are
 always guaranteed and which are discussed in detail below.  This has of course
-some overhead in the actor’s implementation. If you are willing to sacrifice full
+some overhead in the actor's implementation. If you are willing to sacrifice full
 location transparency—for example in case of a group of closely collaborating
 actors—you can place them always on the same local application and enjoy stricter guarantees
 on message delivery. The details of this trade-off are discussed further below.
@@ -130,8 +130,8 @@ illustrated in the following:
       6) Since there is no guaranteed delivery, any of the messages may be dropped, i.e. not arrive at ``A2``
 
 >**Note**<br/>
-It is important to note that Akka’s guarantee applies to the order in which
-messages are enqueued into the recipient’s mailbox. If the mailbox
+It is important to note that Akka's guarantee applies to the order in which
+messages are enqueued into the recipient's mailbox. If the mailbox
 implementation does not respect FIFO order (e.g. a `PriorityMailbox`),
 then the order of processing by the actor can deviate from the enqueueing
 order.
@@ -222,7 +222,7 @@ possibly non-exhaustive list of counter-indications is:
 - Before receiving the first reply from a top-level actor, there is a lock
   which protects an internal interim queue, and this lock is not fair; the
   implication is that enqueue requests from different senders which arrive
-  during the actor’s construction (figuratively, the details are more involved)
+  during the actor's construction (figuratively, the details are more involved)
   may be reordered depending on low-level thread scheduling. Since completely
   fair locks do not exist on the CLR this is unfixable.
 
@@ -276,11 +276,11 @@ Event sourcing (and sharding) is what makes large websites scale to
 billions of users, and the idea is quite simple: when a component (think actor)
 processes a command it will generate a list of events representing the effect
 of the command. These events are stored in addition to being applied to the
-component’s state. The nice thing about this scheme is that events only ever
+component's state. The nice thing about this scheme is that events only ever
 are appended to the storage, nothing is ever mutated; this enables perfect
 replication and scaling of consumers of this event stream (i.e. other
-components may consume the event stream as a means to replicate the component’s
-state on a different continent or to react to changes). If the component’s
+components may consume the event stream as a means to replicate the component's
+state on a different continent or to react to changes). If the component's
 state is lost—due to a machine failure or by being pushed out of a cache—it can
 easily be reconstructed by replaying the event stream (usually employing
 snapshots to speed up the process). :ref:`event-sourcing` is supported by
@@ -289,9 +289,9 @@ Akka.NET Persistence.
 ###Mailbox with Explicit Acknowledgement
 
 By implementing a custom mailbox type it is possible retry message processing
-at the receiving actor’s end in order to handle temporary failures. This
+at the receiving actor's end in order to handle temporary failures. This
 pattern is mostly useful in the local communication context where delivery
-guarantees are otherwise sufficient to fulfill the application’s requirements.
+guarantees are otherwise sufficient to fulfill the application's requirements.
 
 Please note that the caveats for `The Rules for In-App (Local) Message Sends`_
 do apply.
@@ -316,7 +316,7 @@ deadLetters where possible, i.e. run your application with a suitable dead
 letter logger (see more below) from time to time and clean up the log output.
 This exercise—like all else—requires judicious application of common sense: it
 may well be that avoiding to send to a terminated actor complicates the
-sender’s code more than is gained in debug output clarity.
+sender's code more than is gained in debug output clarity.
 
 The dead letter service follows the same rules with respect to delivery
 guarantees as all other message sends, hence it cannot be used to implement

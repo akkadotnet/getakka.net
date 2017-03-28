@@ -36,7 +36,7 @@ public class MyActor: ReceiveActor
 ```
 
 ### The Inbox
-When writing code outside of actors which shall communicate with actors, the ask pattern can be a solution (see below), but there are two thing it cannot do: receiving multiple replies (e.g. by subscribing an `ActorRef` to a notification service) and watching other actors’ lifecycle. For these purposes there is the Inbox class:
+When writing code outside of actors which shall communicate with actors, the ask pattern can be a solution (see below), but there are two thing it cannot do: receiving multiple replies (e.g. by subscribing an `ActorRef` to a notification service) and watching other actors' lifecycle. For these purposes there is the Inbox class:
 
 ```csharp
 var target = system.ActorOf(Props.Empty);
@@ -54,7 +54,7 @@ catch (TimeoutException)
 }
 ```
 
-The send method wraps a normal tell and supplies the internal actor’s reference as the sender. This allows the reply to be received on the last line. Watching an actor is quite simple as well:
+The send method wraps a normal tell and supplies the internal actor's reference as the sender. This allows the reply to be received on the last line. Watching an actor is quite simple as well:
 
 ```csharp
 using System.Diagnostics;
@@ -76,7 +76,7 @@ catch (TimeoutException)
 ## UntypedActor API
 The `UntypedActor` class defines only one abstract method, the above mentioned `OnReceive(object message)`, which implements the behavior of the actor.
 
-If the current actor behavior does not match a received message, it's recommended that you call the unhandled method, which by default publishes a new `Akka.Actor.UnhandledMessage(message, sender, recipient)` on the actor system’s event stream (set configuration item `akka.actor.debug.unhandled` to on to have them converted into actual `Debug` messages).
+If the current actor behavior does not match a received message, it's recommended that you call the unhandled method, which by default publishes a new `Akka.Actor.UnhandledMessage(message, sender, recipient)` on the actor system's event stream (set configuration item `akka.actor.debug.unhandled` to on to have them converted into actual `Debug` messages).
 
 In addition, it offers:
 
@@ -86,7 +86,7 @@ In addition, it offers:
 
 * `SupervisorStrategy` user overridable definition the strategy to use for supervising child actors
 
-This strategy is typically declared inside the actor in order to have access to the actor’s internal state within the decider function: since failure is communicated as a message sent to the supervisor and processed like other messages (albeit outside of the normal behavior), all values and variables within the actor are available, as is the Sender reference (which will be the immediate child reporting the failure; if the original failure occurred within a distant descendant it is still reported one level up at a time).
+This strategy is typically declared inside the actor in order to have access to the actor's internal state within the decider function: since failure is communicated as a message sent to the supervisor and processed like other messages (albeit outside of the normal behavior), all values and variables within the actor are available, as is the Sender reference (which will be the immediate child reporting the failure; if the original failure occurred within a distant descendant it is still reported one level up at a time).
 
 * `Context` exposes contextual information for the actor and the current message, such as:
 
@@ -214,7 +214,7 @@ An example demonstrating remote actor look-up is given in Remoting Sample.
 actorFor is deprecated in favor of actorSelection because actor references acquired with actorFor behave differently for local and remote actors. In the case of a local actor reference, the named actor needs to exist before the lookup, or else the acquired reference will be an EmptyLocalActorRef. This will be true even if an actor with that exact path is created after acquiring the actor reference. For remote actor references acquired with actorFor the behaviour is different and sending messages to such a reference will under the hood look up the actor by path on the remote system for every message send.
 
 ## Messages and immutability
-**IMPORTANT:** Messages can be any kind of object but have to be immutable. Akka can’t enforce immutability (yet) so this has to be by convention.
+**IMPORTANT:** Messages can be any kind of object but have to be immutable. Akka can't enforce immutability (yet) so this has to be by convention.
 
 Here is an example of an immutable message:
 
@@ -248,7 +248,7 @@ In all these methods you have the option of passing along your own ActorRef. Mak
 This is the preferred way of sending messages. No blocking waiting for a message. This gives the best concurrency and scalability characteristics.
 
 ```csharp
-// don’t forget to think about who is the sender (2nd argument)
+// don't forget to think about who is the sender (2nd argument)
 target.Tell(message, Self);
 ```
 The sender reference is passed along with the message and available within the receiving actor via its Sender property while processing this message. Inside of an actor it is usually Self who shall be the sender, but there can be cases where replies shall be routed to some other actor—e.g. the parent—in which the second argument to tell would be a different one. Outside of an actor and if no reply is needed the second argument can be null; if a reply is needed outside of an actor you can use the ask-pattern described next.
@@ -295,7 +295,7 @@ If the actor does not complete the task, it will expire after the timeout period
 For more information on Tasks, check out the [MSDN documentation](https://msdn.microsoft.com/en-us/library/dd537609(v=vs.110).aspx).
 
 >**Warning**<br/>
-When using task callbacks inside actors, you need to carefully avoid closing over the containing actor’s reference, i.e. do not call methods or access mutable state on the enclosing actor from within the callback. This would break the actor encapsulation and may introduce synchronization bugs and race conditions because the callback will be scheduled concurrently to the enclosing actor. Unfortunately there is not yet a way to detect these illegal accesses at compile time. See also: [[Actors and shared mutable state]]
+When using task callbacks inside actors, you need to carefully avoid closing over the containing actor's reference, i.e. do not call methods or access mutable state on the enclosing actor from within the callback. This would break the actor encapsulation and may introduce synchronization bugs and race conditions because the callback will be scheduled concurrently to the enclosing actor. Unfortunately there is not yet a way to detect these illegal accesses at compile time. See also: [[Actors and shared mutable state]]
 
 ### Forward message
 You can forward a message from one actor to another. This means that the original sender address/reference is maintained even though the message is going through a 'mediator'. This can be useful when writing actors that work as routers, load-balancers, replicators etc. You need to pass along your context variable as well.
@@ -419,7 +419,7 @@ public class Manager : UntypedActor
 }
 ```
 
-When ```GracefulStop()``` returns successfully, the actor’s ```PostStop()``` hook will have been executed: there exists a happens-before edge between the end of ```PostStop()``` and the return of ```GracefulStop()```.
+When ```GracefulStop()``` returns successfully, the actor's ```PostStop()``` hook will have been executed: there exists a happens-before edge between the end of ```PostStop()``` and the return of ```GracefulStop()```.
 
 In the above example a "shutdown" message is sent to the target actor to initiate the process of stopping the actor. You can use PoisonPill for this, but then you have limited possibilities to perform interactions with other actors before stopping the target actor. Simple cleanup tasks can be handled in PostStop.
 
@@ -428,7 +428,7 @@ Keep in mind that an actor stopping and its name being deregistered are separate
 
 ## HotSwap
 ### Upgrade
-Akka supports hotswapping the Actor’s message loop (e.g. its implementation) at runtime. Use the Context.Become method from within the Actor. The hotswapped code is kept in a Stack which can be pushed (replacing or adding at the top) and popped.
+Akka supports hotswapping the Actor's message loop (e.g. its implementation) at runtime. Use the Context.Become method from within the Actor. The hotswapped code is kept in a Stack which can be pushed (replacing or adding at the top) and popped.
 
 >**Warning**<br/>
 Please note that the actor will revert to its original behavior when restarted by its Supervisor.
@@ -533,7 +533,7 @@ If an exception is thrown while a message is being processed (i.e. taken out of 
 If an exception is thrown while a message is being processed, nothing happens to the mailbox. If the actor is restarted, the same mailbox will be there. So all messages on that mailbox will be there as well.
 
 ### What happens to the actor
-If code within an actor throws an exception, that actor is suspended and the supervision process is started (see Supervision and Monitoring). Depending on the supervisor’s decision the actor is resumed (as if nothing happened), restarted (wiping out its internal state and starting from scratch) or terminated.
+If code within an actor throws an exception, that actor is suspended and the supervision process is started (see Supervision and Monitoring). Depending on the supervisor's decision the actor is resumed (as if nothing happened), restarted (wiping out its internal state and starting from scratch) or terminated.
 
 ## Initialization patterns
 The rich lifecycle hooks of Actors provide a useful toolkit to implement various initialization patterns. During the lifetime of an ActorRef, an actor can potentially go through several restarts, where the old instance is replaced by a fresh one, invisibly to the outside observer who only sees the ActorRef.
