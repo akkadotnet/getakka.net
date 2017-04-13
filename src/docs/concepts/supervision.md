@@ -100,8 +100,8 @@ public class MyActor : UntypedActor
     protected override SupervisorStrategy SupervisorStrategy()
     {
         return new OneForOneStrategy( //or AllForOneStrategy
-            maxNumberOfRetries: 10,
-            duration: TimeSpan.FromSeconds(30),
+            maxNrOfRetries: 10,
+            withinTimeRange: TimeSpan.FromSeconds(30),
             decider: Decider.From(x =>
             {
                 //Maybe we consider ArithmeticException to not be application critical
