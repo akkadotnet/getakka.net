@@ -38,7 +38,7 @@ protected override void PreRestart(Exception reason, object message)
 ```
 Please note, that the child actors are *still restarted*, but no new `IActorRef` is created. One can recursively apply the same principles for the children, ensuring that their `PreStart()` method is called only at the creation of their refs.
 
-For more information see [What Restarting Means](../concepts/Supervision#what-restarting-means).
+For more information see [What Restarting Means](../concepts/supervision#what-restarting-means).
 
 ### Initialization via message passing
 
