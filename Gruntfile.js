@@ -75,7 +75,7 @@ module.exports = function(grunt) {
                 expand: true,
                 layoutdir: layouts,
                 partials: ['src/partials/**/*'],
-                helpers: ['helper-gfm.js', 'helper-ifEq.js'],
+                helpers: ['helper-gfm.js', 'helper-ifEq.js', 'helper-replace.js'],
                 assets: assets,
                 data: 'src/_data/*'
             },
