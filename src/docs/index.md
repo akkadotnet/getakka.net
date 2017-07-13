@@ -43,6 +43,7 @@ title: Akka.NET Documentation
 - [Switchable Behaviors](working-with-actors/Switchable Behaviors)
 - [Stashing Messages](working-with-actors/Stashing Messages)
 - [Initialization patterns](working-with-actors/initialization-patterns)
+- [Coordinated shutdown and ActorSystem termination](working-with-actors/coordinated-shutdown)
 
 ### Actors
 - [Working with actors](Working with actors)
@@ -115,6 +116,7 @@ title: Akka.NET Documentation
     - [Cluster distributed publish/subscribe](clustering/distributed-publish-subscribe)
     - [Communication with cluster without joining to it](clustering/cluster-client)
 - [Akka.Cluster.Sharding module](clustering/cluster-sharding)
+- [Akka.DistributedData module](clustering/distributed-data)
 
 ### Networking
 - [Serialization](Serialization)

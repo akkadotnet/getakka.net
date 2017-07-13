@@ -69,7 +69,7 @@ You should use `PoisonPill` when you want the actor to process its mailbox befor
 `Kill` will cause an actor to be `Stop`ped by its supervisor. In the process, the supervisor will log the `ActorKilledException`.
 
 #### What Happens When I `Kill` an Actor?
-1. [The actor throws]((https://github.com/akkadotnet/akka.net/blob/dev/src/core/Akka/Actor/ActorCell.DefaultMessages.cs#L376)) an [`ActorKilledException`](https://github.com/akkadotnet/akka.net/blob/dev/src/core/Akka/Actor/Exceptions.cs#L134). The actor's supervisor logs this message.
+1. [The actor throws](https://github.com/akkadotnet/akka.net/blob/dev/src/core/Akka/Actor/ActorCell.DefaultMessages.cs#L376) an [`ActorKilledException`](https://github.com/akkadotnet/akka.net/blob/dev/src/core/Akka/Actor/Exceptions.cs#L134). The actor's supervisor logs this message.
     - Note: This suspends the actor mailbox from processing further user messages.
 2. The actor's supervisor [handles the `ActorKilledException` and issues a `Stop` directive.](https://github.com/akkadotnet/akka.net/blob/dev/src/core/Akka/Actor/SupervisorStrategy.cs#L85)
 3. The actor will stop per the `Stop` sequence outlined above.
