@@ -11,6 +11,13 @@ Below is the URL for the Akka.NET MyGet feeds.
 
 > **https://www.myget.org/F/akkadotnet/api/v2**
 
+### Akka.NET .NET Core Beta Nightlies
+For the time being, Akka.NET's `v1.3` branch is where all of Akka.NET's .NET Core-supporting distributions are available, and you can consume them here:
+
+> **https://www.myget.org/gallery/akkadotnet-netcore**
+
+Akka.NET supports .NET Standard 1.6, which can be consumed in any .NET Core 1.0 and later application.
+
 To consume this MyGet feed in Visual Studio, [follow the steps outlined in the NuGet documentation for adding a package source to Visual Studio (and use the feed URL above)](http://docs.nuget.org/create/hosting-your-own-nuget-feeds).
 
 Once you've done that you can use the Package Manager in Visual Studio and consume the latest packages:
