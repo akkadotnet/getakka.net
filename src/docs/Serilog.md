@@ -40,3 +40,38 @@ var log = Context.GetLogger(new SerilogLogMessageFormatter());
 ...
 log.Info("The value is {Counter}", counter);
 ```
+## HOCON configuration
+
+In order to be able to change log level without the need to recompile, we need to employ some sort of configuration.  To use Serilog via HOCON configuration, add the following to the App.config
+
+```xml
+<configSections>    
+    <section name="akka" type="Akka.Configuration.Hocon.AkkaConfigurationSection, Akka" />
+</configSections>
+
+...
+
+<akka>
+    <hocon>
+      <![CDATA[
+      akka { 
+        loglevel=INFO,
+        loggers=["Akka.Logger.Serilog.SerilogLogger, Akka.Logger.Serilog"]
+      }
+    ]]>
+    </hocon>
+  </akka>
+
+```
+
+The code can then be updated as follows removing the inline HOCON.  Additionally, in this example, we use Serilog's ability to configure itself through the App.config.  For further information see [Serilog AppSettings](https://github.com/serilog/serilog/wiki/AppSettings)
+
+```csharp
+var logger = new LoggerConfiguration()
+                .ReadFrom.AppSettings()
+                .CreateLogger();            
+Serilog.Log.Logger = logger;
+var system = ActorSystem.Create("my-test-system");
+```
+
+

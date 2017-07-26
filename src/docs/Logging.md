@@ -17,10 +17,18 @@ _log.Debug("Some message");
 ```
 
 ## Standard Loggers
-Akka.NET comes with two built in loggers.
+Akka.NET comes with three built in loggers.
 
 * __StandardOutLogger__
 * __BusLogging__
+* __TraceLogger__
+
+Example configuration inside your app.config or web.config to use the `TraceLogger`:
+```hocon
+akka {
+	loggers = ["Akka.Event.TraceLogger, Akka"]
+}
+```
 
 ## Contrib Loggers
 These loggers are also available as separate nuget packages
