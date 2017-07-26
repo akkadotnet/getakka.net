@@ -199,8 +199,7 @@ Each role within the cluster also has a leader, just for that role. Its primary 
 
 ### Reachability
 Nodes send each other <a href="https://en.wikipedia.org/wiki/Heartbeat_(computing)">heartbeats</a> on an ongoing basis. If a node misses enough heartbeats, this will trigger `unreachable` gossip messages from its peers.
-
-If the gossip from a quorum of cluster nodes agree that the node is unreachable ("convergence"), the leader will mark it as down and begin removing the node from the cluster.
+Even if the entire cluster agrees that a node is unreachable, the leader will not take any action. If a node is permanently unreachable, you will have to Down it. You can do this by writing a custom IDowningProvider or using the `cluster.auto-down-unreachable-after` setting.
 
 ## Location Transparency
 [Location transparency](concepts/location-transparency) is the underlying principle powering all of Akka.Remote and Akka.Cluster. The key point is that in a cluster, it's entirely possible that the actors you interface with to do work can be living on any node in the cluster... and you don't have to worry about which one.
