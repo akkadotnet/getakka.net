@@ -352,9 +352,6 @@ akka {
 }
 ```
 
->**Note**<br/>
-The license of Wire has changed to GNU v3. Because of this the Akka.NET team has created a fork of Wire, under the name [Hyperion](https://github.com/akkadotnet/Hyperion). An Akka.Serialization.Hyperion package will be released as part of the 1.1.3 release.
-
 ### Deep serialization of Actors
 The recommended approach to do deep serialization of internal actor state is
 to use [Akka Persistence](Persistence).
