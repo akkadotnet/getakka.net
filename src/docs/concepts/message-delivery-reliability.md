@@ -52,6 +52,10 @@ Discussion: What does "at-most-once" mean?
 When it comes to describing the semantics of a delivery mechanism, there are
 three basic categories:
 
+* **exactly-once** delivery means that for each message handed to the mechanism
+  exactly one delivery is made to the recipient; the message can neither be
+  lost nor duplicated.
+
 * **at-most-once** delivery means that for each message handed to the
   mechanism, that message is delivered zero or one times; in more casual terms
   it means that messages may be lost.
@@ -60,10 +64,6 @@ three basic categories:
   mechanism potentially multiple attempts are made at delivering it, such that
   at least one succeeds; again, in more casual terms this means that messages
   may be duplicated but not lost.
-
-* **exactly-once** delivery means that for each message handed to the mechanism
-  exactly one delivery is made to the recipient; the message can neither be
-  lost nor duplicated.
 
 The first one is the cheapest—highest performance, least implementation
 overhead—because it can be done in a fire-and-forget fashion without keeping
